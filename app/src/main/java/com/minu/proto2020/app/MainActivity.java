@@ -17,6 +17,9 @@ public class MainActivity extends ActionBarActivity {
     private TextView mPickerOne;
     private TextView mPickerTwo;
 
+    float mPickerOneY;
+    float mPickerTwoY;
+
     private TextView debug;
 
     @Override
@@ -34,9 +37,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 TextView picker = (TextView) view.findViewById(R.id.picker_1);
-                int lifeTotal = Integer.parseInt(picker.getText().toString());
-                lifeTotal--;
-                picker.setText(Integer.toString(lifeTotal));
+                changePickerValue(picker, false);
             }
         });
 
@@ -44,17 +45,28 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int action = motionEvent.getAction();
+                boolean moved = false;
+                TextView picker = (TextView) view.findViewById(R.id.picker_1);
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        ClipData data = ClipData.newPlainText("", "");
-                        View.DragShadowBuilder shadow = new View.DragShadowBuilder();
-                        view.startDrag(data, shadow, null, 0);
+                        mPickerOneY = motionEvent.getY();
                         System.out.println("On touch, y: " + motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_MOVE:
                         System.out.println("On touch movement, y: " + motionEvent.getY());
+                        float y = motionEvent.getY();
+                        if (Math.abs(y - mPickerOneY) > 50.0) {
+                            if (y > mPickerOneY)
+                                changePickerValue(picker, false);
+                            else
+                                changePickerValue(picker, true);
+                            mPickerOneY = y;
+                        }
+                        moved = true;
                         break;
                     case MotionEvent.ACTION_UP:
+                        if (!moved)
+                            changePickerValue(picker, false);
                         System.out.println("Action up");
                         break;
                     default:
@@ -65,49 +77,12 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        mPickerOne.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View view, DragEvent dragEvent) {
-                int action = dragEvent.getAction();
-                float y = dragEvent.getY();
-                System.out.println("Y: " + y);
-                switch (action) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        break;
-                    case DragEvent.ACTION_DRAG_LOCATION:
-                        y = dragEvent.getY();
-                        System.out.println("location Y: " + y);
-                        break;
-                    case DragEvent.ACTION_DROP:
-                        y = dragEvent.getY();
-                        System.out.println("drop Y: " + y);
-                        break;
-                    default:
-                        y = dragEvent.getY();
-                        System.out.println("default Y: " + y);
-                        break;
-                }
-                return true;
-            }
-        });
-
-        mPickerOne.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                System.out.println("Picker on long click");
-                return true;
-            }
-        });
 
         mPickerTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TextView picker = (TextView) view.findViewById(R.id.picker_2);
-                int lifeTotal = Integer.parseInt(picker.getText().toString());
-                lifeTotal--;
-                picker.setText(Integer.toString(lifeTotal));
+                changePickerValue(picker, false);
             }
         });
 
@@ -118,6 +93,19 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    private void setOnTouchListener(TextView picker) {
+
+    }
+
+    private void changePickerValue(TextView picker, boolean add) {
+        int lifeTotal = Integer.parseInt(picker.getText().toString());
+        if (add)
+            lifeTotal++;
+        else
+            lifeTotal--;
+        picker.setText(Integer.toString(lifeTotal));
     }
 
 
