@@ -2,35 +2,65 @@ package com.minu.proto2020.app;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity implements NumberPicker.OnScrollListener {
+public class MainActivity extends ActionBarActivity {
 
-    private NumberPicker mPickerOne;
-    private NumberPicker mPickerTwo;
+    private TextView mPickerOne;
+    private TextView mPickerTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPickerOne = (NumberPicker) findViewById(R.id.picker_1);
-        mPickerTwo = (NumberPicker) findViewById(R.id.picker_2);
+        mPickerOne = (TextView) findViewById(R.id.picker_1);
+        mPickerTwo = (TextView) findViewById(R.id.picker_2);
 
-        mPickerOne.setOnScrollListener(this);
-        mPickerTwo.setOnScrollListener(this);
+        mPickerOne.setText("20");
+        mPickerTwo.setText("20");
 
-        mPickerOne.setMaxValue(1000);
-        mPickerTwo.setMaxValue(1000);
+        mPickerOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView picker = (TextView) view.findViewById(R.id.picker_1);
+                int lifeTotal = Integer.parseInt(picker.getText().toString());
+                lifeTotal--;
+                picker.setText(Integer.toString(lifeTotal));
+            }
+        });
 
-        mPickerOne.setValue(20);
-        mPickerTwo.setValue(20);
+        mPickerOne.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                System.out.println("Picker on long click");
+                return false;
+            }
+        });
 
-        mPickerOne.setWrapSelectorWheel(false);
-        mPickerTwo.setWrapSelectorWheel(false);
+        mPickerTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView picker = (TextView) view.findViewById(R.id.picker_2);
+                int lifeTotal = Integer.parseInt(picker.getText().toString());
+                lifeTotal--;
+                picker.setText(Integer.toString(lifeTotal));
+            }
+        });
+
+        mPickerTwo.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                return false;
+            }
+        });
+
     }
 
 
@@ -53,8 +83,4 @@ public class MainActivity extends ActionBarActivity implements NumberPicker.OnSc
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onScrollStateChange(NumberPicker numberPicker, int i) {
-
-    }
 }

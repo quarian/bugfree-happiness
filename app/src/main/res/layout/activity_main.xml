@@ -8,24 +8,27 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.minu.proto2020.app.MainActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-        <NumberPicker
-            android:layout_height="wrap_content"
+        <TextView
+            android:layout_height="fill_parent"
             android:layout_width="wrap_content"
-            android:paddingRight="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight=".5"
+            android:textSize="100dp"
             android:id="@+id/picker_1" />
 
-        <NumberPicker
-            android:layout_height="wrap_content"
+        <TextView
+            android:layout_height="fill_parent"
             android:layout_width="wrap_content"
-            android:paddingLeft="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight=".5"
             android:id="@+id/picker_2"
-            android:layout_toRightOf="@id/picker_1" />
-        </RelativeLayout>
+            android:textSize="100dp"/>
+        </LinearLayout>
 
 </RelativeLayout>
