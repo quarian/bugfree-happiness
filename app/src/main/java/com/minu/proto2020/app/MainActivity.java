@@ -1,10 +1,12 @@
 package com.minu.proto2020.app;
 
+import android.content.ClipData;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -14,6 +16,8 @@ public class MainActivity extends ActionBarActivity {
 
     private TextView mPickerOne;
     private TextView mPickerTwo;
+
+    private TextView debug;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +40,64 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        mPickerOne.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        ClipData data = ClipData.newPlainText("", "");
+                        View.DragShadowBuilder shadow = new View.DragShadowBuilder();
+                        view.startDrag(data, shadow, null, 0);
+                        System.out.println("On touch, y: " + motionEvent.getY());
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        System.out.println("On touch movement, y: " + motionEvent.getY());
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        System.out.println("Action up");
+                        break;
+                    default:
+                        System.out.println("Default touchevent");
+                        break;
+                }
+                return true;
+            }
+        });
+
+        mPickerOne.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                int action = dragEvent.getAction();
+                float y = dragEvent.getY();
+                System.out.println("Y: " + y);
+                switch (action) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        break;
+                    case DragEvent.ACTION_DRAG_LOCATION:
+                        y = dragEvent.getY();
+                        System.out.println("location Y: " + y);
+                        break;
+                    case DragEvent.ACTION_DROP:
+                        y = dragEvent.getY();
+                        System.out.println("drop Y: " + y);
+                        break;
+                    default:
+                        y = dragEvent.getY();
+                        System.out.println("default Y: " + y);
+                        break;
+                }
+                return true;
+            }
+        });
+
         mPickerOne.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 System.out.println("Picker on long click");
-                return false;
+                return true;
             }
         });
 
