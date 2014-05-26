@@ -10,7 +10,7 @@
         <activity
             android:name="com.minu.proto2020.app.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
