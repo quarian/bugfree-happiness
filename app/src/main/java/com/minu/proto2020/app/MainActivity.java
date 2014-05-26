@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
                     case MotionEvent.ACTION_MOVE:
                         System.out.println("On touch movement, y: " + motionEvent.getY());
                         if (Math.abs(y - mPickerY) > 50.0) {
+                            mSpun = true;
                             System.out.println("Changing value");
                             if (y > mPickerY)
                                 changePickerValue(picker, false);
@@ -59,7 +60,6 @@ public class MainActivity extends ActionBarActivity {
                                 changePickerValue(picker, true);
                             mPickerY = y;
                         }
-                        mSpun = true;
                         break;
                     case MotionEvent.ACTION_UP:
                         if (!mSpun)
@@ -99,7 +99,9 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.reset) {
+            mPickerOne.setText("20");
+            mPickerTwo.setText("20");
             return true;
         }
         return super.onOptionsItemSelected(item);
