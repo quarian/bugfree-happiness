@@ -17,10 +17,9 @@ public class MainActivity extends ActionBarActivity {
     private TextView mPickerOne;
     private TextView mPickerTwo;
 
-    float mPickerOneY;
-    float mPickerTwoY;
+    private boolean mSpun;
 
-    private TextView debug;
+    private float mPickerY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,44 +29,43 @@ public class MainActivity extends ActionBarActivity {
         mPickerOne = (TextView) findViewById(R.id.picker_1);
         mPickerTwo = (TextView) findViewById(R.id.picker_2);
 
+        setOnTouchListener(mPickerOne);
+        setOnTouchListener(mPickerTwo);
+
         mPickerOne.setText("20");
         mPickerTwo.setText("20");
 
-        mPickerOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TextView picker = (TextView) view.findViewById(R.id.picker_1);
-                changePickerValue(picker, false);
-            }
-        });
 
-        mPickerOne.setOnTouchListener(new View.OnTouchListener() {
+    }
+
+    private void setOnTouchListener(final TextView picker) {
+        picker.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int action = motionEvent.getAction();
-                boolean moved = false;
-                TextView picker = (TextView) view.findViewById(R.id.picker_1);
+                float y = motionEvent.getY();
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        mPickerOneY = motionEvent.getY();
+                        mPickerY = motionEvent.getY();
                         System.out.println("On touch, y: " + motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_MOVE:
                         System.out.println("On touch movement, y: " + motionEvent.getY());
-                        float y = motionEvent.getY();
-                        if (Math.abs(y - mPickerOneY) > 50.0) {
-                            if (y > mPickerOneY)
+                        if (Math.abs(y - mPickerY) > 50.0) {
+                            System.out.println("Changing value");
+                            if (y > mPickerY)
                                 changePickerValue(picker, false);
                             else
                                 changePickerValue(picker, true);
-                            mPickerOneY = y;
+                            mPickerY = y;
                         }
-                        moved = true;
+                        mSpun = true;
                         break;
                     case MotionEvent.ACTION_UP:
-                        if (!moved)
+                        if (!mSpun)
                             changePickerValue(picker, false);
                         System.out.println("Action up");
+                        mSpun = false;
                         break;
                     default:
                         System.out.println("Default touchevent");
@@ -76,27 +74,6 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             }
         });
-
-
-        mPickerTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TextView picker = (TextView) view.findViewById(R.id.picker_2);
-                changePickerValue(picker, false);
-            }
-        });
-
-        mPickerTwo.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View view, DragEvent dragEvent) {
-                return false;
-            }
-        });
-
-    }
-
-    private void setOnTouchListener(TextView picker) {
-
     }
 
     private void changePickerValue(TextView picker, boolean add) {
