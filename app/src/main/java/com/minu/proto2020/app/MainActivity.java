@@ -1,5 +1,6 @@
 package com.minu.proto2020.app;
 
+import android.app.Activity;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -15,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private TextView mLifePickerOne;
     private TextView mLifePickerTwo;
@@ -154,14 +155,6 @@ public class MainActivity extends ActionBarActivity {
         else
             lifeTotal--;
         picker.setText(Integer.toString(lifeTotal));
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
