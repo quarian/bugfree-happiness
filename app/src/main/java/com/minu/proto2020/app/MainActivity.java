@@ -75,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        mDrawerLayout.setKeepScreenOn(true);
         resetDuel();
 
     }
