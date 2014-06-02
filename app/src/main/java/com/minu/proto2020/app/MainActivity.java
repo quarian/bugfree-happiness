@@ -134,8 +134,15 @@ public class MainActivity extends Activity {
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        if (!mSpun)
-                            changePickerValue(picker, poison);
+                        int[] coordinates = {0, 0};
+                        findViewById(R.id.life_picker_1).getLocationOnScreen(coordinates);
+                        if (!mSpun) {
+                            if (y > (coordinates[1] + findViewById(R.id.life_picker_1).getHeight()) / 2)
+                                changePickerValue(picker, false);
+                            else
+                                changePickerValue(picker, true);
+
+                        }
                         System.out.println("Action up");
                         mSpun = false;
                         break;
