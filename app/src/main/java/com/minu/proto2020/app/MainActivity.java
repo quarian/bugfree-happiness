@@ -56,7 +56,6 @@ public class MainActivity extends ActionBarActivity {
 
         resetDuel();
 
-
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -129,6 +128,12 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideSystemUI();
     }
 
     @Override
