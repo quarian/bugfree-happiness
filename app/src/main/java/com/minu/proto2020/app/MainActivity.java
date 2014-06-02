@@ -1,26 +1,29 @@
 package com.minu.proto2020.app;
 
-import android.content.ClipData;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    private TextView mPickerOne;
-    private TextView mPickerTwo;
+    private TextView mLifePickerOne;
+    private TextView mLifePickerTwo;
+    private TextView mPoisonPickerOne;
+    private TextView mPoisonPickerTwo;
+
+    private boolean mPoisonShowing;
+    private ImageButton mPoisonButton;
 
     private String[] mOptions;
 
@@ -37,8 +40,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         hideSystemUI();
 
-        mPickerOne = (TextView) findViewById(R.id.picker_1);
-        mPickerTwo = (TextView) findViewById(R.id.picker_2);
+        mLifePickerOne = (TextView) findViewById(R.id.life_picker_1);
+        mLifePickerTwo = (TextView) findViewById(R.id.life_picker_2);
+
+        mPoisonPickerOne = (TextView) findViewById(R.id.poison_picker_1);
+        mPoisonPickerTwo = (TextView) findViewById(R.id.poison_picker_2);
+
+        mPoisonButton = (ImageButton) findViewById(R.id.poison_button);
 
         mOptions = new String[1];
         mOptions[0] = "New duel";
@@ -51,11 +59,36 @@ public class MainActivity extends ActionBarActivity {
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        setOnTouchListener(mPickerOne);
-        setOnTouchListener(mPickerTwo);
+        setOnTouchListener(mLifePickerOne, false);
+        setOnTouchListener(mLifePickerTwo, false);
+        setOnTouchListener(mPoisonPickerOne, true);
+        setOnTouchListener(mPoisonPickerTwo, true);
+
+        mPoisonPickerOne.setVisibility(View.GONE);
+        mPoisonPickerTwo.setVisibility(View.GONE);
+
+        mPoisonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("PoisonButton pushed");
+                displayPoison();
+            }
+        });
 
         resetDuel();
 
+    }
+
+    private void displayPoison() {
+        if (mPoisonShowing) {
+            mPoisonPickerOne.setVisibility(View.GONE);
+            mPoisonPickerTwo.setVisibility(View.GONE);
+            mPoisonShowing = false;
+        } else {
+            mPoisonPickerOne.setVisibility(View.VISIBLE);
+            mPoisonPickerTwo.setVisibility(View.VISIBLE);
+            mPoisonShowing = true;
+        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -75,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private void setOnTouchListener(final TextView picker) {
+    private void setOnTouchListener(final TextView picker, final boolean poison) {
         picker.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -100,7 +133,7 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case MotionEvent.ACTION_UP:
                         if (!mSpun)
-                            changePickerValue(picker, false);
+                            changePickerValue(picker, poison);
                         System.out.println("Action up");
                         mSpun = false;
                         break;
@@ -150,8 +183,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void resetDuel() {
-        mPickerOne.setText("20");
-        mPickerTwo.setText("20");
+        mLifePickerOne.setText("20");
+        mLifePickerTwo.setText("20");
+        mPoisonPickerOne.setText("0");
+        mPoisonPickerTwo.setText("0");
     }
 
 
