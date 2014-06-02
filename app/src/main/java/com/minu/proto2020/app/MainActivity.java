@@ -1,6 +1,8 @@
 package com.minu.proto2020.app;
 
 import android.content.ClipData;
+import android.os.Build;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.DragEvent;
@@ -8,6 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -17,6 +22,11 @@ public class MainActivity extends ActionBarActivity {
     private TextView mPickerOne;
     private TextView mPickerTwo;
 
+    private String[] mOptions;
+
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+
     private boolean mSpun;
 
     private float mPickerY;
@@ -25,17 +35,45 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        hideSystemUI();
 
         mPickerOne = (TextView) findViewById(R.id.picker_1);
         mPickerTwo = (TextView) findViewById(R.id.picker_2);
 
+        mOptions = new String[1];
+        mOptions[0] = "New duel";
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,  mOptions));
+
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
         setOnTouchListener(mPickerOne);
         setOnTouchListener(mPickerTwo);
 
-        mPickerOne.setText("20");
-        mPickerTwo.setText("20");
+        resetDuel();
 
 
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            switch (position) {
+                case 0:
+                    resetDuel();
+                    mDrawerLayout.closeDrawer(mDrawerList);
+                    break;
+                case 1:
+                    break;
+                default:
+                    mDrawerLayout.closeDrawer(mDrawerList);
+                    break;
+            }
+        }
     }
 
     private void setOnTouchListener(final TextView picker) {
@@ -100,11 +138,31 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.reset) {
-            mPickerOne.setText("20");
-            mPickerTwo.setText("20");
+            resetDuel();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void resetDuel() {
+        mPickerOne.setText("20");
+        mPickerTwo.setText("20");
+    }
+
+
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        getActionBar().hide();
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        } else {
+            // Not KitKat, do something else
+        }
     }
 
 }
