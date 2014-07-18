@@ -3,21 +3,22 @@ package com.minu.proto2020.app;
 import android.app.Activity;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
 
+    private LinearLayout mLinearLayoutOne;
+    private LinearLayout mLinearLayoutTwo;
     private TextView mLifePickerOne;
     private TextView mLifePickerTwo;
     private TextView mPoisonPickerOne;
@@ -41,6 +42,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         hideSystemUI();
 
+        mLinearLayoutOne = (LinearLayout) findViewById(R.id.first_picker_layout);
+        mLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_picker_layout);
+
         mLifePickerOne = (TextView) findViewById(R.id.life_picker_1);
         mLifePickerTwo = (TextView) findViewById(R.id.life_picker_2);
 
@@ -60,10 +64,12 @@ public class MainActivity extends Activity {
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        setOnTouchListener(mLifePickerOne, false);
-        setOnTouchListener(mLifePickerTwo, false);
-        setOnTouchListener(mPoisonPickerOne, true);
-        setOnTouchListener(mPoisonPickerTwo, true);
+        setLayoutTouchListener(mLinearLayoutOne, mLifePickerOne);
+        setLayoutTouchListener(mLinearLayoutTwo, mLifePickerTwo);
+        setTextViewOnTouchListener(mLifePickerOne, false);
+        setTextViewOnTouchListener(mLifePickerTwo, false);
+        setTextViewOnTouchListener(mPoisonPickerOne, true);
+        setTextViewOnTouchListener(mPoisonPickerTwo, true);
 
         mPoisonPickerOne.setVisibility(View.GONE);
         mPoisonPickerTwo.setVisibility(View.GONE);
@@ -110,7 +116,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void setOnTouchListener(final TextView picker, final boolean poison) {
+    private void setTextViewOnTouchListener(final TextView picker, final boolean poison) {
         picker.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -119,13 +125,13 @@ public class MainActivity extends Activity {
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
                         mPickerY = motionEvent.getY();
-                        System.out.println("On touch, y: " + motionEvent.getY());
+                        System.out.println("On picker touch, y: " + motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        System.out.println("On touch movement, y: " + motionEvent.getY());
+                        System.out.println("On picker touch movement, y: " + motionEvent.getY());
                         if (Math.abs(y - mPickerY) > 50.0) {
                             mSpun = true;
-                            System.out.println("Changing value");
+                            System.out.println("Changing picker value");
                             if (y > mPickerY)
                                 changePickerValue(picker, false);
                             else
@@ -134,20 +140,37 @@ public class MainActivity extends Activity {
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        int[] coordinates = {0, 0};
-                        findViewById(R.id.life_picker_1).getLocationOnScreen(coordinates);
-                        if (!mSpun) {
-                            if (y > (coordinates[1] + findViewById(R.id.life_picker_1).getHeight()) / 2)
-                                changePickerValue(picker, false);
-                            else
-                                changePickerValue(picker, true);
-
-                        }
+                        if (!mSpun)
+                            changePickerValue(picker, poison);
                         System.out.println("Action up");
                         mSpun = false;
                         break;
                     default:
-                        System.out.println("Default touchevent");
+                        System.out.println("Default picker touchevent");
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void setLayoutTouchListener(final LinearLayout layout, final TextView picker) {
+        layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                float y = motionEvent.getY();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        int[] coordinates = {0, 0};
+                        if (y > (coordinates[1] + layout.getHeight()) / 2)
+                            changePickerValue(picker, false);
+                        else
+                            changePickerValue(picker, true);
+                        System.out.println("On layout touch, y: " + motionEvent.getY());
+                        break;
+                    default:
+                        System.out.println("Default layout touchevent");
                         break;
                 }
                 return true;

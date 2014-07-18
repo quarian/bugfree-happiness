@@ -16,49 +16,68 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_height="fill_parent"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:minEms="2"
-                android:gravity="center"
-                android:layout_weight=".5"
-                android:textSize="100dp"
-                android:id="@+id/life_picker_1" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/first_picker_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:textSize="50dp"
-                android:minEms="2"
                 android:layout_weight=".5"
-                android:gravity="center"
-                android:id="@+id/poison_picker_1"
-                android:layout_gravity="center"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_height="fill_parent"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:minEms="2"
-                android:gravity="center"
-                android:layout_weight=".5"
-                android:id="@+id/life_picker_2"
-                android:textSize="100dp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:minEms="2"
+                    android:gravity="center"
+                    android:layout_weight=".5"
+                    android:textSize="100dp"
+                    android:id="@+id/life_picker_1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textSize="50dp"
-                android:layout_weight=".5"
-                android:gravity="center"
-                android:minEms="2"
-                android:id="@+id/poison_picker_2"
-                android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="50dp"
+                    android:minEms="2"
+                    android:layout_weight=".5"
+                    android:gravity="center"
+                    android:id="@+id/poison_picker_1"
+                    android:layout_gravity="center"/>
 
             </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/second_picker_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:minEms="2"
+                    android:gravity="center"
+                    android:layout_weight=".5"
+                    android:id="@+id/life_picker_2"
+                    android:textSize="100dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="50dp"
+                    android:layout_weight=".5"
+                    android:gravity="center"
+                    android:minEms="2"
+                    android:id="@+id/poison_picker_2"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageButton
             android:layout_width="16dp"
