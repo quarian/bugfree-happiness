@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import eu.erikw.PullToRefreshListView;
+
 
 public class MainActivity extends Activity {
 
@@ -31,6 +33,8 @@ public class MainActivity extends Activity {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+
+    private PullToRefreshListView mFoo;
 
     private boolean mSpun;
 
