@@ -14,13 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import eu.erikw.PullToRefreshListView;
-
-
 public class MainActivity extends Activity {
 
-    private LinearLayout mLinearLayoutOne;
-    private LinearLayout mLinearLayoutTwo;
+    private LinearLayout mLifeLinearLayoutOne;
+    private LinearLayout mLifeLinearLayoutTwo;
+    private LinearLayout mPoisonLinearLayoutOne;
+    private LinearLayout mPoisonLinearLayoutTwo;
     private TextView mLifePickerOne;
     private TextView mLifePickerTwo;
     private TextView mPoisonPickerOne;
@@ -34,8 +33,6 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
-    private PullToRefreshListView mFoo;
-
     private boolean mSpun;
 
     private float mPickerY;
@@ -46,8 +43,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         hideSystemUI();
 
-        mLinearLayoutOne = (LinearLayout) findViewById(R.id.first_picker_layout);
-        mLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_picker_layout);
+        mLifeLinearLayoutOne = (LinearLayout) findViewById(R.id.first_life_picker_layout);
+        mLifeLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_life_picker_layout);
+
+        mPoisonLinearLayoutOne = (LinearLayout) findViewById(R.id.first_poison_picker_layout);
+        mPoisonLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_poison_picker_layout);
 
         mLifePickerOne = (TextView) findViewById(R.id.life_picker_1);
         mLifePickerTwo = (TextView) findViewById(R.id.life_picker_2);
@@ -68,15 +68,17 @@ public class MainActivity extends Activity {
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        setLayoutTouchListener(mLinearLayoutOne, mLifePickerOne);
-        setLayoutTouchListener(mLinearLayoutTwo, mLifePickerTwo);
+        setLayoutTouchListener(mLifeLinearLayoutOne, mLifePickerOne, false);
+        setLayoutTouchListener(mLifeLinearLayoutTwo, mLifePickerTwo, false);
+        setLayoutTouchListener(mPoisonLinearLayoutOne, mPoisonPickerOne, true);
+        setLayoutTouchListener(mPoisonLinearLayoutTwo, mPoisonPickerTwo, true);
         setTextViewOnTouchListener(mLifePickerOne, false);
         setTextViewOnTouchListener(mLifePickerTwo, false);
         setTextViewOnTouchListener(mPoisonPickerOne, true);
         setTextViewOnTouchListener(mPoisonPickerTwo, true);
 
-        mPoisonPickerOne.setVisibility(View.GONE);
-        mPoisonPickerTwo.setVisibility(View.GONE);
+        mPoisonLinearLayoutOne.setVisibility(View.GONE);
+        mPoisonLinearLayoutTwo.setVisibility(View.GONE);
 
         mPoisonButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,12 +95,12 @@ public class MainActivity extends Activity {
 
     private void displayPoison() {
         if (mPoisonShowing) {
-            mPoisonPickerOne.setVisibility(View.GONE);
-            mPoisonPickerTwo.setVisibility(View.GONE);
+            mPoisonLinearLayoutOne.setVisibility(View.GONE);
+            mPoisonLinearLayoutTwo.setVisibility(View.GONE);
             mPoisonShowing = false;
         } else {
-            mPoisonPickerOne.setVisibility(View.VISIBLE);
-            mPoisonPickerTwo.setVisibility(View.VISIBLE);
+            mPoisonLinearLayoutOne.setVisibility(View.VISIBLE);
+            mPoisonLinearLayoutTwo.setVisibility(View.VISIBLE);
             mPoisonShowing = true;
         }
     }
@@ -158,7 +160,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void setLayoutTouchListener(final LinearLayout layout, final TextView picker) {
+    private void setLayoutTouchListener(final LinearLayout layout, final TextView picker, final boolean poison) {
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -167,6 +169,7 @@ public class MainActivity extends Activity {
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
                         int[] coordinates = {0, 0};
+                        System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
                         if (y > (coordinates[1] + layout.getHeight()) / 2)
                             changePickerValue(picker, false);
                         else

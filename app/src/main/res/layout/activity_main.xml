@@ -20,7 +20,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/first_picker_layout"
+                android:id="@+id/first_life_picker_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_weight=".5"
@@ -36,6 +36,16 @@
                     android:textSize="100dp"
                     android:id="@+id/life_picker_1" />
 
+            </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/first_poison_picker_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight=".5"
+            android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,11 +56,10 @@
                     android:id="@+id/poison_picker_1"
                     android:layout_gravity="center"/>
 
-            </LinearLayout>
-
+        </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/second_picker_layout"
+                android:id="@+id/second_life_picker_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_weight=".5"
@@ -65,7 +74,15 @@
                     android:layout_weight=".5"
                     android:id="@+id/life_picker_2"
                     android:textSize="100dp"/>
+            </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/second_poison_picker_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight=".5"
+            android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
