@@ -25,6 +25,10 @@ public class MainActivity extends Activity {
     private TextView mPoisonPickerOne;
     private TextView mPoisonPickerTwo;
 
+    private LinearLayout mWrapper;
+
+    private TextView mTempUpdateTextView;
+
     private boolean mPoisonShowing;
     private ImageButton mPoisonButton;
 
@@ -34,8 +38,12 @@ public class MainActivity extends Activity {
     private ListView mDrawerList;
 
     private boolean mSpun;
+    private boolean mSideSwipe;
 
     private float mPickerY;
+    private float mPickerX;
+    private float mPickerLastX;
+    private boolean mUpdating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,10 @@ public class MainActivity extends Activity {
         mPoisonPickerTwo = (TextView) findViewById(R.id.poison_picker_2);
 
         mPoisonButton = (ImageButton) findViewById(R.id.poison_button);
+
+        mWrapper = (LinearLayout) findViewById(R.id.wrapper);
+
+        mTempUpdateTextView = (TextView) findViewById(R.id.update);
 
         mOptions = new String[1];
         mOptions[0] = "New duel";
@@ -128,14 +140,17 @@ public class MainActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int action = motionEvent.getAction();
                 float y = motionEvent.getY();
+                float x = motionEvent.getX();
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
                         mPickerY = motionEvent.getY();
+                        mPickerX = motionEvent.getX();
+                        mPickerLastX = motionEvent.getX();
                         System.out.println("On picker touch, y: " + motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_MOVE:
                         System.out.println("On picker touch movement, y: " + motionEvent.getY());
-                        if (Math.abs(y - mPickerY) > 50.0) {
+                        if (!mSideSwipe && Math.abs(y - mPickerY) > 50.0) {
                             mSpun = true;
                             System.out.println("Changing picker value");
                             if (y > mPickerY)
@@ -144,12 +159,32 @@ public class MainActivity extends Activity {
                                 changePickerValue(picker, true);
                             mPickerY = y;
                         }
+                        if (!mSpun && Math.abs(x - mPickerLastX) > 50.0) {
+                            mSideSwipe = true;
+                            System.out.println((int) (x - mPickerLastX));
+                            mWrapper.scrollBy((int) (x - mPickerLastX) / 10, 0);
+                            System.out.println("Side swiping");
+                            if (Math.abs(x - mPickerX) > 500.0) {
+                                mTempUpdateTextView.setText("UPDATING");
+                                mUpdating = true;
+                            } else {
+                                mTempUpdateTextView.setText("NOT UPDATING");
+                                mUpdating = false;
+                            }
+                            mPickerLastX = x;
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
-                        if (!mSpun)
+                        if (!mSpun && !mSideSwipe)
                             changePickerValue(picker, poison);
                         System.out.println("Action up");
                         mSpun = false;
+                        mTempUpdateTextView.setText("NOT UPDATING");
+                        if (mUpdating)
+                            resetDuel();
+                        mWrapper.scrollTo(0, 0);
+                        mUpdating = false;
+                        mSideSwipe = false;
                         break;
                     default:
                         System.out.println("Default picker touchevent");
@@ -166,15 +201,44 @@ public class MainActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int action = motionEvent.getAction();
                 float y = motionEvent.getY();
+                float x = motionEvent.getX();
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        int[] coordinates = {0, 0};
-                        System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
-                        if (y > (coordinates[1] + layout.getHeight()) / 2)
-                            changePickerValue(picker, false);
-                        else
-                            changePickerValue(picker, true);
-                        System.out.println("On layout touch, y: " + motionEvent.getY());
+                        mPickerX = motionEvent.getX();
+                        mPickerLastX = motionEvent.getX();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (!mSpun && Math.abs(x - mPickerLastX) > 50.0) {
+                            mSideSwipe = true;
+                            System.out.println((int) (x - mPickerLastX));
+                            mWrapper.scrollBy((int) (x - mPickerLastX) / 10, 0);
+                            System.out.println("Side swiping");
+                            if (Math.abs(x - mPickerX) > 500.0) {
+                                mTempUpdateTextView.setText("UPDATING");
+                                mUpdating = true;
+                            } else {
+                                mTempUpdateTextView.setText("NOT UPDATING");
+                                mUpdating = false;
+                            }
+                            mPickerLastX = x;
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mTempUpdateTextView.setText("NOT UPDATING");
+                        if (mUpdating)
+                            resetDuel();
+                        else {
+                            int[] coordinates = {0, 0};
+                            System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
+                            if (y > (coordinates[1] + layout.getHeight()) / 2)
+                                changePickerValue(picker, false);
+                            else
+                                changePickerValue(picker, true);
+                            System.out.println("On layout touch, y: " + motionEvent.getY());
+                        }
+                        mWrapper.scrollTo(0, 0);
+                        mUpdating = false;
+                        mSideSwipe = false;
                         break;
                     default:
                         System.out.println("Default layout touchevent");

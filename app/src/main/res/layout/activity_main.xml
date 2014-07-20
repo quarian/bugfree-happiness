@@ -17,7 +17,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/wrapper">
 
             <LinearLayout
                 android:id="@+id/first_life_picker_layout"
@@ -107,7 +108,15 @@
             android:alpha="0.4"
             android:scaleType="fitXY"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/update"
+            android:text="NOT UPDATING"
+            android:layout_toLeftOf="@id/poison_button"/>
+
     </RelativeLayout>
+
 
     <ListView
         android:id="@+id/left_drawer"
