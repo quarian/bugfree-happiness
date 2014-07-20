@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:id="@+id/picker_layout">
+
+    <LinearLayout
+        android:id="@+id/life_picker_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight=".5"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:minEms="2"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:textSize="100dp"
+            android:id="@+id/life_picker" />
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/poison_picker_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight=".5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50dp"
+            android:minEms="2"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:id="@+id/poison_picker"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -4,28 +4,26 @@ import android.app.Activity;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import it.sephiroth.android.library.widget.HListView;
+
 public class MainActivity extends Activity {
 
-    private LinearLayout mLifeLinearLayoutOne;
-    private LinearLayout mLifeLinearLayoutTwo;
-    private LinearLayout mPoisonLinearLayoutOne;
-    private LinearLayout mPoisonLinearLayoutTwo;
-    private TextView mLifePickerOne;
-    private TextView mLifePickerTwo;
-    private TextView mPoisonPickerOne;
-    private TextView mPoisonPickerTwo;
+    private ArrayList<Picker> mPickers;
 
-    private boolean mPoisonShowing;
     private ImageButton mPoisonButton;
 
     private String[] mOptions;
@@ -33,27 +31,14 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
-    private boolean mSpun;
-
-    private float mPickerY;
+    private HListView mListView;
+    private PickerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         hideSystemUI();
-
-        mLifeLinearLayoutOne = (LinearLayout) findViewById(R.id.first_life_picker_layout);
-        mLifeLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_life_picker_layout);
-
-        mPoisonLinearLayoutOne = (LinearLayout) findViewById(R.id.first_poison_picker_layout);
-        mPoisonLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_poison_picker_layout);
-
-        mLifePickerOne = (TextView) findViewById(R.id.life_picker_1);
-        mLifePickerTwo = (TextView) findViewById(R.id.life_picker_2);
-
-        mPoisonPickerOne = (TextView) findViewById(R.id.poison_picker_1);
-        mPoisonPickerTwo = (TextView) findViewById(R.id.poison_picker_2);
 
         mPoisonButton = (ImageButton) findViewById(R.id.poison_button);
 
@@ -68,17 +53,15 @@ public class MainActivity extends Activity {
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        setLayoutTouchListener(mLifeLinearLayoutOne, mLifePickerOne, false);
-        setLayoutTouchListener(mLifeLinearLayoutTwo, mLifePickerTwo, false);
-        setLayoutTouchListener(mPoisonLinearLayoutOne, mPoisonPickerOne, true);
-        setLayoutTouchListener(mPoisonLinearLayoutTwo, mPoisonPickerTwo, true);
-        setTextViewOnTouchListener(mLifePickerOne, false);
-        setTextViewOnTouchListener(mLifePickerTwo, false);
-        setTextViewOnTouchListener(mPoisonPickerOne, true);
-        setTextViewOnTouchListener(mPoisonPickerTwo, true);
+        mListView = (HListView) findViewById(R.id.list_view);
 
-        mPoisonLinearLayoutOne.setVisibility(View.GONE);
-        mPoisonLinearLayoutTwo.setVisibility(View.GONE);
+
+        mPickers = new ArrayList<Picker>();
+        mPickers.add(new Picker());
+        mPickers.add(new Picker());
+
+        mAdapter = new PickerAdapter(this, mPickers);
+        mListView.setAdapter(mAdapter);
 
         mPoisonButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,20 +72,11 @@ public class MainActivity extends Activity {
         });
 
         mDrawerLayout.setKeepScreenOn(true);
-        resetDuel();
-
     }
 
     private void displayPoison() {
-        if (mPoisonShowing) {
-            mPoisonLinearLayoutOne.setVisibility(View.GONE);
-            mPoisonLinearLayoutTwo.setVisibility(View.GONE);
-            mPoisonShowing = false;
-        } else {
-            mPoisonLinearLayoutOne.setVisibility(View.VISIBLE);
-            mPoisonLinearLayoutTwo.setVisibility(View.VISIBLE);
-            mPoisonShowing = true;
-        }
+        for (Picker picker : mPickers)
+            picker.displayPoison();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -122,77 +96,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void setTextViewOnTouchListener(final TextView picker, final boolean poison) {
-        picker.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int action = motionEvent.getAction();
-                float y = motionEvent.getY();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        mPickerY = motionEvent.getY();
-                        System.out.println("On picker touch, y: " + motionEvent.getY());
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        System.out.println("On picker touch movement, y: " + motionEvent.getY());
-                        if (Math.abs(y - mPickerY) > 50.0) {
-                            mSpun = true;
-                            System.out.println("Changing picker value");
-                            if (y > mPickerY)
-                                changePickerValue(picker, false);
-                            else
-                                changePickerValue(picker, true);
-                            mPickerY = y;
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if (!mSpun)
-                            changePickerValue(picker, poison);
-                        System.out.println("Action up");
-                        mSpun = false;
-                        break;
-                    default:
-                        System.out.println("Default picker touchevent");
-                        break;
-                }
-                return true;
-            }
-        });
-    }
 
-    private void setLayoutTouchListener(final LinearLayout layout, final TextView picker, final boolean poison) {
-        layout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int action = motionEvent.getAction();
-                float y = motionEvent.getY();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        int[] coordinates = {0, 0};
-                        System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
-                        if (y > (coordinates[1] + layout.getHeight()) / 2)
-                            changePickerValue(picker, false);
-                        else
-                            changePickerValue(picker, true);
-                        System.out.println("On layout touch, y: " + motionEvent.getY());
-                        break;
-                    default:
-                        System.out.println("Default layout touchevent");
-                        break;
-                }
-                return true;
-            }
-        });
-    }
-
-    private void changePickerValue(TextView picker, boolean add) {
-        int lifeTotal = Integer.parseInt(picker.getText().toString());
-        if (add)
-            lifeTotal++;
-        else
-            lifeTotal--;
-        picker.setText(Integer.toString(lifeTotal));
-    }
 
     @Override
     public void onResume() {
@@ -214,10 +118,8 @@ public class MainActivity extends Activity {
     }
 
     public void resetDuel() {
-        mLifePickerOne.setText("20");
-        mLifePickerTwo.setText("20");
-        mPoisonPickerOne.setText("0");
-        mPoisonPickerTwo.setText("0");
+        for (Picker picker : mPickers)
+            picker.reset();
     }
 
 

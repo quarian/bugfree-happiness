@@ -14,87 +14,11 @@
         tools:context="com.minu.proto2020.app.MainActivity">
 
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal">
+        <it.sephiroth.android.library.widget.HListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list_view" />
 
-            <LinearLayout
-                android:id="@+id/first_life_picker_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight=".5"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="center"
-                    android:minEms="2"
-                    android:gravity="center"
-                    android:layout_weight=".5"
-                    android:textSize="100dp"
-                    android:id="@+id/life_picker_1" />
-
-            </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/first_poison_picker_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight=".5"
-            android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="50dp"
-                    android:minEms="2"
-                    android:layout_weight=".5"
-                    android:gravity="center"
-                    android:id="@+id/poison_picker_1"
-                    android:layout_gravity="center"/>
-
-        </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/second_life_picker_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight=".5"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="center"
-                    android:minEms="2"
-                    android:gravity="center"
-                    android:layout_weight=".5"
-                    android:id="@+id/life_picker_2"
-                    android:textSize="100dp"/>
-            </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/second_poison_picker_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight=".5"
-            android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="50dp"
-                    android:layout_weight=".5"
-                    android:gravity="center"
-                    android:minEms="2"
-                    android:id="@+id/poison_picker_2"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
-
-        </LinearLayout>
 
         <ImageButton
             android:layout_width="16dp"
