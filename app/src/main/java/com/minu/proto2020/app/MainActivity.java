@@ -159,20 +159,7 @@ public class MainActivity extends Activity {
                                 changePickerValue(picker, true);
                             mPickerY = y;
                         }
-                        if (!mSpun && Math.abs(x - mPickerLastX) > 50.0) {
-                            mSideSwipe = true;
-                            System.out.println((int) (x - mPickerLastX));
-                            mWrapper.scrollBy((int) (x - mPickerLastX) / 10, 0);
-                            System.out.println("Side swiping");
-                            if (Math.abs(x - mPickerX) > 500.0) {
-                                mTempUpdateTextView.setText("UPDATING");
-                                mUpdating = true;
-                            } else {
-                                mTempUpdateTextView.setText("NOT UPDATING");
-                                mUpdating = false;
-                            }
-                            mPickerLastX = x;
-                        }
+                        sideSwipe(x);
                         break;
                     case MotionEvent.ACTION_UP:
                         if (!mSpun && !mSideSwipe)
@@ -208,20 +195,7 @@ public class MainActivity extends Activity {
                         mPickerLastX = motionEvent.getX();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if (!mSpun && Math.abs(x - mPickerLastX) > 50.0) {
-                            mSideSwipe = true;
-                            System.out.println((int) (x - mPickerLastX));
-                            mWrapper.scrollBy((int) (x - mPickerLastX) / 10, 0);
-                            System.out.println("Side swiping");
-                            if (Math.abs(x - mPickerX) > 500.0) {
-                                mTempUpdateTextView.setText("UPDATING");
-                                mUpdating = true;
-                            } else {
-                                mTempUpdateTextView.setText("NOT UPDATING");
-                                mUpdating = false;
-                            }
-                            mPickerLastX = x;
-                        }
+                        sideSwipe(x);
                         break;
                     case MotionEvent.ACTION_UP:
                         mTempUpdateTextView.setText("NOT UPDATING");
@@ -247,6 +221,24 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
+    }
+
+    private void sideSwipe(float x) {
+        if (!mSpun && Math.abs(x - mPickerLastX) > 20.0) {
+            mSideSwipe = true;
+            System.out.println((int) (x - mPickerLastX));
+            if (!mUpdating)
+                mWrapper.scrollBy((int) -(x - mPickerLastX) / 3, 0);
+            System.out.println("Side swiping");
+            if (Math.abs(x - mPickerX) > 300.0) {
+                mTempUpdateTextView.setText("UPDATING");
+                mUpdating = true;
+            } else {
+                mTempUpdateTextView.setText("NOT UPDATING");
+                mUpdating = false;
+            }
+            mPickerLastX = x;
+        }
     }
 
     private void changePickerValue(TextView picker, boolean add) {
