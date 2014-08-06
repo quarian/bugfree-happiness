@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         hideSystemUI();
 
         bindElements();
@@ -217,11 +217,12 @@ public class MainActivity extends Activity {
     }
 
     private void sideSwipe(float x) {
-        if (!mSpun && Math.abs(x - mPickerLastX) > 20.0) {
+        if (!mSpun && Math.abs(x - mPickerLastX) > 20.0)
             mSideSwipe = true;
+        if (mSideSwipe) {
             System.out.println((int) (x - mPickerLastX));
             if (!mUpdating)
-                mWrapper.scrollBy((int) -(x - mPickerLastX) / 3, 0);
+                mWrapper.scrollBy((int) -(x - mPickerLastX) / 2, 0);
             System.out.println("Side swiping");
             if (Math.abs(x - mPickerX) > 300.0) {
                 mTempUpdateTextView.setText("UPDATING");
