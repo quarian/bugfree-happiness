@@ -49,8 +49,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
         hideSystemUI();
 
+        bindElements();
+
+        initElements();
+    }
+
+    private void bindElements() {
         mLifeLinearLayoutOne = (LinearLayout) findViewById(R.id.first_life_picker_layout);
         mLifeLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_life_picker_layout);
 
@@ -74,16 +81,17 @@ public class MainActivity extends Activity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+    }
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,  mOptions));
+    private void initElements() { mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+            android.R.layout.simple_list_item_1,  mOptions));
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        setLayoutTouchListener(mLifeLinearLayoutOne, mLifePickerOne, false);
-        setLayoutTouchListener(mLifeLinearLayoutTwo, mLifePickerTwo, false);
-        setLayoutTouchListener(mPoisonLinearLayoutOne, mPoisonPickerOne, true);
-        setLayoutTouchListener(mPoisonLinearLayoutTwo, mPoisonPickerTwo, true);
+        setLayoutTouchListener(mLifeLinearLayoutOne, mLifePickerOne);
+        setLayoutTouchListener(mLifeLinearLayoutTwo, mLifePickerTwo);
+        setLayoutTouchListener(mPoisonLinearLayoutOne, mPoisonPickerOne);
+        setLayoutTouchListener(mPoisonLinearLayoutTwo, mPoisonPickerTwo);
         setTextViewOnTouchListener(mLifePickerOne, false);
         setTextViewOnTouchListener(mLifePickerTwo, false);
         setTextViewOnTouchListener(mPoisonPickerOne, true);
@@ -102,7 +110,6 @@ public class MainActivity extends Activity {
 
         mDrawerLayout.setKeepScreenOn(true);
         resetDuel();
-
     }
 
     private void displayPoison() {
@@ -143,22 +150,10 @@ public class MainActivity extends Activity {
                 float x = motionEvent.getX();
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        mPickerY = motionEvent.getY();
-                        mPickerX = motionEvent.getX();
-                        mPickerLastX = motionEvent.getX();
-                        System.out.println("On picker touch, y: " + motionEvent.getY());
+                        recordTouchStart(motionEvent);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        System.out.println("On picker touch movement, y: " + motionEvent.getY());
-                        if (!mSideSwipe && Math.abs(y - mPickerY) > 50.0) {
-                            mSpun = true;
-                            System.out.println("Changing picker value");
-                            if (y > mPickerY)
-                                changePickerValue(picker, false);
-                            else
-                                changePickerValue(picker, true);
-                            mPickerY = y;
-                        }
+                        verticalSwipe(y, picker);
                         sideSwipe(x);
                         break;
                     case MotionEvent.ACTION_UP:
@@ -182,7 +177,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void setLayoutTouchListener(final LinearLayout layout, final TextView picker, final boolean poison) {
+    private void setLayoutTouchListener(final LinearLayout layout, final TextView picker) {
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -191,8 +186,7 @@ public class MainActivity extends Activity {
                 float x = motionEvent.getX();
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        mPickerX = motionEvent.getX();
-                        mPickerLastX = motionEvent.getX();
+                        recordTouchStart(motionEvent);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         sideSwipe(x);
@@ -201,15 +195,8 @@ public class MainActivity extends Activity {
                         mTempUpdateTextView.setText("NOT UPDATING");
                         if (mUpdating)
                             resetDuel();
-                        else {
-                            int[] coordinates = {0, 0};
-                            System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
-                            if (y > (coordinates[1] + layout.getHeight()) / 2)
-                                changePickerValue(picker, false);
-                            else
-                                changePickerValue(picker, true);
-                            System.out.println("On layout touch, y: " + motionEvent.getY());
-                        }
+                        else
+                            peripheralTouch(y, picker, layout);
                         mWrapper.scrollTo(0, 0);
                         mUpdating = false;
                         mSideSwipe = false;
@@ -221,6 +208,12 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
+    }
+
+    private void recordTouchStart(MotionEvent motionEvent) {
+        mPickerY = motionEvent.getY();
+        mPickerX = motionEvent.getX();
+        mPickerLastX = motionEvent.getX();
     }
 
     private void sideSwipe(float x) {
@@ -239,6 +232,27 @@ public class MainActivity extends Activity {
             }
             mPickerLastX = x;
         }
+    }
+
+    private void verticalSwipe(float y, TextView picker) {
+        if (!mSideSwipe && Math.abs(y - mPickerY) > 50.0) {
+            mSpun = true;
+            System.out.println("Changing picker value");
+            if (y > mPickerY)
+                changePickerValue(picker, false);
+            else
+                changePickerValue(picker, true);
+            mPickerY = y;
+        }
+    }
+
+    private void peripheralTouch(float y, TextView picker, LinearLayout layout) {
+        int[] coordinates = {0, 0};
+        System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
+        if (y > (coordinates[1] + layout.getHeight()) / 2)
+            changePickerValue(picker, false);
+        else
+            changePickerValue(picker, true);
     }
 
     private void changePickerValue(TextView picker, boolean add) {
