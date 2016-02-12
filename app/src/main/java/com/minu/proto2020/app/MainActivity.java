@@ -154,7 +154,7 @@ public class MainActivity extends Activity {
             if (!isHistoryEntryRead(mHistory.get(i))) {
                 currentTime = parseTimeStamp(mHistory.get(i));
                 nextTime = parseTimeStamp(mHistory.get(i + 1));
-                if (nextTime - currentTime < 1000) {
+                if (nextTime - currentTime < 2000) {
                     mHistory.remove(i + 1);
                     i--;
                 }
@@ -312,6 +312,7 @@ public class MainActivity extends Activity {
                 recordTouchStart(motionEvent);
                 break;
             case MotionEvent.ACTION_MOVE:
+                verticalSwipe(y, picker);
                 sideSwipe(x);
                 break;
             case MotionEvent.ACTION_UP:
