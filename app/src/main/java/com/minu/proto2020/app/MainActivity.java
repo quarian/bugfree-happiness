@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
 
     private LinearLayout mLifeLinearLayoutOne;
@@ -32,6 +34,8 @@ public class MainActivity extends Activity {
     static final String PICKER_TWO_LIFE = "PICKER_ONE_POISON";
     static final String PICKER_ONE_POISON = "PICKER_TWO_LIFE";
     static final String PICKER_TWO_POISON = "PICKER_TWO_POISON";
+
+    static final String HISTORY = "HISTORY";
 
     private LinearLayout mWrapper;
 
@@ -53,6 +57,8 @@ public class MainActivity extends Activity {
     private float mPickerLastX;
     private boolean mUpdating;
 
+    private ArrayList<String> mHistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +76,10 @@ public class MainActivity extends Activity {
                     savedInstanceState.getString(PICKER_TWO_POISON),
                     savedInstanceState.getString(PICKER_TWO_LIFE),
                     savedInstanceState.getString(PICKER_TWO_POISON));
+
+                    mHistory = savedInstanceState.getStringArrayList(HISTORY);
         } else {
+            mHistory = new ArrayList<String>();
             resetDuel();
         }
     }
@@ -82,6 +91,8 @@ public class MainActivity extends Activity {
         savedInstanceState.putString(PICKER_ONE_POISON, mPoisonPickerTwo.getText().toString());
         savedInstanceState.putString(PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
         savedInstanceState.putString(PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
+
+        savedInstanceState.putStringArrayList(HISTORY, mHistory);
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -206,6 +217,7 @@ public class MainActivity extends Activity {
             changePickerValue(picker, poison);
         System.out.println("Action up");
         mSpun = false;
+        addToHistory(getTotals());
         mTempUpdateTextView.setText("NOT UPDATING");
         if (mUpdating)
             resetDuel();
@@ -335,6 +347,20 @@ public class MainActivity extends Activity {
         mLifePickerTwo.setText(STARTING_LIFE);
         mPoisonPickerOne.setText(STARTING_POISON);
         mPoisonPickerTwo.setText(STARTING_POISON);
+        mHistory.clear();
+    }
+
+    public void addToHistory(String[] totals) {
+        System.out.println("Adding to history " + totals[0] + " " + totals[1] + " "
+                + totals[2] + " " + totals[3]);
+        mHistory.add(totals[0] + " " + totals[1] + " "
+                + totals[2] + " " + totals[3]);
+    }
+
+    public String[] getTotals() {
+        String[] result = {mLifePickerOne.getText().toString(), mLifePickerTwo.getText().toString(),
+                           mPoisonPickerOne.getText().toString(), mPoisonPickerTwo.getText().toString()};
+        return result;
     }
 
 
