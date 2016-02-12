@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
     private boolean mPoisonShowing;
     private ImageButton mPoisonButton;
 
-    private String[] mOptions;
+    private ArrayList<String> mOptions;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -78,6 +78,8 @@ public class MainActivity extends Activity {
                     savedInstanceState.getString(PICKER_TWO_POISON));
 
                     mHistory = savedInstanceState.getStringArrayList(HISTORY);
+                    mOptions.addAll(1, mHistory);
+                    ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
         } else {
             mHistory = new ArrayList<String>();
             resetDuel();
@@ -116,11 +118,75 @@ public class MainActivity extends Activity {
 
         mTempUpdateTextView = (TextView) findViewById(R.id.update);
 
-        mOptions = new String[1];
-        mOptions[0] = "New duel";
+        mOptions = new ArrayList<String>();
+        mOptions.add("New duel");
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                collapseHistory();
+                showHistory();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+    }
+
+    private void collapseHistory() {
+        long currentTime;
+        long nextTime;
+        for (int i = 0; i + 2 < mHistory.size(); i++) {
+            if (!isHistoryEntryRead(mHistory.get(i))) {
+                currentTime = parseTimeStamp(mHistory.get(i));
+                nextTime = parseTimeStamp(mHistory.get(i + 1));
+                if (nextTime - currentTime < 1000) {
+                    mHistory.remove(i + 1);
+                    i--;
+                }
+            }
+        }
+        for (int i = 0; i + 1 < mHistory.size(); i++) {
+            mHistory.set(i, markedHistoryEntryRead(mHistory.get(i)));
+        }
+    }
+
+    private void showHistory() {
+        mOptions.subList(1, mOptions.size()).clear();
+        if (mHistory.size() > 2)
+            mHistory.remove(mHistory.size() - 2); // MAGIC: the CODENING
+        mOptions.addAll(1, mHistory);
+        ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
+    }
+
+    private long parseTimeStamp(String historyEntry) {
+        String timeString = historyEntry.split(" ")[4];
+        return Long.parseLong(timeString);
+    }
+
+    private boolean isHistoryEntryRead(String historyEntry) {
+        String read = historyEntry.split(" ")[4];
+        return read.compareTo("READ") == 0;
+    }
+
+    private String markedHistoryEntryRead(String historyEntry) {
+        String[] split = historyEntry.split(" ");
+        split[4] = "READ";
+        return split[0] + " " + split[1] + " " + split[2] + " " + split[3]+ " " + split[4];
     }
 
     private void initElements() { mDrawerList.setAdapter(new ArrayAdapter<String>(this,
@@ -349,6 +415,10 @@ public class MainActivity extends Activity {
         mPoisonPickerOne.setText(STARTING_POISON);
         mPoisonPickerTwo.setText(STARTING_POISON);
         mHistory.clear();
+        mOptions.clear();
+        mOptions.add("New duel");
+        addToHistory(getTotals());
+        ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     public void addToHistory(String[] totals) {
