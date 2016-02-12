@@ -321,6 +321,7 @@ public class MainActivity extends Activity {
         else
             lifeTotal--;
         picker.setText(Integer.toString(lifeTotal));
+        addToHistory(getTotals());
     }
 
     @Override
@@ -351,10 +352,11 @@ public class MainActivity extends Activity {
     }
 
     public void addToHistory(String[] totals) {
+        String timeStamp = Long.toString(System.currentTimeMillis());
         System.out.println("Adding to history " + totals[0] + " " + totals[1] + " "
-                + totals[2] + " " + totals[3]);
+                + totals[2] + " " + totals[3] + " " + timeStamp);
         mHistory.add(totals[0] + " " + totals[1] + " "
-                + totals[2] + " " + totals[3]);
+                + totals[2] + " " + totals[3] + " " + timeStamp);
     }
 
     public String[] getTotals() {
