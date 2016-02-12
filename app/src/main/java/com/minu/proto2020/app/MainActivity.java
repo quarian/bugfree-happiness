@@ -148,33 +148,42 @@ public class MainActivity extends Activity {
                 int action = motionEvent.getAction();
                 float y = motionEvent.getY();
                 float x = motionEvent.getX();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        recordTouchStart(motionEvent);
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        verticalSwipe(y, picker);
-                        sideSwipe(x);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if (!mSpun && !mSideSwipe)
-                            changePickerValue(picker, poison);
-                        System.out.println("Action up");
-                        mSpun = false;
-                        mTempUpdateTextView.setText("NOT UPDATING");
-                        if (mUpdating)
-                            resetDuel();
-                        mWrapper.scrollTo(0, 0);
-                        mUpdating = false;
-                        mSideSwipe = false;
-                        break;
-                    default:
-                        System.out.println("Default picker touchevent");
-                        break;
-                }
+                handlePickerTouchEvent(x, y, action, motionEvent, picker, poison);
                 return true;
             }
         });
+    }
+
+    private void handlePickerTouchEvent(float x, float y, int action,
+                                        MotionEvent motionEvent, TextView picker, boolean poison) {
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                recordTouchStart(motionEvent);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                verticalSwipe(y, picker);
+                sideSwipe(x);
+                break;
+            case MotionEvent.ACTION_UP:
+                handlePickerTouchRelease(picker, poison);
+                break;
+            default:
+                System.out.println("Default picker touchevent");
+                break;
+        }
+    }
+
+    private void handlePickerTouchRelease(TextView picker, boolean poison) {
+        if (!mSpun && !mSideSwipe)
+            changePickerValue(picker, poison);
+        System.out.println("Action up");
+        mSpun = false;
+        mTempUpdateTextView.setText("NOT UPDATING");
+        if (mUpdating)
+            resetDuel();
+        mWrapper.scrollTo(0, 0);
+        mUpdating = false;
+        mSideSwipe = false;
     }
 
     private void setLayoutTouchListener(final LinearLayout layout, final TextView picker) {
@@ -184,30 +193,39 @@ public class MainActivity extends Activity {
                 int action = motionEvent.getAction();
                 float y = motionEvent.getY();
                 float x = motionEvent.getX();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        recordTouchStart(motionEvent);
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        sideSwipe(x);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        mTempUpdateTextView.setText("NOT UPDATING");
-                        if (mUpdating)
-                            resetDuel();
-                        else
-                            peripheralTouch(y, picker, layout);
-                        mWrapper.scrollTo(0, 0);
-                        mUpdating = false;
-                        mSideSwipe = false;
-                        break;
-                    default:
-                        System.out.println("Default layout touchevent");
-                        break;
-                }
+                handleLayoutTouchEvent(x, y, action, motionEvent, picker, layout);
                 return true;
             }
         });
+    }
+
+    private void handleLayoutTouchEvent(float x, float y, int action, MotionEvent motionEvent,
+                                        TextView picker, LinearLayout layout) {
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                recordTouchStart(motionEvent);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                sideSwipe(x);
+                break;
+            case MotionEvent.ACTION_UP:
+                handleLayoutTouchRelease(y, picker, layout);
+                break;
+            default:
+                System.out.println("Default layout touchevent");
+                break;
+        }
+    }
+
+    private void handleLayoutTouchRelease(float y, TextView picker, LinearLayout layout) {
+        mTempUpdateTextView.setText("NOT UPDATING");
+        if (mUpdating)
+            resetDuel();
+        else
+            peripheralTouch(y, picker, layout);
+        mWrapper.scrollTo(0, 0);
+        mUpdating = false;
+        mSideSwipe = false;
     }
 
     private void recordTouchStart(MotionEvent motionEvent) {
@@ -295,7 +313,7 @@ public class MainActivity extends Activity {
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         getActionBar().hide();
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
