@@ -25,6 +25,14 @@ public class MainActivity extends Activity {
     private TextView mPoisonPickerOne;
     private TextView mPoisonPickerTwo;
 
+    static final String STARTING_LIFE = "20";
+    static final String STARTING_POISON = "0";
+
+    static final String PICKER_ONE_LIFE = "PICKER_ONE_LIFE";
+    static final String PICKER_TWO_LIFE = "PICKER_ONE_POISON";
+    static final String PICKER_ONE_POISON = "PICKER_TWO_LIFE";
+    static final String PICKER_TWO_POISON = "PICKER_TWO_POISON";
+
     private LinearLayout mWrapper;
 
     private TextView mTempUpdateTextView;
@@ -55,6 +63,27 @@ public class MainActivity extends Activity {
         bindElements();
 
         initElements();
+
+        if (savedInstanceState != null) {
+            System.out.println("Restoring state");
+            setLifeTotals(savedInstanceState.getString(PICKER_ONE_LIFE),
+                    savedInstanceState.getString(PICKER_TWO_POISON),
+                    savedInstanceState.getString(PICKER_TWO_LIFE),
+                    savedInstanceState.getString(PICKER_TWO_POISON));
+        } else {
+            resetDuel();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        System.out.println("Saving state");
+        savedInstanceState.putString(PICKER_ONE_LIFE, mLifePickerOne.getText().toString());
+        savedInstanceState.putString(PICKER_ONE_POISON, mPoisonPickerTwo.getText().toString());
+        savedInstanceState.putString(PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
+        savedInstanceState.putString(PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
+
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private void bindElements() {
@@ -109,7 +138,6 @@ public class MainActivity extends Activity {
         });
 
         mDrawerLayout.setKeepScreenOn(true);
-        resetDuel();
     }
 
     private void displayPoison() {
@@ -303,10 +331,19 @@ public class MainActivity extends Activity {
     }
 
     public void resetDuel() {
-        mLifePickerOne.setText("20");
-        mLifePickerTwo.setText("20");
-        mPoisonPickerOne.setText("0");
-        mPoisonPickerTwo.setText("0");
+        mLifePickerOne.setText(STARTING_LIFE);
+        mLifePickerTwo.setText(STARTING_LIFE);
+        mPoisonPickerOne.setText(STARTING_POISON);
+        mPoisonPickerTwo.setText(STARTING_POISON);
+    }
+
+
+    private void setLifeTotals(String lifePickerOne, String poisonPickerOne,
+                               String lifePickerTwo, String poisonPickerTwo) {
+        mLifePickerOne.setText(lifePickerOne);
+        mLifePickerTwo.setText(lifePickerTwo);
+        mPoisonPickerOne.setText(poisonPickerOne);
+        mPoisonPickerTwo.setText(poisonPickerTwo);
     }
 
 
