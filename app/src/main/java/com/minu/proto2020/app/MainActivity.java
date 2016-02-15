@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+    private static final boolean SCALE_UP = true;
+    private static final boolean SCALE_DOWN = false;
     private LinearLayout mLifeLinearLayoutOne;
     private LinearLayout mLifeLinearLayoutTwo;
     private LinearLayout mPoisonLinearLayoutOne;
@@ -293,9 +296,13 @@ public class MainActivity extends Activity {
     }
 
     private void handlePickerTouchRelease(TextView picker, boolean poison) {
-        if (!mSpun && !mSideSwipe)
+        if (!mSpun && !mSideSwipe) {
             changePickerValue(picker, poison);
+            scaleTextView(picker, SCALE_DOWN);
+        }
         System.out.println("Action up");
+        if (mSpun)
+            scaleTextView(picker, SCALE_DOWN);
         mSpun = false;
         addToHistory(getTotals());
         setUpdateTextViewTexts("NOT UPDATING");
@@ -384,6 +391,8 @@ public class MainActivity extends Activity {
 
     private void verticalSwipe(float y, TextView picker) {
         if (!mSideSwipe && Math.abs(y - mPickerY) > 50.0) {
+            if (!mSpun)
+                scaleTextView(picker, SCALE_UP);
             mSpun = true;
             System.out.println("Changing picker value");
             if (y > mPickerY)
@@ -395,12 +404,18 @@ public class MainActivity extends Activity {
     }
 
     private void peripheralTouch(float y, TextView picker, LinearLayout layout) {
-        int[] coordinates = {0, 0};
-        System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
-        if (y > (coordinates[1] + layout.getHeight()) / 2)
-            changePickerValue(picker, false);
-        else
-            changePickerValue(picker, true);
+        if (mSpun) {
+            mSpun = false;
+            scaleTextView(picker, SCALE_DOWN);
+        } else {
+            int[] coordinates = {0, 0};
+            System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
+            scaleTextView(picker, SCALE_DOWN);
+            if (y > (coordinates[1] + layout.getHeight()) / 2)
+                changePickerValue(picker, false);
+            else
+                changePickerValue(picker, true);
+        }
     }
 
     private void changePickerValue(TextView picker, boolean add) {
@@ -478,6 +493,15 @@ public class MainActivity extends Activity {
         mCurrentRotation += 180.0f;
         leftArrow.startAnimation(r);
         rightArrow.startAnimation(r);
+    }
+
+    private void scaleTextView(TextView view, boolean scaleUp) {
+        Animation scaleAnimation;
+        if (scaleUp)
+            scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.text_scale_up);
+        else
+            scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.text_scale_down);
+        view.startAnimation(scaleAnimation);
     }
 
     private void hideSystemUI() {
