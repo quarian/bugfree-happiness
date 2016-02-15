@@ -71,6 +71,9 @@ public class MainActivity extends Activity {
     private String mShowPoison = "Show Poison Counters";
     private String mHidePoison = "Hide Poison Counters";
 
+    private String mPullToRefresh = "Pull to Restart";
+    private String mReleaseToRefresh = "Pull to Cancel";
+
     private String mPoisonOption = mShowPoison;
     private int mPoisonOptionIndex = 1;
 
@@ -307,7 +310,7 @@ public class MainActivity extends Activity {
             scaleTextView(picker, SCALE_DOWN);
         mSpun = false;
         addToHistory(getTotals());
-        setUpdateTextViewTexts("NOT UPDATING");
+        setUpdateTextViewTexts(mPullToRefresh);
         if (mUpdating)
             resetDuel();
         mWrapper.scrollTo(0, 0);
@@ -356,7 +359,7 @@ public class MainActivity extends Activity {
     }
 
     private void handleLayoutTouchRelease(float y, TextView picker, LinearLayout layout) {
-        setUpdateTextViewTexts("NOT UPDATING");
+        setUpdateTextViewTexts(mPullToRefresh);
         if (mUpdating)
             resetDuel();
         else
@@ -381,10 +384,10 @@ public class MainActivity extends Activity {
                 mWrapper.scrollBy((int) -(x - mPickerLastX) / 2, 0);
             System.out.println("Side swiping");
             if (Math.abs(x - mPickerX) > 300.0) {
-                setUpdateTextViewTexts("UPDATING");
+                setUpdateTextViewTexts(mReleaseToRefresh);
                 mUpdating = true;
             } else {
-                setUpdateTextViewTexts("NOT UPDATING");
+                setUpdateTextViewTexts(mPullToRefresh);
                 mUpdating = false;
             }
             mPickerLastX = x;

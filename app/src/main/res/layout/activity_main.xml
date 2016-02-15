@@ -33,7 +33,7 @@
                     android:rotation="270"
                     android:layout_centerVertical="true"
                     android:id="@+id/update"
-                    android:text="NOT UPDATING" />
+                    android:text="Pull to Restart Duel" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="50dp"
                     android:layout_above="@id/update"
-                    android:src="@drawable/right_arrow"/>
+                    android:src="@drawable/left_arrow"/>
 
             </RelativeLayout>
 
@@ -146,7 +146,7 @@
                     android:rotation="90"
                     android:layout_centerVertical="true"
                     android:id="@+id/update_2"
-                    android:text="NOT UPDATING" />
+                    android:text="Pull to Restart Duel" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="50dp"
                     android:layout_above="@id/update_2"
-                    android:src="@drawable/left_arrow"/>
+                    android:src="@drawable/right_arrow"/>
 
             </RelativeLayout>
 
