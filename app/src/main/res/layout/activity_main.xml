@@ -107,23 +107,11 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:layout_width="16dp"
-            android:layout_height="35dp"
-            android:id="@+id/poison_button"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/poison_symbol"
-            android:background="@null"
-            android:alpha="0.4"
-            android:scaleType="fitXY"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/update"
-            android:text="NOT UPDATING"
-            android:layout_toLeftOf="@id/poison_button"/>
+            android:text="NOT UPDATING" />
 
     </RelativeLayout>
 

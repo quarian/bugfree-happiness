@@ -42,7 +42,6 @@ public class MainActivity extends Activity {
     private TextView mTempUpdateTextView;
 
     private boolean mPoisonShowing;
-    private ImageButton mPoisonButton;
 
     private ArrayList<String> mOptions;
 
@@ -58,6 +57,13 @@ public class MainActivity extends Activity {
     private boolean mUpdating;
 
     private ArrayList<String> mHistory;
+    final private int mHistoryStart = 2;
+
+    private String mShowPoison = "Show Poison Counters";
+    private String mHidePoison = "Hide Poison Counters";
+
+    private String mPoisonOption = mShowPoison;
+    private int mPoisonOptionIndex = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,7 @@ public class MainActivity extends Activity {
                     savedInstanceState.getString(PICKER_TWO_POISON));
 
                     mHistory = savedInstanceState.getStringArrayList(HISTORY);
-                    mOptions.addAll(1, mHistory);
+                    mOptions.addAll(mHistoryStart, mHistory);
                     ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
         } else {
             mHistory = new ArrayList<String>();
@@ -112,14 +118,12 @@ public class MainActivity extends Activity {
         mPoisonPickerOne = (TextView) findViewById(R.id.poison_picker_1);
         mPoisonPickerTwo = (TextView) findViewById(R.id.poison_picker_2);
 
-        mPoisonButton = (ImageButton) findViewById(R.id.poison_button);
-
         mWrapper = (LinearLayout) findViewById(R.id.wrapper);
 
         mTempUpdateTextView = (TextView) findViewById(R.id.update);
 
         mOptions = new ArrayList<String>();
-        mOptions.add("New duel");
+        instansiateOptions();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
@@ -147,6 +151,11 @@ public class MainActivity extends Activity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
     }
 
+    private void instansiateOptions() {
+        mOptions.add("New Duel");
+        mOptions.add(mPoisonOption);
+    }
+
     private void collapseHistory() {
         long currentTime;
         long nextTime;
@@ -166,10 +175,10 @@ public class MainActivity extends Activity {
     }
 
     private void showHistory() {
-        mOptions.subList(1, mOptions.size()).clear();
+        mOptions.subList(mHistoryStart, mOptions.size()).clear();
         if (mHistory.size() > 2)
             mHistory.remove(mHistory.size() - 2); // MAGIC: the CODENING
-        mOptions.addAll(1, mHistory);
+        mOptions.addAll(mHistoryStart, mHistory);
         ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
@@ -206,14 +215,6 @@ public class MainActivity extends Activity {
         mPoisonLinearLayoutOne.setVisibility(View.GONE);
         mPoisonLinearLayoutTwo.setVisibility(View.GONE);
 
-        mPoisonButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("PoisonButton pushed");
-                displayPoison();
-            }
-        });
-
         mDrawerLayout.setKeepScreenOn(true);
     }
 
@@ -222,11 +223,15 @@ public class MainActivity extends Activity {
             mPoisonLinearLayoutOne.setVisibility(View.GONE);
             mPoisonLinearLayoutTwo.setVisibility(View.GONE);
             mPoisonShowing = false;
+            mPoisonOption = mShowPoison;
         } else {
             mPoisonLinearLayoutOne.setVisibility(View.VISIBLE);
             mPoisonLinearLayoutTwo.setVisibility(View.VISIBLE);
             mPoisonShowing = true;
+            mPoisonOption = mHidePoison;
         }
+        mOptions.set(mPoisonOptionIndex, mPoisonOption);
+        ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -238,6 +243,8 @@ public class MainActivity extends Activity {
                     mDrawerLayout.closeDrawer(mDrawerList);
                     break;
                 case 1:
+                    displayPoison();
+                    mDrawerLayout.closeDrawer(mDrawerList);
                     break;
                 default:
                     mDrawerLayout.closeDrawer(mDrawerList);
@@ -417,7 +424,7 @@ public class MainActivity extends Activity {
         mPoisonPickerTwo.setText(STARTING_POISON);
         mHistory.clear();
         mOptions.clear();
-        mOptions.add("New duel");
+        instansiateOptions();
         addToHistory(getTotals());
         ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
     }
