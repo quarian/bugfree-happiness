@@ -13,12 +13,22 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context="com.minu.proto2020.app.MainActivity">
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="horizontal"
             android:id="@+id/wrapper">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:rotation="270"
+                android:layout_marginStart="-80dp"
+                android:layout_marginLeft="-80dp"
+                android:layout_gravity="center"
+                android:id="@+id/update"
+                android:text="NOT UPDATING" />
 
             <LinearLayout
                 android:id="@+id/first_life_picker_layout"
@@ -105,13 +115,19 @@
                     android:layout_gravity="center"/>
             </LinearLayout>
 
-        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/update"
-            android:text="NOT UPDATING" />
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:rotation="90"
+                android:layout_marginEnd="-80dp"
+                android:layout_marginRight="-80dp"
+                android:layout_gravity="center"
+                android:id="@+id/update_2"
+                android:text="NOT UPDATING" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

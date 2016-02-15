@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,7 +38,8 @@ public class MainActivity extends Activity {
 
     private LinearLayout mWrapper;
 
-    private TextView mTempUpdateTextView;
+    private TextView mLeftUpdateTextView;
+    private TextView mRighyUpdateTextView;
 
     private boolean mPoisonShowing;
 
@@ -120,7 +120,8 @@ public class MainActivity extends Activity {
 
         mWrapper = (LinearLayout) findViewById(R.id.wrapper);
 
-        mTempUpdateTextView = (TextView) findViewById(R.id.update);
+        mLeftUpdateTextView = (TextView) findViewById(R.id.update);
+        mRighyUpdateTextView = (TextView) findViewById(R.id.update_2);
 
         mOptions = new ArrayList<String>();
         instansiateOptions();
@@ -199,7 +200,7 @@ public class MainActivity extends Activity {
     }
 
     private void initElements() { mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-            android.R.layout.simple_list_item_1,  mOptions));
+            android.R.layout.simple_list_item_1, mOptions));
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -291,12 +292,17 @@ public class MainActivity extends Activity {
         System.out.println("Action up");
         mSpun = false;
         addToHistory(getTotals());
-        mTempUpdateTextView.setText("NOT UPDATING");
+        setUpdateTextViewTexts("NOT UPDATING");
         if (mUpdating)
             resetDuel();
         mWrapper.scrollTo(0, 0);
         mUpdating = false;
         mSideSwipe = false;
+    }
+
+    private void setUpdateTextViewTexts(String s) {
+        mRighyUpdateTextView.setText(s);
+        mLeftUpdateTextView.setText(s);
     }
 
     private void setLayoutTouchListener(final LinearLayout layout, final TextView picker) {
@@ -332,7 +338,7 @@ public class MainActivity extends Activity {
     }
 
     private void handleLayoutTouchRelease(float y, TextView picker, LinearLayout layout) {
-        mTempUpdateTextView.setText("NOT UPDATING");
+        setUpdateTextViewTexts("NOT UPDATING");
         if (mUpdating)
             resetDuel();
         else
@@ -357,10 +363,10 @@ public class MainActivity extends Activity {
                 mWrapper.scrollBy((int) -(x - mPickerLastX) / 2, 0);
             System.out.println("Side swiping");
             if (Math.abs(x - mPickerX) > 300.0) {
-                mTempUpdateTextView.setText("UPDATING");
+                setUpdateTextViewTexts("UPDATING");
                 mUpdating = true;
             } else {
-                mTempUpdateTextView.setText("NOT UPDATING");
+                setUpdateTextViewTexts("NOT UPDATING");
                 mUpdating = false;
             }
             mPickerLastX = x;
