@@ -1,5 +1,6 @@
 package com.minu.proto2020.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
@@ -7,8 +8,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -64,6 +68,8 @@ public class MainActivity extends Activity {
 
     private String mPoisonOption = mShowPoison;
     private int mPoisonOptionIndex = 1;
+
+    private float mCurrentRotation = 0.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -301,8 +307,11 @@ public class MainActivity extends Activity {
     }
 
     private void setUpdateTextViewTexts(String s) {
-        mRighyUpdateTextView.setText(s);
-        mLeftUpdateTextView.setText(s);
+        if (mLeftUpdateTextView.getText().toString().compareTo(s) != 0) {
+            mRighyUpdateTextView.setText(s);
+            mLeftUpdateTextView.setText(s);
+            spinResetArrows();
+        }
     }
 
     private void setLayoutTouchListener(final LinearLayout layout, final TextView picker) {
@@ -458,6 +467,18 @@ public class MainActivity extends Activity {
         mPoisonPickerTwo.setText(poisonPickerTwo);
     }
 
+    private void spinResetArrows() {
+        ImageView leftArrow = (ImageView) findViewById(R.id.update_arrow_left);
+        ImageView rightArrow = (ImageView) findViewById(R.id.update_arrow_right);
+        RotateAnimation r = new RotateAnimation(mCurrentRotation, mCurrentRotation + 180.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        r.setDuration((long) 1000);
+        r.setRepeatCount(0);
+        r.setFillAfter(true);
+        mCurrentRotation += 180.0f;
+        leftArrow.startAnimation(r);
+        rightArrow.startAnimation(r);
+    }
 
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();

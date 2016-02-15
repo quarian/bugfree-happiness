@@ -19,16 +19,31 @@
             android:orientation="horizontal"
             android:id="@+id/wrapper">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="100dp"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:rotation="270"
+                android:layout_height="fill_parent"
                 android:layout_marginStart="-80dp"
-                android:layout_marginLeft="-80dp"
-                android:layout_gravity="center"
-                android:id="@+id/update"
-                android:text="NOT UPDATING" />
+                android:layout_marginLeft="-80dp">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:rotation="270"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/update"
+                    android:text="NOT UPDATING" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/update_arrow_left"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="50dp"
+                    android:layout_above="@id/update"
+                    android:src="@android:drawable/ic_menu_rotate"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/first_life_picker_layout"
@@ -116,16 +131,32 @@
             </LinearLayout>
 
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="100dp"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:rotation="90"
+                android:layout_height="fill_parent"
                 android:layout_marginEnd="-80dp"
-                android:layout_marginRight="-80dp"
-                android:layout_gravity="center"
-                android:id="@+id/update_2"
-                android:text="NOT UPDATING" />
+                android:layout_marginRight="-80dp">
+
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:rotation="90"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/update_2"
+                    android:text="NOT UPDATING" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/update_arrow_right"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="50dp"
+                    android:layout_above="@id/update_2"
+                    android:src="@android:drawable/ic_menu_rotate"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
