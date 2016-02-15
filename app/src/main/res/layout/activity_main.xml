@@ -23,7 +23,8 @@
                 android:layout_width="100dp"
                 android:layout_height="fill_parent"
                 android:layout_marginStart="-80dp"
-                android:layout_marginLeft="-80dp">
+                android:layout_marginLeft="-80dp"
+                android:id="@+id/left_update">
 
                 <TextView
                     android:layout_width="100dp"

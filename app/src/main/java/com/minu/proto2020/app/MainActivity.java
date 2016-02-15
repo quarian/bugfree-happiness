@@ -1,6 +1,5 @@
 package com.minu.proto2020.app;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +8,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
@@ -24,6 +24,8 @@ public class MainActivity extends Activity {
 
     private static final boolean SCALE_UP = true;
     private static final boolean SCALE_DOWN = false;
+    private static final int LETHAL_LIFE = 0;
+    private static final int LETHAL_POISON = 10;
     private LinearLayout mLifeLinearLayoutOne;
     private LinearLayout mLifeLinearLayoutTwo;
     private LinearLayout mPoisonLinearLayoutOne;
@@ -419,13 +421,40 @@ public class MainActivity extends Activity {
     }
 
     private void changePickerValue(TextView picker, boolean add) {
-        int lifeTotal = Integer.parseInt(picker.getText().toString());
-        if (add)
-            lifeTotal++;
-        else
-            lifeTotal--;
-        picker.setText(Integer.toString(lifeTotal));
-        addToHistory(getTotals());
+        if (checkLethal(picker)) {
+            shakeLayout();
+        } else {
+            int lifeTotal = getPickerValue(picker);
+            if (add)
+                lifeTotal++;
+            else
+                lifeTotal--;
+            picker.setText(Integer.toString(lifeTotal));
+            addToHistory(getTotals());
+            if (checkLethal(picker)) {
+                shakeLayout();
+            }
+        }
+    }
+
+    private void shakeLayout() {
+        AnimationSet animations = new AnimationSet(false);
+        Animation shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake_main_layout);
+        Animation unShakeAnimation = AnimationUtils.loadAnimation(this, R.anim.unshake_main_layout);
+        animations.addAnimation(shakeAnimation);
+        animations.addAnimation(unShakeAnimation);
+        findViewById(R.id.left_update).startAnimation(animations);
+    }
+
+    private int getPickerValue(TextView picker) {
+        return Integer.parseInt(picker.getText().toString());
+    }
+
+    private boolean checkLethal(TextView picker) {
+        return ((picker.equals(mLifePickerOne) || picker.equals(mLifePickerTwo))
+                && getPickerValue(picker) == LETHAL_LIFE) ||
+                ((picker.equals(mPoisonPickerOne) || picker.equals(mPoisonPickerTwo))
+                        && getPickerValue(picker) == LETHAL_POISON);
     }
 
     @Override
