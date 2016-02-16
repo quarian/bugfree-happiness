@@ -196,25 +196,23 @@ public class MainActivity extends Activity {
     private void collapseHistory() {
         long currentTime;
         long nextTime;
-        for (int i = 0; i + 2 < mHistory.size(); i++) {
+        for (int i = 0; i + 1 < mHistory.size(); i++) {
             if (!isHistoryEntryRead(mHistory.get(i))) {
                 currentTime = parseTimeStamp(mHistory.get(i));
                 nextTime = parseTimeStamp(mHistory.get(i + 1));
                 if (nextTime - currentTime < 2000) {
-                    mHistory.remove(i + 1);
+                    mHistory.remove(i);
                     i--;
                 }
             }
         }
-        for (int i = 0; i + 1 < mHistory.size(); i++) {
+        for (int i = 0; i < mHistory.size(); i++) {
             mHistory.set(i, markedHistoryEntryRead(mHistory.get(i)));
         }
     }
 
     private void showHistory() {
         mOptions.subList(mHistoryStart, mOptions.size()).clear();
-        if (mHistory.size() > 2)
-            mHistory.remove(mHistory.size() - 2); // MAGIC: the CODENING
         mOptions.addAll(mHistoryStart, mHistory);
         ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
     }
@@ -331,7 +329,6 @@ public class MainActivity extends Activity {
         if (mSpun)
             scaleTextView(picker, SCALE_DOWN);
         mSpun = false;
-        addToHistory(getTotals());
         setUpdateTextViewTexts(mPullToRefresh);
         if (mUpdating)
             resetDuel();
