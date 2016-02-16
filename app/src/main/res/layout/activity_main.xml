@@ -13,17 +13,6 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context="com.minu.proto2020.app.MainActivity">
 
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="fitXY"
-            android:background="@android:color/transparent"
-            android:alpha="0.9"
-            android:id="@+id/settings_button"
-            android:layout_alignLeft="@id/wrapper"
-            android:layout_alignTop="@id/wrapper"
-            android:src="@drawable/settings"/>
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -180,6 +169,17 @@
 
         </LinearLayout>
 
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:alpha="0.9"
+            android:id="@+id/settings_button"
+            android:layout_alignLeft="@id/wrapper"
+            android:layout_alignTop="@id/wrapper"
+            android:src="@drawable/settings"/>
+
     </RelativeLayout>
 
 
@@ -188,6 +188,17 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0dp"
+        android:background="#fff" />
+
+
+    <ListView
+        android:id="@+id/right_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
         android:choiceMode="singleChoice"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0dp"

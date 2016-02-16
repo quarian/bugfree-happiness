@@ -17,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,8 +61,11 @@ public class MainActivity extends Activity {
 
     private ArrayList<String> mOptions;
 
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    private DrawerLayout mSettingsDrawerLayout;
+    private ListView mSettingsDrawerList;
+
+    private DrawerLayout mHistoryDrawerLayout;
+    private ListView mHistoryDrawerList;
 
     private boolean mSpun;
     private boolean mSideSwipe;
@@ -106,8 +108,7 @@ public class MainActivity extends Activity {
                     savedInstanceState.getString(PICKER_TWO_POISON));
 
                     mHistory = savedInstanceState.getStringArrayList(HISTORY);
-                    mOptions.addAll(mHistoryStart, mHistory);
-                    ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
+                    ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
         } else {
             mHistory = new ArrayList<String>();
             resetDuel();
@@ -150,14 +151,17 @@ public class MainActivity extends Activity {
         mSettingsButton = (ImageButton) findViewById(R.id.settings_button);
 
         mOptions = new ArrayList<String>();
-        instansiateOptions();
+        mHistory = new ArrayList<String>();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mSettingsDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mHistoryDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        mSettingsDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mHistoryDrawerList = (ListView) findViewById(R.id.right_drawer);
     }
 
-    private void instansiateOptions() {
+    private void instantiateArrayLists() {
         mOptions.add("New Duel");
         mOptions.add(mPoisonOption);
     }
@@ -192,15 +196,14 @@ public class MainActivity extends Activity {
                 }
             }
         }
-        for (int i = 0; i < mHistory.size(); i++) {
+        for (int i = 0; i < mHistory.size(); i++)
             mHistory.set(i, markedHistoryEntryRead(mHistory.get(i)));
-        }
+        ((ArrayAdapter)mHistoryDrawerList.getAdapter()).clear();
+        ((ArrayAdapter)mHistoryDrawerList.getAdapter()).addAll(mHistory);
     }
 
     private void showHistory() {
-        mOptions.subList(mHistoryStart, mOptions.size()).clear();
-        mOptions.addAll(mHistoryStart, mHistory);
-        ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
+        ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private long parseTimeStamp(String historyEntry) {
@@ -219,10 +222,15 @@ public class MainActivity extends Activity {
         return split[0] + " " + split[1] + " " + split[2] + " " + split[3]+ " " + split[4];
     }
 
-    private void initElements() { mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+    private void initElements() {
+
+        mSettingsDrawerList.setAdapter(new ArrayAdapter<String>(this,
             android.R.layout.simple_list_item_1, mOptions));
 
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mHistoryDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, mHistory));
+
+        mSettingsDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         setLayoutTouchListener(mLifeLinearLayoutOne, mLifePickerOne);
         setLayoutTouchListener(mLifeLinearLayoutTwo, mLifePickerTwo);
@@ -236,14 +244,16 @@ public class MainActivity extends Activity {
         mPoisonLinearLayoutOne.setVisibility(View.GONE);
         mPoisonLinearLayoutTwo.setVisibility(View.GONE);
 
+        instantiateArrayLists();
+
         mSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerLayout.openDrawer(Gravity.LEFT);
+                mSettingsDrawerLayout.openDrawer(Gravity.LEFT);
             }
         });
 
-        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+        mSettingsDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
 
@@ -251,8 +261,12 @@ public class MainActivity extends Activity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                collapseHistory();
-                showHistory();
+                if (drawerView.equals(mHistoryDrawerList)) {
+                    System.out.println("Should show history");
+                    System.out.println(mHistory);
+                    collapseHistory();
+                    showHistory();
+                }
             }
 
             @Override
@@ -266,7 +280,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        mDrawerLayout.setKeepScreenOn(true);
+        mSettingsDrawerLayout.setKeepScreenOn(true);
     }
 
     private void displayPoison() {
@@ -282,7 +296,7 @@ public class MainActivity extends Activity {
             mPoisonOption = mHidePoison;
         }
         mOptions.set(mPoisonOptionIndex, mPoisonOption);
-        ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
+        ((ArrayAdapter<String>) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -291,14 +305,14 @@ public class MainActivity extends Activity {
             switch (position) {
                 case 0:
                     resetDuel();
-                    mDrawerLayout.closeDrawer(mDrawerList);
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 case 1:
                     displayPoison();
-                    mDrawerLayout.closeDrawer(mDrawerList);
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 default:
-                    mDrawerLayout.closeDrawer(mDrawerList);
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
             }
         }
@@ -521,9 +535,10 @@ public class MainActivity extends Activity {
         mPoisonPickerTwo.setText(STARTING_POISON);
         mHistory.clear();
         mOptions.clear();
-        instansiateOptions();
+        instantiateArrayLists();
         addToHistory(getTotals());
-        ((ArrayAdapter<String>)mDrawerList.getAdapter()).notifyDataSetChanged();
+        ((ArrayAdapter<String>) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
+        ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     public void addToHistory(String[] totals) {
