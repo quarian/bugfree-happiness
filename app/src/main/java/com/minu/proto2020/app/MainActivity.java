@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity {
     private TextView mPoisonPickerTwo;
 
     private ImageButton mSettingsButton;
+    private ImageButton mHistoryButton;
 
     static final String STARTING_LIFE = "20";
     static final String STARTING_POISON = "0";
@@ -149,6 +151,7 @@ public class MainActivity extends Activity {
         mRighyUpdateTextView = (TextView) findViewById(R.id.update_2);
 
         mSettingsButton = (ImageButton) findViewById(R.id.settings_button);
+        mHistoryButton = (ImageButton) findViewById(R.id.history_button);
 
         mOptions = new ArrayList<String>();
         mHistory = new ArrayList<String>();
@@ -253,6 +256,13 @@ public class MainActivity extends Activity {
             }
         });
 
+        mHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSettingsDrawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
+
         mSettingsDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -266,12 +276,13 @@ public class MainActivity extends Activity {
                     System.out.println(mHistory);
                     collapseHistory();
                     showHistory();
+                    mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
                 }
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-
+                mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
             }
 
             @Override
@@ -280,6 +291,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mSettingsDrawerLayout.setKeepScreenOn(true);
     }
 

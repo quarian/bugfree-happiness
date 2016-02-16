@@ -180,6 +180,19 @@
             android:layout_alignTop="@id/wrapper"
             android:src="@drawable/settings"/>
 
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:alpha="0.9"
+            android:id="@+id/history_button"
+            android:layout_alignEnd="@id/wrapper"
+            android:layout_alignRight="@id/wrapper"
+            android:layout_alignTop="@id/wrapper"
+            android:src="@drawable/history"/>
+
     </RelativeLayout>
 
 
