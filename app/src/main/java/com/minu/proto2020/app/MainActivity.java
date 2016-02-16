@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,6 +40,8 @@ public class MainActivity extends Activity {
     private TextView mLifePickerTwo;
     private TextView mPoisonPickerOne;
     private TextView mPoisonPickerTwo;
+
+    private ImageButton mSettingsButton;
 
     static final String STARTING_LIFE = "20";
     static final String STARTING_POISON = "0";
@@ -142,32 +147,13 @@ public class MainActivity extends Activity {
         mLeftUpdateTextView = (TextView) findViewById(R.id.update);
         mRighyUpdateTextView = (TextView) findViewById(R.id.update_2);
 
+        mSettingsButton = (ImageButton) findViewById(R.id.settings_button);
+
         mOptions = new ArrayList<String>();
         instansiateOptions();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
 
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                collapseHistory();
-                showHistory();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
-        });
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
     }
 
@@ -249,6 +235,36 @@ public class MainActivity extends Activity {
 
         mPoisonLinearLayoutOne.setVisibility(View.GONE);
         mPoisonLinearLayoutTwo.setVisibility(View.GONE);
+
+        mSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                collapseHistory();
+                showHistory();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
         mDrawerLayout.setKeepScreenOn(true);
     }
