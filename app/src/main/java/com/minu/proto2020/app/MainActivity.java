@@ -1,6 +1,9 @@
 package com.minu.proto2020.app;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -132,6 +135,8 @@ public class MainActivity extends Activity {
         mPoisonPickerOne = (TextView) findViewById(R.id.poison_picker_1);
         mPoisonPickerTwo = (TextView) findViewById(R.id.poison_picker_2);
 
+        setInitialColors();
+
         mWrapper = (LinearLayout) findViewById(R.id.wrapper);
 
         mLeftUpdateTextView = (TextView) findViewById(R.id.update);
@@ -169,6 +174,23 @@ public class MainActivity extends Activity {
     private void instansiateOptions() {
         mOptions.add("New Duel");
         mOptions.add(mPoisonOption);
+    }
+
+    private void setInitialColors() {
+        int red = Color.parseColor("#BB0A1E");
+        int blue = Color.parseColor("#00719E");
+        mLifePickerOne.setTextColor(red);
+        mPoisonPickerOne.setTextColor(red);
+        mLifePickerTwo.setTextColor(blue);
+        mPoisonPickerTwo.setTextColor(blue);
+        Drawable poisonIconOne = getResources().getDrawable(R.drawable.poison_symbol_1);
+        Drawable poisonIconTwo = getResources().getDrawable(R.drawable.poison_symbol_2);
+        poisonIconOne.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
+        poisonIconTwo.setColorFilter(blue, PorterDuff.Mode.SRC_ATOP);
+        ((ImageView)findViewById(R.id.poison_symbol_1)).setAlpha(0.9f);
+        ((ImageView)findViewById(R.id.poison_symbol_2)).setAlpha(0.9f);
+        ((ImageView)findViewById(R.id.poison_symbol_1)).setImageDrawable(poisonIconOne);
+        ((ImageView)findViewById(R.id.poison_symbol_2)).setImageDrawable(poisonIconTwo);
     }
 
     private void collapseHistory() {

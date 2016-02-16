@@ -61,6 +61,7 @@
                     android:gravity="center"
                     android:layout_weight=".5"
                     android:textSize="100dp"
+                    android:alpha="0.9"
                     android:id="@+id/life_picker_1" />
 
             </LinearLayout>
@@ -78,7 +79,9 @@
                     android:layout_height="50dp"
                     android:gravity="right"
                     android:layout_gravity="center"
-                    android:src="@drawable/poison_symbol"/>
+                    android:alpha="0.9"
+                    android:id="@+id/poison_symbol_1"
+                    android:src="@drawable/poison_symbol_1"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,6 +89,7 @@
                     android:minEms="2"
                     android:gravity="center"
                     android:id="@+id/poison_picker_1"
+                    android:alpha="0.9"
                     android:layout_gravity="center"/>
 
         </LinearLayout>
@@ -105,6 +109,7 @@
                     android:gravity="center"
                     android:layout_weight=".5"
                     android:id="@+id/life_picker_2"
+                    android:alpha="0.9"
                     android:textSize="100dp"/>
             </LinearLayout>
 
@@ -120,7 +125,9 @@
                     android:layout_height="50dp"
                     android:gravity="right"
                     android:layout_gravity="center"
-                    android:src="@drawable/poison_symbol"/>
+                    android:alpha="0.9"
+                    android:id="@+id/poison_symbol_2"
+                    android:src="@drawable/poison_symbol_2"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -128,6 +135,7 @@
                     android:gravity="center"
                     android:minEms="2"
                     android:id="@+id/poison_picker_2"
+                    android:alpha="0.9"
                     android:layout_gravity="center"/>
             </LinearLayout>
 
