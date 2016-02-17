@@ -347,7 +347,7 @@ public class MainActivity extends Activity {
                                         MotionEvent motionEvent, TextView picker, boolean poison) {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                recordTouchStart(motionEvent);
+                recordTouchStart(motionEvent, picker);
                 break;
             case MotionEvent.ACTION_MOVE:
                 verticalSwipe(y, picker);
@@ -404,7 +404,7 @@ public class MainActivity extends Activity {
                                         TextView picker, LinearLayout layout) {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                recordTouchStart(motionEvent);
+                recordTouchStart(motionEvent, picker);
                 break;
             case MotionEvent.ACTION_MOVE:
                 verticalSwipe(y, picker);
@@ -430,10 +430,11 @@ public class MainActivity extends Activity {
         mSideSwipe = false;
     }
 
-    private void recordTouchStart(MotionEvent motionEvent) {
+    private void recordTouchStart(MotionEvent motionEvent, TextView picker) {
         mPickerY = motionEvent.getY();
         mPickerX = motionEvent.getX();
         mPickerLastX = motionEvent.getX();
+        scaleTextView(picker, SCALE_UP);
     }
 
     private void sideSwipe(float x) {
@@ -457,8 +458,6 @@ public class MainActivity extends Activity {
 
     private void verticalSwipe(float y, TextView picker) {
         if (!mSideSwipe && Math.abs(y - mPickerY) > 50.0) {
-            if (!mSpun)
-                scaleTextView(picker, SCALE_UP);
             mSpun = true;
             System.out.println("Changing picker value");
             if (y > mPickerY)
