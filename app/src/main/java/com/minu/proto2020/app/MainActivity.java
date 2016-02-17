@@ -368,7 +368,7 @@ public class MainActivity extends Activity {
             scaleTextView(picker, SCALE_DOWN);
         }
         System.out.println("Action up");
-        if (mSpun)
+        if (mSpun || mSideSwipe)
             scaleTextView(picker, SCALE_DOWN);
         mSpun = false;
         setUpdateTextViewTexts(mPullToRefresh);
@@ -423,8 +423,10 @@ public class MainActivity extends Activity {
         setUpdateTextViewTexts(mPullToRefresh);
         if (mUpdating)
             resetDuel();
-        else
+        else if (!mSideSwipe)
             peripheralTouch(y, picker, layout);
+        else
+            scaleTextView(picker, SCALE_DOWN);
         mWrapper.scrollTo(0, 0);
         mUpdating = false;
         mSideSwipe = false;
