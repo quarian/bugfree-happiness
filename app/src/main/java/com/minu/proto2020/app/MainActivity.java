@@ -90,6 +90,7 @@ public class MainActivity extends Activity {
     private int mPoisonOptionIndex = 1;
 
     private float mCurrentRotation = 0.0f;
+    private boolean mWhiteBackground = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +168,7 @@ public class MainActivity extends Activity {
     private void instantiateArrayLists() {
         mOptions.add("New Duel");
         mOptions.add(mPoisonOption);
+        mOptions.add("Change Background");
     }
 
     private void setInitialColors() {
@@ -323,6 +325,12 @@ public class MainActivity extends Activity {
                     displayPoison();
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
+                case 2:
+                    if (mWhiteBackground)
+                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor("#0f0f0f"));
+                    else
+                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+                    mWhiteBackground = !mWhiteBackground;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
