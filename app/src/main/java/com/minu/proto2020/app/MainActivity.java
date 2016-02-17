@@ -2,12 +2,14 @@ package com.minu.proto2020.app;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -68,6 +70,9 @@ public class MainActivity extends Activity {
 
     private DrawerLayout mHistoryDrawerLayout;
     private ListView mHistoryDrawerList;
+
+    private int mScreenHeight;
+    private int mScreenWidth;
 
     private boolean mSpun;
     private boolean mSideSwipe;
@@ -230,7 +235,7 @@ public class MainActivity extends Activity {
     private void initElements() {
 
         mSettingsDrawerList.setAdapter(new ArrayAdapter<String>(this,
-            android.R.layout.simple_list_item_1, mOptions));
+                android.R.layout.simple_list_item_1, mOptions));
 
         mHistoryDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, mHistory));
@@ -292,6 +297,10 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        Display display = getWindowManager().getDefaultDisplay();
+        mScreenHeight = display.getWidth();
+        mScreenWidth = display.getHeight();
 
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mSettingsDrawerLayout.setKeepScreenOn(true);
@@ -448,14 +457,14 @@ public class MainActivity extends Activity {
     }
 
     private void sideSwipe(float x) {
-        if (!mSpun && Math.abs(x - mPickerLastX) > 20.0)
+        if (!mSpun && Math.abs(x - mPickerLastX) > mScreenWidth / 40)
             mSideSwipe = true;
         if (mSideSwipe) {
             System.out.println((int) (x - mPickerLastX));
             if (!mUpdating)
                 mWrapper.scrollBy((int) -(x - mPickerLastX) / 2, 0);
             System.out.println("Side swiping");
-            if (Math.abs(x - mPickerX) > 300.0) {
+            if (Math.abs(x - mPickerX) > mScreenWidth / 4) {
                 setUpdateTextViewTexts(mReleaseToRefresh);
                 mUpdating = true;
             } else {
@@ -467,7 +476,7 @@ public class MainActivity extends Activity {
     }
 
     private void verticalSwipe(float y, TextView picker) {
-        if (!mSideSwipe && Math.abs(y - mPickerY) > 50.0) {
+        if (!mSideSwipe && Math.abs(y - mPickerY) > mScreenHeight / 35) {
             mSpun = true;
             System.out.println("Changing picker value");
             if (y > mPickerY)
