@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
                     savedInstanceState.getString(PICKER_TWO_POISON));
 
                     mHistory = savedInstanceState.getStringArrayList(HISTORY);
-                    ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
+                    ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
         } else {
             mHistory = new ArrayList<String>();
             resetDuel();
@@ -216,12 +216,12 @@ public class MainActivity extends Activity {
         }
         for (int i = 0; i < mHistory.size(); i++)
             mHistory.set(i, markedHistoryEntryRead(mHistory.get(i)));
-        ((ArrayAdapter)mHistoryDrawerList.getAdapter()).clear();
-        ((ArrayAdapter)mHistoryDrawerList.getAdapter()).addAll(mHistory);
+        ((HistoryListAdapter)mHistoryDrawerList.getAdapter()).clear();
+        ((HistoryListAdapter)mHistoryDrawerList.getAdapter()).addAll(mHistory);
     }
 
     private void showHistory() {
-        ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
+        ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private long parseTimeStamp(String historyEntry) {
@@ -244,8 +244,7 @@ public class MainActivity extends Activity {
 
         mSettingsDrawerList.setAdapter(new SettingsListAdapter(this, mOptions));
 
-        mHistoryDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mHistory));
+        mHistoryDrawerList.setAdapter(new HistoryListAdapter(this, mHistory));
 
         mSettingsDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -591,7 +590,7 @@ public class MainActivity extends Activity {
         instantiateArrayLists();
         addToHistory(getTotals());
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
-        ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
+        ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     public void addToHistory(String[] totals) {
