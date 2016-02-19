@@ -37,6 +37,8 @@ public class MainActivity extends Activity {
     private static final boolean SCALE_DOWN = false;
     private static final int LETHAL_LIFE = 0;
     private static final int LETHAL_POISON = 10;
+    private static final String BACKGROUND_WHITE = "BACKGROUND_WHITE";
+    private static final String POISON = "POISON";
     private LinearLayout mLifeLinearLayoutOne;
     private LinearLayout mLifeLinearLayoutTwo;
     private LinearLayout mPoisonLinearLayoutOne;
@@ -89,6 +91,8 @@ public class MainActivity extends Activity {
     private float mPickerLastX;
     private boolean mUpdating;
 
+    private int mStartingLife = 20;
+
     private ArrayList<String> mHistory;
     final private int mHistoryStart = 2;
 
@@ -122,12 +126,35 @@ public class MainActivity extends Activity {
                     savedInstanceState.getString(PICKER_TWO_LIFE),
                     savedInstanceState.getString(PICKER_TWO_POISON));
 
-                    mHistory = savedInstanceState.getStringArrayList(HISTORY);
-                    ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
+            mHistory = savedInstanceState.getStringArrayList(HISTORY);
+            ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
+            mPoisonShowing = savedInstanceState.getBoolean(POISON);
+            mWhiteBackground = savedInstanceState.getBoolean(BACKGROUND_WHITE);
+            mStartingLife = savedInstanceState.getInt(STARTING_LIFE);
+
         } else {
             mHistory = new ArrayList<String>();
             resetDuel();
         }
+    }
+
+    // Doesn't work, seems that the drawer is not instantiated
+    private void restoreSettings() {
+        mSettingsDrawerLayout.openDrawer(Gravity.LEFT);
+        if (mPoisonShowing) {
+            mPoisonShowing = !mPoisonShowing;
+            displayPoison();
+            ((TextView) findViewById(R.id.poison_toggle)).setText("on");
+            ((TextView) findViewById(R.id.poison_toggle)).setTextColor(Color.parseColor("#e3aaaa"));
+        }
+        if (!mWhiteBackground) {
+            mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
+            ((ImageView) findViewById(R.id.background_preview)).
+                    setImageDrawable(getResources().getDrawable(R.drawable.color_scheme_dark));
+        }
+        if (mStartingLife != 20)
+            ((NumberPicker) findViewById(R.id.starting_life_picker)).setValue(mStartingLife);
+        mSettingsDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
     @Override
@@ -137,6 +164,15 @@ public class MainActivity extends Activity {
         savedInstanceState.putString(PICKER_ONE_POISON, mPoisonPickerTwo.getText().toString());
         savedInstanceState.putString(PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
         savedInstanceState.putString(PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
+
+        savedInstanceState.putBoolean(BACKGROUND_WHITE, mWhiteBackground);
+        int startingLife;
+        if (findViewById(R.id.starting_life_picker) != null)
+            startingLife = Integer.parseInt(STARTING_LIFE);
+        else
+            startingLife = ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue();
+        savedInstanceState.putInt(STARTING_LIFE, startingLife);
+        savedInstanceState.putBoolean(POISON, mPoisonShowing);
 
         savedInstanceState.putStringArrayList(HISTORY, mHistory);
 
@@ -558,6 +594,9 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        System.out.println("RESUMING");
+        mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+        //restoreSettings();
         hideSystemUI();
     }
 
