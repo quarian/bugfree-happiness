@@ -47,8 +47,21 @@ public class HistoryListAdapter extends BaseAdapter {
             vi = mLayoutInflater.inflate(R.layout.history_entry, null);
         String leftLife = mData.get(position).split(" ")[0];
         String rightLife = mData.get(position).split(" ")[1];
+        String leftPoison = mData.get(position).split(" ")[2];
+        String rightPoison = mData.get(position).split(" ")[3];
         ((TextView) vi.findViewById(R.id.left_life)).setText(leftLife);
         ((TextView) vi.findViewById(R.id.right_life)).setText(rightLife);
+        if (!leftPoison.equals("0")) {
+            vi.findViewById(R.id.left_poison).setVisibility(View.VISIBLE);
+            ((TextView) vi.findViewById(R.id.left_poison)).setText(leftPoison);
+            vi.findViewById(R.id.poison_left_icon).setVisibility(View.VISIBLE);
+        }
+        if (!rightPoison.equals("0")) {
+            vi.findViewById(R.id.right_poison).setVisibility(View.VISIBLE);
+            ((TextView) vi.findViewById(R.id.right_poison)).setText(rightPoison);
+            vi.findViewById(R.id.poison_right_icon).setVisibility(View.VISIBLE);
+        }
+
         if (getCount() > 1 && position > 0)
             vi.findViewById(R.id.divider_pipe_above).setVisibility(View.VISIBLE);
         else

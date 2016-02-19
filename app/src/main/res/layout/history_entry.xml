@@ -9,9 +9,30 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:layout_alignParentLeft="true"
+        android:paddingRight="10dp"
         android:layout_centerVertical="true"
         android:textColor="#e3aaaa"
         android:id="@+id/left_life"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/poison_red"
+        android:id="@+id/poison_left_icon"
+        android:visibility="invisible"
+        android:layout_toRightOf="@id/left_life"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/poison_left_icon"
+        android:visibility="invisible"
+        android:id="@+id/left_poison"
+        android:textColor="#e3aaaa"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -29,6 +50,26 @@
         android:textColor="#9bb8d5"
         android:id="@+id/right_life"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/right_life"
+        android:paddingRight="10dp"
+        android:visibility="invisible"
+        android:id="@+id/right_poison"
+        android:textColor="#9bb8d5"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/poison_blue"
+        android:visibility="invisible"
+        android:id="@+id/poison_right_icon"
+        android:layout_toLeftOf="@id/right_poison"
+        android:layout_centerVertical="true"/>
 
     <ImageView
         android:layout_width="wrap_content"
