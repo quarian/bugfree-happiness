@@ -20,11 +20,13 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -71,6 +73,7 @@ public class MainActivity extends Activity {
 
     private DrawerLayout mSettingsDrawerLayout;
     private ListView mSettingsDrawerList;
+    private RelativeLayout mSettingsDrawer;
 
     private DrawerLayout mHistoryDrawerLayout;
     private ListView mHistoryDrawerList;
@@ -170,12 +173,14 @@ public class MainActivity extends Activity {
         mSettingsDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mHistoryDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        mSettingsDrawer = (RelativeLayout) findViewById(R.id.settings_drawer);
+
         mSettingsDrawerList = (ListView) findViewById(R.id.left_drawer);
         mHistoryDrawerList = (ListView) findViewById(R.id.right_drawer);
     }
 
     private void instantiateArrayLists() {
-        mOptions.add("New Duel");
+        mOptions.add("New duel");
         mOptions.add("Starting life total");
         mOptions.add(mPoisonOption);
         mOptions.add("Color scheme");
@@ -321,7 +326,8 @@ public class MainActivity extends Activity {
             mPoisonOption = mHidePoison;
         }
         mOptions.set(mPoisonOptionIndex, mPoisonOption);
-        ((SettingsListAdapter) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
+
+        ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -330,7 +336,7 @@ public class MainActivity extends Activity {
             switch (position) {
                 case 0:
                     resetDuel();
-                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
                     break;
                 case 1:
                     break;
@@ -352,7 +358,7 @@ public class MainActivity extends Activity {
                     //mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 default:
-                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
                     break;
             }
         }
@@ -584,7 +590,7 @@ public class MainActivity extends Activity {
         mOptions.clear();
         instantiateArrayLists();
         addToHistory(getTotals());
-        ((SettingsListAdapter) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
+        ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
         ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
     }
 

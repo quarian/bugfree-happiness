@@ -190,16 +190,23 @@
     </RelativeLayout>
 
 
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:id="@+id/settings_drawer">
     <ListView
         android:id="@+id/left_drawer"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
         android:choiceMode="singleChoice"
         android:divider="#555555"
         android:dividerHeight="0dp"
         android:background="#555555" />
 
+        <include layout="@layout/settings_footer" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/right_drawer"
