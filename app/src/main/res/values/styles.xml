@@ -5,4 +5,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="NumberPickerTextColorStyle">
+        <item name="android:textColorPrimary">#9bb8d5</item>
+    </style>
 </resources>

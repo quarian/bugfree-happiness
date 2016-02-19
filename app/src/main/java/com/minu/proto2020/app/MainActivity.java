@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class MainActivity extends Activity {
     private String mReleaseToRefresh = "Pull to Cancel";
 
     private String mPoisonOption = mShowPoison;
-    private int mPoisonOptionIndex = 1;
+    private int mPoisonOptionIndex = 2;
 
     private float mCurrentRotation = 0.0f;
     private boolean mWhiteBackground = true;
@@ -175,6 +176,7 @@ public class MainActivity extends Activity {
 
     private void instantiateArrayLists() {
         mOptions.add("New Duel");
+        mOptions.add("Starting life total");
         mOptions.add(mPoisonOption);
         mOptions.add("Change Background");
     }
@@ -331,15 +333,20 @@ public class MainActivity extends Activity {
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 case 1:
-                    displayPoison();
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 case 2:
+                    displayPoison();
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
+                    break;
+                case 3:
                     if (mWhiteBackground)
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
                     else
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
                     mWhiteBackground = !mWhiteBackground;
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
+                    break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
@@ -559,8 +566,14 @@ public class MainActivity extends Activity {
     }
 
     public void resetDuel() {
-        mLifePickerOne.setText(STARTING_LIFE);
-        mLifePickerTwo.setText(STARTING_LIFE);
+        String startingLife;
+        if (findViewById(R.id.starting_life_picker) != null)
+            startingLife =Integer.toString(
+                    ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue());
+        else
+        startingLife = STARTING_LIFE;
+        mLifePickerOne.setText(startingLife);
+        mLifePickerTwo.setText(startingLife);
         mPoisonPickerOne.setText(STARTING_POISON);
         mPoisonPickerTwo.setText(STARTING_POISON);
         mHistory.clear();

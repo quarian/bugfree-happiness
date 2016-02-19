@@ -9,8 +9,7 @@
         android:layout_height="wrap_content"
         android:textColor="#aaaaaa"
         android:textSize="20dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:padding="15dp"
         android:gravity="center_vertical"
         android:id="@+id/settings_text"/>
 
