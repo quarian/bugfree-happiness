@@ -193,12 +193,12 @@ public class MainActivity extends Activity {
         mPoisonPickerOne.setTextColor(red);
         mLifePickerTwo.setTextColor(blue);
         mPoisonPickerTwo.setTextColor(blue);
-        Drawable poisonIconOne = getResources().getDrawable(R.drawable.poison_symbol_1);
-        Drawable poisonIconTwo = getResources().getDrawable(R.drawable.poison_symbol_2);
-        poisonIconOne.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
-        poisonIconTwo.setColorFilter(blue, PorterDuff.Mode.SRC_ATOP);
-        ((ImageView)findViewById(R.id.poison_symbol_1)).setImageDrawable(poisonIconOne);
-        ((ImageView)findViewById(R.id.poison_symbol_2)).setImageDrawable(poisonIconTwo);
+        Drawable arrowLeft = getResources().getDrawable(R.drawable.left_arrow);
+        Drawable arrowRight = getResources().getDrawable(R.drawable.right_arrow);
+        arrowLeft.setColorFilter(Color.parseColor("#aaaaaa"), PorterDuff.Mode.SRC_ATOP);
+        arrowRight.setColorFilter(Color.parseColor("#aaaaaa"), PorterDuff.Mode.SRC_ATOP);
+        ((ImageView)findViewById(R.id.update_arrow_left)).setImageDrawable(arrowLeft);
+        ((ImageView)findViewById(R.id.update_arrow_right)).setImageDrawable(arrowRight);
     }
 
     private void collapseHistory() {

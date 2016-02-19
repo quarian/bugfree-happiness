@@ -35,6 +35,7 @@
                     android:rotation="270"
                     android:layout_centerVertical="true"
                     android:id="@+id/update"
+                    android:textColor="#aaaaaa"
                     android:text="Pull to Restart Duel" />
 
                 <ImageView
@@ -148,6 +149,7 @@
                     android:layout_height="20dp"
                     android:gravity="center"
                     android:rotation="90"
+                    android:textColor="#aaaaaa"
                     android:layout_centerVertical="true"
                     android:id="@+id/update_2"
                     android:text="Pull to Restart Duel" />
