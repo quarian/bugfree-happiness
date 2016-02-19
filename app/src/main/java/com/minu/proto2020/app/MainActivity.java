@@ -480,7 +480,7 @@ public class MainActivity extends Activity {
             if (!mUpdating)
                 mWrapper.scrollBy((int) -(x - mPickerLastX) / 2, 0);
             System.out.println("Side swiping");
-            if (Math.abs(x - mPickerX) > mScreenWidth / 4) {
+            if (Math.abs(x - mPickerX) > mScreenWidth / 3.5f) {
                 setUpdateTextViewTexts(mReleaseToRefresh);
                 mUpdating = true;
             } else {
