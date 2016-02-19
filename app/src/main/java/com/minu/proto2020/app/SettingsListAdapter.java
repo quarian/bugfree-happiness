@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -76,6 +77,26 @@ public class SettingsListAdapter extends BaseAdapter {
                             } else {
                                 tw.setText("off");
                                 tw.setTextColor(Color.parseColor("#9bb8d5"));
+                            }
+                            return false;
+                        }
+                    });
+                    break;
+                case 3:
+                    vi = mLayoutInflater.inflate(R.layout.change_background_option, null);
+                    final ImageView imageView = (ImageView) vi.findViewById(R.id.background_preview);
+                    imageView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            ImageView iw = (ImageView) v;
+                            if (v.getTag().toString().equals("light")) {
+                                iw.setImageDrawable(v.getContext().getResources()
+                                        .getDrawable(R.drawable.color_scheme_dark));
+                                iw.setTag("dark");
+                            } else {
+                                iw.setImageDrawable(v.getContext().getResources()
+                                        .getDrawable(R.drawable.color_scheme_light));
+                                iw.setTag("light");
                             }
                             return false;
                         }

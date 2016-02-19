@@ -89,8 +89,8 @@ public class MainActivity extends Activity {
     private ArrayList<String> mHistory;
     final private int mHistoryStart = 2;
 
-    private String mShowPoison = "Show Poison Counters";
-    private String mHidePoison = "Hide Poison Counters";
+    private String mShowPoison = "Poison";
+    private String mHidePoison = "Poison";
 
     private String mPullToRefresh = "Pull to Restart";
     private String mReleaseToRefresh = "Pull to Cancel";
@@ -178,7 +178,7 @@ public class MainActivity extends Activity {
         mOptions.add("New Duel");
         mOptions.add("Starting life total");
         mOptions.add(mPoisonOption);
-        mOptions.add("Change Background");
+        mOptions.add("Color scheme");
     }
 
     private void setInitialColors() {
@@ -333,7 +333,6 @@ public class MainActivity extends Activity {
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 case 1:
-                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 case 2:
                     String showPoison =
@@ -341,16 +340,16 @@ public class MainActivity extends Activity {
                     if (showPoison.equals("on") && !mPoisonShowing ||
                             showPoison.equals("off") && mPoisonShowing) {
                         displayPoison();
-                        mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     }
                     break;
                 case 3:
-                    if (mWhiteBackground)
+                    String tag = findViewById(R.id.background_preview).getTag().toString();
+                    if (tag.equals("dark"))
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
                     else
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
                     mWhiteBackground = !mWhiteBackground;
-                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
+                    //mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
