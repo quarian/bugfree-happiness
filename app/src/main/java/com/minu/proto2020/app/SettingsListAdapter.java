@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -60,6 +61,25 @@ public class SettingsListAdapter extends BaseAdapter {
                     np.setMinValue(0);
                     np.setMaxValue(100);
                     np.setValue(20);
+                    break;
+                case 2:
+                    vi = mLayoutInflater.inflate(R.layout.poison_option, null);
+                    TextView poisonToggle = (TextView) vi.findViewById(R.id.poison_toggle);
+                    poisonToggle.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            TextView tw = ((TextView) v);
+                            String content = tw.getText().toString();
+                            if (content.equals("off")) {
+                                tw.setText("on");
+                                tw.setTextColor(Color.parseColor("#e3aaaa"));
+                            } else {
+                                tw.setText("off");
+                                tw.setTextColor(Color.parseColor("#9bb8d5"));
+                            }
+                            return false;
+                        }
+                    });
                     break;
                 default:
                     vi = mLayoutInflater.inflate(R.layout.settings_list_item, null);

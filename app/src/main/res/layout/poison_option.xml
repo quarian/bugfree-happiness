@@ -14,10 +14,15 @@
         android:gravity="center_vertical"
         android:id="@+id/settings_text"/>
 
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:id="@+id/starting_life_picker"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:padding="15dp"
+        android:gravity="center"
+        android:textColor="#9bb8d5"
+        android:text="off"
+        android:id="@+id/poison_toggle"
+        android:layout_weight="0.8"/>
 
 </LinearLayout>

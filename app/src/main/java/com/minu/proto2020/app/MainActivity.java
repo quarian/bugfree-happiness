@@ -336,8 +336,13 @@ public class MainActivity extends Activity {
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 case 2:
-                    displayPoison();
-                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
+                    String showPoison =
+                            ((TextView) findViewById(R.id.poison_toggle)).getText().toString();
+                    if (showPoison.equals("on") && !mPoisonShowing ||
+                            showPoison.equals("off") && mPoisonShowing) {
+                        displayPoison();
+                        mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
+                    }
                     break;
                 case 3:
                     if (mWhiteBackground)
