@@ -56,6 +56,9 @@ public class MainActivity extends Activity {
 
     static final String HISTORY = "HISTORY";
 
+    private String mWhiteBackgroundColor = "#f5f5f5";
+    private String mBlackBackgroundColor = "#333231";
+
     private LinearLayout mWrapper;
 
     private TextView mLeftUpdateTextView;
@@ -177,8 +180,8 @@ public class MainActivity extends Activity {
     }
 
     private void setInitialColors() {
-        int red = Color.parseColor("#BB0A1E");
-        int blue = Color.parseColor("#00719E");
+        int red = Color.parseColor("#e3aaaa");
+        int blue = Color.parseColor("#9bb8d5");
         mLifePickerOne.setTextColor(red);
         mPoisonPickerOne.setTextColor(red);
         mLifePickerTwo.setTextColor(blue);
@@ -187,8 +190,6 @@ public class MainActivity extends Activity {
         Drawable poisonIconTwo = getResources().getDrawable(R.drawable.poison_symbol_2);
         poisonIconOne.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
         poisonIconTwo.setColorFilter(blue, PorterDuff.Mode.SRC_ATOP);
-        ((ImageView)findViewById(R.id.poison_symbol_1)).setAlpha(0.9f);
-        ((ImageView)findViewById(R.id.poison_symbol_2)).setAlpha(0.9f);
         ((ImageView)findViewById(R.id.poison_symbol_1)).setImageDrawable(poisonIconOne);
         ((ImageView)findViewById(R.id.poison_symbol_2)).setImageDrawable(poisonIconTwo);
     }
@@ -234,8 +235,7 @@ public class MainActivity extends Activity {
 
     private void initElements() {
 
-        mSettingsDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mOptions));
+        mSettingsDrawerList.setAdapter(new SettingsListAdapter(this, mOptions));
 
         mHistoryDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, mHistory));
@@ -319,7 +319,7 @@ public class MainActivity extends Activity {
             mPoisonOption = mHidePoison;
         }
         mOptions.set(mPoisonOptionIndex, mPoisonOption);
-        ((ArrayAdapter<String>) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
+        ((SettingsListAdapter) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -336,9 +336,9 @@ public class MainActivity extends Activity {
                     break;
                 case 2:
                     if (mWhiteBackground)
-                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor("#0f0f0f"));
+                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
                     else
-                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
                     mWhiteBackground = !mWhiteBackground;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
@@ -567,7 +567,7 @@ public class MainActivity extends Activity {
         mOptions.clear();
         instantiateArrayLists();
         addToHistory(getTotals());
-        ((ArrayAdapter<String>) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
+        ((SettingsListAdapter) mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
         ((ArrayAdapter<String>) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
