@@ -138,23 +138,18 @@ public class MainActivity extends Activity {
         }
     }
 
-    // Doesn't work, seems that the drawer is not instantiated
     private void restoreSettings() {
-        mSettingsDrawerLayout.openDrawer(Gravity.LEFT);
         if (mPoisonShowing) {
             mPoisonShowing = !mPoisonShowing;
             displayPoison();
-            ((TextView) findViewById(R.id.poison_toggle)).setText("on");
-            ((TextView) findViewById(R.id.poison_toggle)).setTextColor(Color.parseColor("#e3aaaa"));
         }
         if (!mWhiteBackground) {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
-            ((ImageView) findViewById(R.id.background_preview)).
-                    setImageDrawable(getResources().getDrawable(R.drawable.color_scheme_dark));
         }
-        if (mStartingLife != 20)
-            ((NumberPicker) findViewById(R.id.starting_life_picker)).setValue(mStartingLife);
-        mSettingsDrawerLayout.closeDrawer(Gravity.LEFT);
+        System.out.println(mPoisonShowing + " " + mStartingLife + " " + mWhiteBackground);
+        ((SettingsListAdapter)mSettingsDrawerList.getAdapter())
+                .setSettings(mPoisonShowing, mStartingLife, mWhiteBackground);
+
     }
 
     @Override
@@ -167,7 +162,7 @@ public class MainActivity extends Activity {
 
         savedInstanceState.putBoolean(BACKGROUND_WHITE, mWhiteBackground);
         int startingLife;
-        if (findViewById(R.id.starting_life_picker) != null)
+        if (findViewById(R.id.starting_life_picker) == null)
             startingLife = Integer.parseInt(STARTING_LIFE);
         else {
             int index = ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue();
@@ -180,6 +175,8 @@ public class MainActivity extends Activity {
         savedInstanceState.putBoolean(POISON, mPoisonShowing);
 
         savedInstanceState.putStringArrayList(HISTORY, mHistory);
+
+        System.out.println(savedInstanceState);
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -389,8 +386,7 @@ public class MainActivity extends Activity {
                     }
                     break;
                 case 3:
-                    String tag = findViewById(R.id.background_preview).getTag().toString();
-                    if (tag.equals("dark"))
+                    if (mWhiteBackground)
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
                     else
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
@@ -601,7 +597,7 @@ public class MainActivity extends Activity {
         super.onResume();
         System.out.println("RESUMING");
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-        //restoreSettings();
+        restoreSettings();
         hideSystemUI();
     }
 

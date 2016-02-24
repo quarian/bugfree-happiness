@@ -25,6 +25,10 @@ public class SettingsListAdapter extends BaseAdapter {
     private ArrayList<String> mData;
     private static LayoutInflater mLayoutInflater;
 
+    private boolean mPoisonShowing;
+    private boolean mWhiteBackGround;
+    private int mStartingLife;
+
     public SettingsListAdapter(Context context, ArrayList<String> data) {
         mContext = context;
         mData = data;
@@ -62,23 +66,30 @@ public class SettingsListAdapter extends BaseAdapter {
                     np.setDisplayedValues(new String[]{"10", "20", "30", "40", "50", "60", "70", "80", "100"});
                     np.setMinValue(0);
                     np.setMaxValue(8);
-                    np.setValue(1);
+                    np.setValue(mStartingLife / 10 - 1);
                     break;
                 case 2:
                     vi = mLayoutInflater.inflate(R.layout.poison_option, null);
                     TextView poisonToggle = (TextView) vi.findViewById(R.id.poison_toggle);
+                    if (mPoisonShowing) {
+                        poisonToggle.setText("on");
+                        poisonToggle.setTextColor(Color.parseColor("#e3aaaa"));
+                    } else {
+                        poisonToggle.setText("off");
+                        poisonToggle.setTextColor(Color.parseColor("#9bb8d5"));
+                    }
                     poisonToggle.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
                             TextView tw = ((TextView) v);
-                            String content = tw.getText().toString();
-                            if (content.equals("off")) {
+                            if (!mPoisonShowing) {
                                 tw.setText("on");
                                 tw.setTextColor(Color.parseColor("#e3aaaa"));
                             } else {
                                 tw.setText("off");
                                 tw.setTextColor(Color.parseColor("#9bb8d5"));
                             }
+                            mPoisonShowing = !mPoisonShowing;
                             return false;
                         }
                     });
@@ -86,19 +97,25 @@ public class SettingsListAdapter extends BaseAdapter {
                 case 3:
                     vi = mLayoutInflater.inflate(R.layout.change_background_option, null);
                     final ImageView imageView = (ImageView) vi.findViewById(R.id.background_preview);
+                    if (!mWhiteBackGround) {
+                        imageView.setImageDrawable(vi.getContext().getResources()
+                                .getDrawable(R.drawable.color_scheme_dark));
+                    } else {
+                        imageView.setImageDrawable(vi.getContext().getResources()
+                                .getDrawable(R.drawable.color_scheme_light));
+                    }
                     imageView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
                             ImageView iw = (ImageView) v;
-                            if (v.getTag().toString().equals("light")) {
+                            if (mWhiteBackGround) {
                                 iw.setImageDrawable(v.getContext().getResources()
                                         .getDrawable(R.drawable.color_scheme_dark));
-                                iw.setTag("dark");
                             } else {
                                 iw.setImageDrawable(v.getContext().getResources()
                                         .getDrawable(R.drawable.color_scheme_light));
-                                iw.setTag("light");
                             }
+                            mWhiteBackGround = !mWhiteBackGround;
                             return false;
                         }
                     });
@@ -133,5 +150,12 @@ public class SettingsListAdapter extends BaseAdapter {
                 break;
             }
         }
+    }
+
+    public void setSettings(boolean poisonShowing, int startingLife, boolean whiteBackground) {
+        System.out.println("Settings settings " + poisonShowing);
+        mPoisonShowing = poisonShowing;
+        mStartingLife = startingLife;
+        mWhiteBackGround = whiteBackground;
     }
 }
