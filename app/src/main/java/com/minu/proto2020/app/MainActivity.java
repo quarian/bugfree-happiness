@@ -169,8 +169,13 @@ public class MainActivity extends Activity {
         int startingLife;
         if (findViewById(R.id.starting_life_picker) != null)
             startingLife = Integer.parseInt(STARTING_LIFE);
-        else
-            startingLife = ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue();
+        else {
+            int index = ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue();
+            String[] values = ((NumberPicker) findViewById(R.id.starting_life_picker))
+                    .getDisplayedValues();
+            System.out.println(values);
+            startingLife = Integer.parseInt(values[index]);
+        }
         savedInstanceState.putInt(STARTING_LIFE, startingLife);
         savedInstanceState.putBoolean(POISON, mPoisonShowing);
 
@@ -615,11 +620,14 @@ public class MainActivity extends Activity {
 
     public void resetDuel() {
         String startingLife;
-        if (findViewById(R.id.starting_life_picker) != null)
-            startingLife =Integer.toString(
-                    ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue());
+        if (findViewById(R.id.starting_life_picker) != null) {
+            int index = ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue();
+            String[] values = ((NumberPicker) findViewById(R.id.starting_life_picker))
+                    .getDisplayedValues();
+            startingLife = values[index];
+        }
         else
-        startingLife = STARTING_LIFE;
+            startingLife = STARTING_LIFE;
         mLifePickerOne.setText(startingLife);
         mLifePickerTwo.setText(startingLife);
         mPoisonPickerOne.setText(STARTING_POISON);

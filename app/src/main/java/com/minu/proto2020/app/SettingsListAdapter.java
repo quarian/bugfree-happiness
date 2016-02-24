@@ -59,9 +59,10 @@ public class SettingsListAdapter extends BaseAdapter {
                     NumberPicker np = (NumberPicker) vi.findViewById(R.id.starting_life_picker);
                     setDividerColor(np, Color.argb(0, 0, 0, 0));
                     np.setEnabled(true);
+                    np.setDisplayedValues(new String[]{"10", "20", "30", "40", "50", "60", "70", "80", "100"});
                     np.setMinValue(0);
-                    np.setMaxValue(100);
-                    np.setValue(20);
+                    np.setMaxValue(8);
+                    np.setValue(1);
                     break;
                 case 2:
                     vi = mLayoutInflater.inflate(R.layout.poison_option, null);
