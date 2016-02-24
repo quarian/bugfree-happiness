@@ -385,11 +385,18 @@ public class MainActivity extends Activity {
                     }
                     break;
                 case 3:
-                    if (mWhiteBackground)
+                    boolean toggleWhiteBackground =
+                            ((SettingsListAdapter)
+                                    mSettingsDrawerList.getAdapter()).getWhiteBackground();
+                    if (mWhiteBackground && !toggleWhiteBackground) {
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
-                    else
+                        mWhiteBackground = !mWhiteBackground;
+                    }
+                    else if (!mWhiteBackground && toggleWhiteBackground) {
                         mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
-                    mWhiteBackground = !mWhiteBackground;
+                        mWhiteBackground = !mWhiteBackground;
+                    }
+
                     //mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 default:

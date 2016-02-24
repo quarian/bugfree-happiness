@@ -131,6 +131,10 @@ public class SettingsListAdapter extends BaseAdapter {
         return vi;
     }
 
+    public boolean getWhiteBackground() {
+        return mWhiteBackGround;
+    }
+
     private void setDividerColor(NumberPicker picker, int color) {
 
         java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
