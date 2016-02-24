@@ -24,8 +24,8 @@
             <RelativeLayout
                 android:layout_width="100dp"
                 android:layout_height="fill_parent"
-                android:layout_marginStart="-80dp"
-                android:layout_marginLeft="-80dp"
+                android:layout_marginStart="-70dp"
+                android:layout_marginLeft="-70dp"
                 android:id="@+id/left_update">
 
                 <TextView
@@ -144,8 +144,8 @@
             <RelativeLayout
                 android:layout_width="100dp"
                 android:layout_height="fill_parent"
-                android:layout_marginEnd="-80dp"
-                android:layout_marginRight="-80dp">
+                android:layout_marginEnd="-70dp"
+                android:layout_marginRight="-70dp">
 
 
                 <TextView

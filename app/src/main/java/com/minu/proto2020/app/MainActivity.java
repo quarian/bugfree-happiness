@@ -666,7 +666,7 @@ public class MainActivity extends Activity {
         ImageView rightArrow = (ImageView) findViewById(R.id.update_arrow_right);
         RotateAnimation r = new RotateAnimation(mCurrentRotation, mCurrentRotation + 180.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        r.setDuration((long) 700);
+        r.setDuration((long) 300);
         r.setRepeatCount(0);
         r.setFillAfter(true);
         mCurrentRotation += 180.0f;
