@@ -65,6 +65,7 @@ public class SettingsListAdapter extends BaseAdapter {
                     np.setEnabled(true);
                     np.setDisplayedValues(new String[]{"10", "20", "30", "40", "50", "60", "70", "80", "100"});
                     np.setMinValue(0);
+                    np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
                     np.setMaxValue(8);
                     np.setValue(mStartingLife / 10 - 1);
                     break;
