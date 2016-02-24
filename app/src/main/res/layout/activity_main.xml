@@ -61,6 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:minEms="2"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:layout_weight=".5"
                     android:textSize="100dp"
@@ -88,7 +89,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="50dp"
                     android:minEms="2"
-                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:gravity="left"
                     android:id="@+id/poison_picker_1"
                     android:layout_gravity="center"/>
 
@@ -106,6 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:minEms="2"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:layout_weight=".5"
                     android:id="@+id/life_picker_2"
@@ -130,7 +133,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="50dp"
-                    android:gravity="center"
+                    android:gravity="left"
+                    android:textStyle="bold"
                     android:minEms="2"
                     android:id="@+id/poison_picker_2"
                     android:layout_gravity="center"/>
