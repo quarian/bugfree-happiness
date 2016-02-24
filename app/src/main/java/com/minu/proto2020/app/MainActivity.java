@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
         if (savedInstanceState != null) {
             System.out.println("Restoring state");
             setLifeTotals(savedInstanceState.getString(PICKER_ONE_LIFE),
-                    savedInstanceState.getString(PICKER_TWO_POISON),
+                    savedInstanceState.getString(PICKER_ONE_POISON),
                     savedInstanceState.getString(PICKER_TWO_LIFE),
                     savedInstanceState.getString(PICKER_TWO_POISON));
 
