@@ -174,6 +174,7 @@
         <ImageButton
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
             android:scaleType="center"
             android:background="@android:color/transparent"
             android:id="@+id/settings_button"
@@ -186,6 +187,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleType="center"
+            android:layout_marginRight="16dp"
             android:background="@android:color/transparent"
             android:id="@+id/history_button"
             android:layout_alignEnd="@id/wrapper"
