@@ -558,19 +558,15 @@ public class MainActivity extends Activity {
     }
 
     private void changePickerValue(TextView picker, boolean add) {
+        int lifeTotal = getPickerValue(picker);
+        if (add)
+            lifeTotal++;
+        else
+            lifeTotal--;
+        picker.setText(Integer.toString(lifeTotal));
+        addToHistory(getTotals());
         if (checkLethal(picker)) {
             shakeLayout();
-        } else {
-            int lifeTotal = getPickerValue(picker);
-            if (add)
-                lifeTotal++;
-            else
-                lifeTotal--;
-            picker.setText(Integer.toString(lifeTotal));
-            addToHistory(getTotals());
-            if (checkLethal(picker)) {
-                shakeLayout();
-            }
         }
     }
 
