@@ -1,16 +1,14 @@
 package com.minu.proto2020.app;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -21,8 +19,6 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,7 +75,6 @@ public class MainActivity extends Activity {
     private ListView mSettingsDrawerList;
     private RelativeLayout mSettingsDrawer;
 
-    private DrawerLayout mHistoryDrawerLayout;
     private ListView mHistoryDrawerList;
 
     private int mScreenHeight;
@@ -211,7 +206,6 @@ public class MainActivity extends Activity {
 
 
         mSettingsDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mHistoryDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mSettingsDrawer = (RelativeLayout) findViewById(R.id.settings_drawer);
 
@@ -347,6 +341,9 @@ public class MainActivity extends Activity {
         Display display = getWindowManager().getDefaultDisplay();
         mScreenHeight = display.getWidth();
         mScreenWidth = display.getHeight();
+
+        ((TextView) findViewById(R.id.twitter_link))
+                .setMovementMethod(LinkMovementMethod.getInstance());
 
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mSettingsDrawerLayout.setKeepScreenOn(true);

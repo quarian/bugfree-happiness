@@ -5,17 +5,39 @@
     android:background="#555555"
     android:layout_alignParentBottom="true">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/swipe_image"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/swipe_to_reset"/>
+        android:orientation="horizontal"
+        android:id="@+id/image_twitter">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swipe_image"
+            android:padding="10dp"
+            android:layout_weight="0.5"
+            android:src="@drawable/swipe_to_reset"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/twitter"
+            android:id="@+id/twitter_link"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColorLink="#9bb8d5"
+            android:textColor="#9bb8d5"
+            android:layout_toRightOf="@id/swipe_image"/>
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/swipe_image"
+        android:layout_below="@id/image_twitter"
         android:textSize="10dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
