@@ -16,10 +16,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/swipe_image"
-        android:textSize="15dp"
+        android:textSize="10dp"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:textColor="#aaaaaa"
         android:padding="10dp"
-        android:text="Designed and developed by Pekka Pulli and Miro Nurmela"/>
+        android:text="Designed and developed by Miro Nurmela and Pekka Pulli"/>
 
 </RelativeLayout>
