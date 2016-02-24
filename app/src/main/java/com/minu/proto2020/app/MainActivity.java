@@ -1,9 +1,11 @@
 package com.minu.proto2020.app;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Build;
@@ -683,6 +685,7 @@ public class MainActivity extends Activity {
 
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#555555")));
         getActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
