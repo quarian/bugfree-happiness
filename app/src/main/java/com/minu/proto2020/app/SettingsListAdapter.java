@@ -79,9 +79,9 @@ public class SettingsListAdapter extends BaseAdapter {
                         poisonToggle.setText("off");
                         poisonToggle.setTextColor(Color.parseColor("#9bb8d5"));
                     }
-                    poisonToggle.setOnTouchListener(new View.OnTouchListener() {
+                    poisonToggle.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public boolean onTouch(View v, MotionEvent event) {
+                        public void onClick(View v) {
                             TextView tw = ((TextView) v);
                             if (!mPoisonShowing) {
                                 tw.setText("on");
@@ -91,7 +91,7 @@ public class SettingsListAdapter extends BaseAdapter {
                                 tw.setTextColor(Color.parseColor("#9bb8d5"));
                             }
                             mPoisonShowing = !mPoisonShowing;
-                            return false;
+                            ((MainActivity)mContext).togglePoison();
                         }
                     });
                     break;
@@ -105,9 +105,9 @@ public class SettingsListAdapter extends BaseAdapter {
                         imageView.setImageDrawable(vi.getContext().getResources()
                                 .getDrawable(R.drawable.color_scheme_light));
                     }
-                    imageView.setOnTouchListener(new View.OnTouchListener() {
+                    imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public boolean onTouch(View v, MotionEvent event) {
+                        public void onClick(View v) {
                             ImageView iw = (ImageView) v;
                             if (mWhiteBackGround) {
                                 iw.setImageDrawable(v.getContext().getResources()
@@ -117,7 +117,7 @@ public class SettingsListAdapter extends BaseAdapter {
                                         .getDrawable(R.drawable.color_scheme_light));
                             }
                             mWhiteBackGround = !mWhiteBackGround;
-                            return false;
+                            ((MainActivity)mContext).toggleBackground();
                         }
                     });
                     break;

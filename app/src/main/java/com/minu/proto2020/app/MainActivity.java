@@ -377,32 +377,36 @@ public class MainActivity extends Activity {
                 case 1:
                     break;
                 case 2:
-                    String showPoison =
-                            ((TextView) findViewById(R.id.poison_toggle)).getText().toString();
-                    if (showPoison.equals("on") && !mPoisonShowing ||
-                            showPoison.equals("off") && mPoisonShowing) {
-                        displayPoison();
-                    }
                     break;
                 case 3:
-                    boolean toggleWhiteBackground =
-                            ((SettingsListAdapter)
-                                    mSettingsDrawerList.getAdapter()).getWhiteBackground();
-                    if (mWhiteBackground && !toggleWhiteBackground) {
-                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
-                        mWhiteBackground = !mWhiteBackground;
-                    }
-                    else if (!mWhiteBackground && toggleWhiteBackground) {
-                        mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
-                        mWhiteBackground = !mWhiteBackground;
-                    }
-
-                    //mSettingsDrawerLayout.closeDrawer(mSettingsDrawerList);
                     break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
                     break;
             }
+        }
+    }
+
+    public void toggleBackground() {
+        boolean toggleWhiteBackground =
+                ((SettingsListAdapter)
+                        mSettingsDrawerList.getAdapter()).getWhiteBackground();
+        if (mWhiteBackground && !toggleWhiteBackground) {
+            mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
+            mWhiteBackground = !mWhiteBackground;
+        }
+        else if (!mWhiteBackground && toggleWhiteBackground) {
+            mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
+            mWhiteBackground = !mWhiteBackground;
+        }
+    }
+
+    public void togglePoison() {
+        String showPoison =
+                ((TextView) findViewById(R.id.poison_toggle)).getText().toString();
+        if (showPoison.equals("on") && !mPoisonShowing ||
+                showPoison.equals("off") && mPoisonShowing) {
+            displayPoison();
         }
     }
 
