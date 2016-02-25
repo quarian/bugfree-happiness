@@ -62,10 +62,10 @@ public class SettingsListAdapter extends BaseAdapter {
                     NumberPicker np = (NumberPicker) vi.findViewById(R.id.starting_life_picker);
                     setDividerColor(np, Color.argb(0, 0, 0, 0));
                     np.setEnabled(true);
-                    np.setDisplayedValues(new String[]{"10", "20", "30", "40", "50", "60", "70", "80", "100"});
+                    np.setDisplayedValues(new String[]{"10", "20", "30", "40", "50", "60", "70", "80", "90", "100"});
                     np.setMinValue(0);
                     np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-                    np.setMaxValue(8);
+                    np.setMaxValue(9);
                     np.setValue(mStartingLife / 10 - 1);
                     break;
                 case 2:
