@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -73,22 +72,26 @@ public class SettingsListAdapter extends BaseAdapter {
                     vi = mLayoutInflater.inflate(R.layout.poison_option, null);
                     TextView poisonToggle = (TextView) vi.findViewById(R.id.poison_toggle);
                     if (mPoisonShowing) {
-                        poisonToggle.setText("on");
-                        poisonToggle.setTextColor(Color.parseColor("#e3aaaa"));
+                        poisonToggle.setText(mContext.getString(R.string.on));
+                        poisonToggle.setTextColor(
+                                Color.parseColor(mContext.getString(R.string.color_blue)));
                     } else {
-                        poisonToggle.setText("off");
-                        poisonToggle.setTextColor(Color.parseColor("#9bb8d5"));
+                        poisonToggle.setText(mContext.getString(R.string.off));
+                        poisonToggle.setTextColor(
+                                Color.parseColor(mContext.getString(R.string.color_red)));
                     }
                     poisonToggle.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             TextView tw = ((TextView) v);
                             if (!mPoisonShowing) {
-                                tw.setText("on");
-                                tw.setTextColor(Color.parseColor("#e3aaaa"));
+                                tw.setText(mContext.getString(R.string.on));
+                                tw.setTextColor(
+                                        Color.parseColor(mContext.getString(R.string.color_blue)));
                             } else {
-                                tw.setText("off");
-                                tw.setTextColor(Color.parseColor("#9bb8d5"));
+                                tw.setText(mContext.getString(R.string.off));
+                                tw.setTextColor(
+                                        Color.parseColor(mContext.getString(R.string.color_red)));
                             }
                             mPoisonShowing = !mPoisonShowing;
                             ((MainActivity)mContext).togglePoison();

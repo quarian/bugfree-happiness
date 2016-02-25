@@ -7,5 +7,18 @@
     <string name="reset">Reset</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="twitter"><a href="https://twitter.com/2020lifecount">twitter</a></string>
+    <string name="color_text">#aaaaaa</string>
+    <string name="color_red">#e3aaaa</string>
+    <string name="color_blue">#9bb8d5</string>
+    <string name="new_duel">New duel</string>
+    <string name="starting_life_total">Starting life total</string>
+    <string name="color_scheme">Color scheme</string>
+    <string name="poison">Poison</string>
+    <string name="pull_to_restart">Pull to Restart</string>
+    <string name="pull_to_cancel">Pull to Cancel</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
+    <string name="color_background_white">#f5f5f5</string>
+    <string name="color_background_black">#333231</string>
 
 </resources>

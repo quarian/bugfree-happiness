@@ -59,6 +59,8 @@ public class MainActivity extends Activity {
 
     static final String HISTORY = "HISTORY";
 
+    static final String READ = "READ";
+
     private String mWhiteBackgroundColor = "#f5f5f5";
     private String mBlackBackgroundColor = "#333231";
 
@@ -91,13 +93,12 @@ public class MainActivity extends Activity {
     private int mStartingLife = 20;
 
     private ArrayList<String> mHistory;
-    final private int mHistoryStart = 2;
 
-    private String mShowPoison = "Poison";
-    private String mHidePoison = "Poison";
+    private String mShowPoison;
+    private String mHidePoison;
 
-    private String mPullToRefresh = "Pull to Restart";
-    private String mReleaseToRefresh = "Pull to Cancel";
+    private String mPullToRefresh;
+    private String mReleaseToRefresh;
 
     private String mPoisonOption = mShowPoison;
     private int mPoisonOptionIndex = 2;
@@ -136,6 +137,7 @@ public class MainActivity extends Activity {
     }
 
     private void restoreSettings() {
+        mPoisonOption = mShowPoison;
         if (mPoisonShowing) {
             mPoisonShowing = !mPoisonShowing;
             displayPoison();
@@ -204,7 +206,6 @@ public class MainActivity extends Activity {
         mOptions = new ArrayList<String>();
         mHistory = new ArrayList<String>();
 
-
         mSettingsDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mSettingsDrawer = (RelativeLayout) findViewById(R.id.settings_drawer);
@@ -214,23 +215,25 @@ public class MainActivity extends Activity {
     }
 
     private void instantiateArrayLists() {
-        mOptions.add("New duel");
-        mOptions.add("Starting life total");
+        mOptions.add(getString(R.string.new_duel));
+        mOptions.add(getString(R.string.starting_life_total));
         mOptions.add(mPoisonOption);
-        mOptions.add("Color scheme");
+        mOptions.add(getString(R.string.color_scheme));
     }
 
     private void setInitialColors() {
-        int red = Color.parseColor("#e3aaaa");
-        int blue = Color.parseColor("#9bb8d5");
+        int red = Color.parseColor(getString(R.string.color_red));
+        int blue = Color.parseColor(getString(R.string.color_blue));
         mLifePickerOne.setTextColor(red);
         mPoisonPickerOne.setTextColor(red);
         mLifePickerTwo.setTextColor(blue);
         mPoisonPickerTwo.setTextColor(blue);
         Drawable arrowLeft = getResources().getDrawable(R.drawable.left_arrow);
         Drawable arrowRight = getResources().getDrawable(R.drawable.right_arrow);
-        arrowLeft.setColorFilter(Color.parseColor("#aaaaaa"), PorterDuff.Mode.SRC_ATOP);
-        arrowRight.setColorFilter(Color.parseColor("#aaaaaa"), PorterDuff.Mode.SRC_ATOP);
+        arrowLeft.setColorFilter(Color.parseColor(getString(R.string.color_text)),
+                PorterDuff.Mode.SRC_ATOP);
+        arrowRight.setColorFilter(Color.parseColor(getString(R.string.color_text)),
+                PorterDuff.Mode.SRC_ATOP);
         ((ImageView)findViewById(R.id.update_arrow_left)).setImageDrawable(arrowLeft);
         ((ImageView)findViewById(R.id.update_arrow_right)).setImageDrawable(arrowRight);
     }
@@ -265,12 +268,12 @@ public class MainActivity extends Activity {
 
     private boolean isHistoryEntryRead(String historyEntry) {
         String read = historyEntry.split(" ")[4];
-        return read.compareTo("READ") == 0;
+        return read.compareTo(READ) == 0;
     }
 
     private String markedHistoryEntryRead(String historyEntry) {
         String[] split = historyEntry.split(" ");
-        split[4] = "READ";
+        split[4] = READ;
         return split[0] + " " + split[1] + " " + split[2] + " " + split[3]+ " " + split[4];
     }
 
@@ -338,6 +341,17 @@ public class MainActivity extends Activity {
             }
         });
 
+        mShowPoison = getString(R.string.poison);
+        mHidePoison = getString(R.string.poison);
+
+        mPullToRefresh = getString(R.string.pull_to_restart);
+        mReleaseToRefresh = getString(R.string.pull_to_cancel);
+
+        mWhiteBackgroundColor = getString(R.string.color_background_white);
+        mBlackBackgroundColor = getString(R.string.color_background_black);
+
+        mPoisonOption = mShowPoison;
+
         Display display = getWindowManager().getDefaultDisplay();
         mScreenHeight = display.getWidth();
         mScreenWidth = display.getHeight();
@@ -347,6 +361,8 @@ public class MainActivity extends Activity {
 
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mSettingsDrawerLayout.setKeepScreenOn(true);
+
+
     }
 
     private void displayPoison() {
@@ -603,6 +619,7 @@ public class MainActivity extends Activity {
         super.onResume();
         System.out.println("RESUMING");
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+        mOptions.set(mPoisonOptionIndex, mPoisonOption);
         restoreSettings();
         hideSystemUI();
     }
