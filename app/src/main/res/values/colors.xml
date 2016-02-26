@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="light_blue_2020" type="color">#9bb8d5</item>
+    <item name="text_light_grey" type="color">#aaaaaa</item>
+    <item name="background_light" type="color">#f5f5f5</item>
+    <item name="drawer_background" type="color">#555555</item>
+    <item name="light_red_2020" type="color">#e3aaaa</item>
+</resources>
