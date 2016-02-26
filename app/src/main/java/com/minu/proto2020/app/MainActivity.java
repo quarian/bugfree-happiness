@@ -30,10 +30,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
-    private static final boolean SCALE_UP = true;
-    private static final boolean SCALE_DOWN = false;
-    private static final int LETHAL_LIFE = 0;
-    private static final int LETHAL_POISON = 10;
     private LinearLayout mLifeLinearLayoutOne;
     private LinearLayout mLifeLinearLayoutTwo;
     private LinearLayout mPoisonLinearLayoutOne;
@@ -75,7 +71,7 @@ public class MainActivity extends Activity {
     private float mPickerLastX;
     private boolean mUpdating;
 
-    private int mStartingLife = 20;
+    private int mStartingLife;
 
     private ArrayList<String> mHistory;
 
@@ -86,10 +82,10 @@ public class MainActivity extends Activity {
     private String mReleaseToRefresh;
 
     private String mPoisonOption = mShowPoison;
-    private int mPoisonOptionIndex = 2;
+    private int mPoisonOptionIndex;
 
-    private float mCurrentRotation = 0.0f;
-    private boolean mWhiteBackground = true;
+    private float mCurrentRotation;
+    private boolean mWhiteBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,6 +282,13 @@ public class MainActivity extends Activity {
 
         instantiateArrayLists();
 
+
+        mStartingLife = 20;
+        mPoisonOptionIndex = 2;
+
+        mCurrentRotation = 0.0f;
+        mWhiteBackground = true;
+
         mSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -455,11 +458,11 @@ public class MainActivity extends Activity {
     private void handlePickerTouchRelease(TextView picker, boolean poison) {
         if (!mSpun && !mSideSwipe) {
             changePickerValue(picker, poison);
-            scaleTextView(picker, SCALE_DOWN);
+            scaleTextView(picker, Constants.SCALE_DOWN);
         }
         System.out.println("Action up");
         if (mSpun || mSideSwipe)
-            scaleTextView(picker, SCALE_DOWN);
+            scaleTextView(picker, Constants.SCALE_DOWN);
         mSpun = false;
         setUpdateTextViewTexts(mPullToRefresh);
         if (mUpdating)
@@ -516,7 +519,7 @@ public class MainActivity extends Activity {
         else if (!mSideSwipe)
             peripheralTouch(y, picker, layout);
         else
-            scaleTextView(picker, SCALE_DOWN);
+            scaleTextView(picker, Constants.SCALE_DOWN);
         mWrapper.scrollTo(0, 0);
         mUpdating = false;
         mSideSwipe = false;
@@ -526,7 +529,7 @@ public class MainActivity extends Activity {
         mPickerY = motionEvent.getY();
         mPickerX = motionEvent.getX();
         mPickerLastX = motionEvent.getX();
-        scaleTextView(picker, SCALE_UP);
+        scaleTextView(picker, Constants.SCALE_UP);
     }
 
     private void sideSwipe(float x) {
@@ -563,11 +566,11 @@ public class MainActivity extends Activity {
     private void peripheralTouch(float y, TextView picker, LinearLayout layout) {
         if (mSpun) {
             mSpun = false;
-            scaleTextView(picker, SCALE_DOWN);
+            scaleTextView(picker, Constants.SCALE_DOWN);
         } else {
             int[] coordinates = {0, 0};
             System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
-            scaleTextView(picker, SCALE_DOWN);
+            scaleTextView(picker, Constants.SCALE_DOWN);
             if (y > (coordinates[1] + layout.getHeight()) / 2)
                 changePickerValue(picker, false);
             else
@@ -603,9 +606,9 @@ public class MainActivity extends Activity {
 
     private boolean checkLethal(TextView picker) {
         return ((picker.equals(mLifePickerOne) || picker.equals(mLifePickerTwo))
-                && getPickerValue(picker) == LETHAL_LIFE) ||
+                && getPickerValue(picker) == Constants.LETHAL_LIFE) ||
                 ((picker.equals(mPoisonPickerOne) || picker.equals(mPoisonPickerTwo))
-                        && getPickerValue(picker) == LETHAL_POISON);
+                        && getPickerValue(picker) == Constants.LETHAL_POISON);
     }
 
     @Override
