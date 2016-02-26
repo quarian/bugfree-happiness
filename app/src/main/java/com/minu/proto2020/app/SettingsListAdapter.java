@@ -59,70 +59,15 @@ public class SettingsListAdapter extends BaseAdapter {
                     vi = LayoutInflater.from(
                             new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
                             .inflate(R.layout.starting_life_option, parent, false);
-                    NumberPicker np = (NumberPicker) vi.findViewById(R.id.starting_life_picker);
-                    setDividerColor(np, Color.argb(0, 0, 0, 0));
-                    np.setEnabled(true);
-                    np.setDisplayedValues(new String[]{"10", "20", "30", "40", "50", "60", "70", "80", "90", "100"});
-                    np.setMinValue(0);
-                    np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-                    np.setMaxValue(9);
-                    np.setValue(mStartingLife / 10 - 1);
+                    setupStartingLifeOption(vi);
                     break;
                 case 2:
                     vi = mLayoutInflater.inflate(R.layout.poison_option, parent, false);
-                    TextView poisonToggle = (TextView) vi.findViewById(R.id.poison_toggle);
-                    if (mPoisonShowing) {
-                        poisonToggle.setText(mContext.getString(R.string.on));
-                        poisonToggle.setTextColor(
-                                Color.parseColor(mContext.getString(R.string.color_blue)));
-                    } else {
-                        poisonToggle.setText(mContext.getString(R.string.off));
-                        poisonToggle.setTextColor(
-                                Color.parseColor(mContext.getString(R.string.color_red)));
-                    }
-                    poisonToggle.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            TextView tw = ((TextView) v);
-                            if (!mPoisonShowing) {
-                                tw.setText(mContext.getString(R.string.on));
-                                tw.setTextColor(
-                                        Color.parseColor(mContext.getString(R.string.color_blue)));
-                            } else {
-                                tw.setText(mContext.getString(R.string.off));
-                                tw.setTextColor(
-                                        Color.parseColor(mContext.getString(R.string.color_red)));
-                            }
-                            mPoisonShowing = !mPoisonShowing;
-                            ((MainActivity)mContext).togglePoison();
-                        }
-                    });
+                    setupPoisonOption(vi);
                     break;
                 case 3:
                     vi = mLayoutInflater.inflate(R.layout.change_background_option, parent, false);
-                    final ImageView imageView = (ImageView) vi.findViewById(R.id.background_preview);
-                    if (!mWhiteBackGround) {
-                        imageView.setImageDrawable(vi.getContext().getResources()
-                                .getDrawable(R.drawable.color_scheme_dark));
-                    } else {
-                        imageView.setImageDrawable(vi.getContext().getResources()
-                                .getDrawable(R.drawable.color_scheme_light));
-                    }
-                    imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ImageView iw = (ImageView) v;
-                            if (mWhiteBackGround) {
-                                iw.setImageDrawable(v.getContext().getResources()
-                                        .getDrawable(R.drawable.color_scheme_dark));
-                            } else {
-                                iw.setImageDrawable(v.getContext().getResources()
-                                        .getDrawable(R.drawable.color_scheme_light));
-                            }
-                            mWhiteBackGround = !mWhiteBackGround;
-                            ((MainActivity)mContext).toggleBackground();
-                        }
-                    });
+                   setupBackgroundOption(vi);
                     break;
                 default:
                     vi = mLayoutInflater.inflate(R.layout.settings_list_item, parent, false);
@@ -132,6 +77,73 @@ public class SettingsListAdapter extends BaseAdapter {
         }
         ((TextView)vi.findViewById(R.id.settings_text)).setText(mData.get(position));
         return vi;
+    }
+
+    private void setupStartingLifeOption(View vi) {
+        NumberPicker np = (NumberPicker) vi.findViewById(R.id.starting_life_picker);
+        setDividerColor(np, Color.argb(0, 0, 0, 0));
+        np.setEnabled(true);
+        np.setDisplayedValues(new String[]{"10", "20", "30", "40", "50", "60", "70", "80", "90", "100"});
+        np.setMinValue(0);
+        np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        np.setMaxValue(9);
+        np.setValue(mStartingLife / 10 - 1);
+    }
+
+    private void setupPoisonOption(View vi) {
+        TextView poisonToggle = (TextView) vi.findViewById(R.id.poison_toggle);
+        if (mPoisonShowing) {
+            poisonToggle.setText(mContext.getString(R.string.on));
+            poisonToggle.setTextColor(
+                    Color.parseColor(mContext.getString(R.string.color_blue)));
+        } else {
+            poisonToggle.setText(mContext.getString(R.string.off));
+            poisonToggle.setTextColor(
+                    Color.parseColor(mContext.getString(R.string.color_red)));
+        }
+        poisonToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tw = ((TextView) v);
+                if (!mPoisonShowing) {
+                    tw.setText(mContext.getString(R.string.on));
+                    tw.setTextColor(
+                            Color.parseColor(mContext.getString(R.string.color_blue)));
+                } else {
+                    tw.setText(mContext.getString(R.string.off));
+                    tw.setTextColor(
+                            Color.parseColor(mContext.getString(R.string.color_red)));
+                }
+                mPoisonShowing = !mPoisonShowing;
+                ((MainActivity) mContext).togglePoison();
+            }
+        });
+    }
+
+    private void setupBackgroundOption(View vi) {
+        final ImageView imageView = (ImageView) vi.findViewById(R.id.background_preview);
+        if (!mWhiteBackGround)
+            imageView.setImageDrawable(vi.getContext().getResources()
+                    .getDrawable(R.drawable.color_scheme_dark));
+        else
+            imageView.setImageDrawable(vi.getContext().getResources()
+                    .getDrawable(R.drawable.color_scheme_light));
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView iw = (ImageView) v;
+                if (mWhiteBackGround)
+                    iw.setImageDrawable(v.getContext().getResources()
+                            .getDrawable(R.drawable.color_scheme_dark));
+                else
+                    iw.setImageDrawable(v.getContext().getResources()
+                            .getDrawable(R.drawable.color_scheme_light));
+
+                mWhiteBackGround = !mWhiteBackGround;
+                ((MainActivity)mContext).toggleBackground();
+            }
+        });
     }
 
     public boolean getWhiteBackground() {

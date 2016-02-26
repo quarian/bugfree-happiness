@@ -647,6 +647,7 @@ public class MainActivity extends Activity {
         mPoisonPickerOne.setText(Constants.STARTING_POISON);
         mPoisonPickerTwo.setText(Constants.STARTING_POISON);
         mHistory.clear();
+        ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).clear();
         mOptions.clear();
         instantiateArrayLists();
         addToHistory(getTotals());

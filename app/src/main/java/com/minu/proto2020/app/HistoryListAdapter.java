@@ -49,12 +49,12 @@ public class HistoryListAdapter extends BaseAdapter {
         String rightPoison = mData.get(position).split(" ")[3];
         ((TextView) vi.findViewById(R.id.left_life)).setText(leftLife);
         ((TextView) vi.findViewById(R.id.right_life)).setText(rightLife);
-        if (!leftPoison.equals("0")) {
+        if (!leftPoison.equals(Constants.STARTING_POISON)) {
             vi.findViewById(R.id.left_poison).setVisibility(View.VISIBLE);
             ((TextView) vi.findViewById(R.id.left_poison)).setText(leftPoison);
             vi.findViewById(R.id.poison_left_icon).setVisibility(View.VISIBLE);
         }
-        if (!rightPoison.equals("0")) {
+        if (!rightPoison.equals(Constants.STARTING_POISON)) {
             vi.findViewById(R.id.right_poison).setVisibility(View.VISIBLE);
             ((TextView) vi.findViewById(R.id.right_poison)).setText(rightPoison);
             vi.findViewById(R.id.poison_right_icon).setVisibility(View.VISIBLE);
