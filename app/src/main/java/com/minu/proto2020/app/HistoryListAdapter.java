@@ -14,15 +14,13 @@ import java.util.ArrayList;
  */
 public class HistoryListAdapter extends BaseAdapter {
 
-    private Context mContext;
     private ArrayList<String> mData;
     private static LayoutInflater mLayoutInflater;
 
     public HistoryListAdapter(Context context, ArrayList<String> data) {
-        mContext = context;
         mData = data;
         mLayoutInflater =
-                (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class HistoryListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (vi == null)
-            vi = mLayoutInflater.inflate(R.layout.history_entry, null);
+            vi = mLayoutInflater.inflate(R.layout.history_entry, parent, false);
         String leftLife = mData.get(position).split(" ")[0];
         String rightLife = mData.get(position).split(" ")[1];
         String leftPoison = mData.get(position).split(" ")[2];

@@ -58,7 +58,7 @@ public class SettingsListAdapter extends BaseAdapter {
                 case 1:
                     vi = LayoutInflater.from(
                             new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
-                            .inflate(R.layout.starting_life_option, null);
+                            .inflate(R.layout.starting_life_option, parent, false);
                     NumberPicker np = (NumberPicker) vi.findViewById(R.id.starting_life_picker);
                     setDividerColor(np, Color.argb(0, 0, 0, 0));
                     np.setEnabled(true);
@@ -69,7 +69,7 @@ public class SettingsListAdapter extends BaseAdapter {
                     np.setValue(mStartingLife / 10 - 1);
                     break;
                 case 2:
-                    vi = mLayoutInflater.inflate(R.layout.poison_option, null);
+                    vi = mLayoutInflater.inflate(R.layout.poison_option, parent, false);
                     TextView poisonToggle = (TextView) vi.findViewById(R.id.poison_toggle);
                     if (mPoisonShowing) {
                         poisonToggle.setText(mContext.getString(R.string.on));
@@ -99,7 +99,7 @@ public class SettingsListAdapter extends BaseAdapter {
                     });
                     break;
                 case 3:
-                    vi = mLayoutInflater.inflate(R.layout.change_background_option, null);
+                    vi = mLayoutInflater.inflate(R.layout.change_background_option, parent, false);
                     final ImageView imageView = (ImageView) vi.findViewById(R.id.background_preview);
                     if (!mWhiteBackGround) {
                         imageView.setImageDrawable(vi.getContext().getResources()
@@ -125,7 +125,7 @@ public class SettingsListAdapter extends BaseAdapter {
                     });
                     break;
                 default:
-                    vi = mLayoutInflater.inflate(R.layout.settings_list_item, null);
+                    vi = mLayoutInflater.inflate(R.layout.settings_list_item, parent, false);
                     break;
 
             }

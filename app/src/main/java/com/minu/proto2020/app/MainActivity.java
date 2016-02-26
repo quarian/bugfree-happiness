@@ -216,10 +216,12 @@ public class MainActivity extends Activity {
         mPoisonPickerTwo.setTextColor(blue);
         Drawable arrowLeft = getResources().getDrawable(R.drawable.left_arrow);
         Drawable arrowRight = getResources().getDrawable(R.drawable.right_arrow);
-        arrowLeft.setColorFilter(Color.parseColor(getString(R.string.color_text)),
-                PorterDuff.Mode.SRC_ATOP);
-        arrowRight.setColorFilter(Color.parseColor(getString(R.string.color_text)),
-                PorterDuff.Mode.SRC_ATOP);
+        if (arrowLeft != null)
+            arrowLeft.setColorFilter(Color.parseColor(getString(R.string.color_text)),
+                    PorterDuff.Mode.SRC_ATOP);
+        if (arrowRight != null)
+            arrowRight.setColorFilter(Color.parseColor(getString(R.string.color_text)),
+                    PorterDuff.Mode.SRC_ATOP);
         ((ImageView)findViewById(R.id.update_arrow_left)).setImageDrawable(arrowLeft);
         ((ImageView)findViewById(R.id.update_arrow_right)).setImageDrawable(arrowRight);
     }
@@ -698,9 +700,8 @@ public class MainActivity extends Activity {
 
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
-        getActionBar().setBackgroundDrawable(
-                new ColorDrawable(Color.parseColor(getString(R.string.color_dark_grey))));
-        getActionBar().hide();
+        if (getActionBar() != null)
+            getActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
