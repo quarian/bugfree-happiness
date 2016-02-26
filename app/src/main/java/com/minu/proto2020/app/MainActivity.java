@@ -35,8 +35,6 @@ public class MainActivity extends Activity {
     private static final boolean SCALE_DOWN = false;
     private static final int LETHAL_LIFE = 0;
     private static final int LETHAL_POISON = 10;
-    private static final String BACKGROUND_WHITE = "BACKGROUND_WHITE";
-    private static final String POISON = "POISON";
     private LinearLayout mLifeLinearLayoutOne;
     private LinearLayout mLifeLinearLayoutTwo;
     private LinearLayout mPoisonLinearLayoutOne;
@@ -49,20 +47,8 @@ public class MainActivity extends Activity {
     private ImageButton mSettingsButton;
     private ImageButton mHistoryButton;
 
-    static final String STARTING_LIFE = "20";
-    static final String STARTING_POISON = "0";
-
-    static final String PICKER_ONE_LIFE = "PICKER_ONE_LIFE";
-    static final String PICKER_TWO_LIFE = "PICKER_ONE_POISON";
-    static final String PICKER_ONE_POISON = "PICKER_TWO_LIFE";
-    static final String PICKER_TWO_POISON = "PICKER_TWO_POISON";
-
-    static final String HISTORY = "HISTORY";
-
-    static final String READ = "READ";
-
-    private String mWhiteBackgroundColor = "#f5f5f5";
-    private String mBlackBackgroundColor = "#333231";
+    private String mWhiteBackgroundColor;
+    private String mBlackBackgroundColor;
 
     private LinearLayout mWrapper;
 
@@ -119,16 +105,16 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState != null) {
             System.out.println("Restoring state");
-            setLifeTotals(savedInstanceState.getString(PICKER_ONE_LIFE),
-                    savedInstanceState.getString(PICKER_ONE_POISON),
-                    savedInstanceState.getString(PICKER_TWO_LIFE),
-                    savedInstanceState.getString(PICKER_TWO_POISON));
+            setLifeTotals(savedInstanceState.getString(Constants.PICKER_ONE_LIFE),
+                    savedInstanceState.getString(Constants.PICKER_ONE_POISON),
+                    savedInstanceState.getString(Constants.PICKER_TWO_LIFE),
+                    savedInstanceState.getString(Constants.PICKER_TWO_POISON));
 
-            mHistory = savedInstanceState.getStringArrayList(HISTORY);
+            mHistory = savedInstanceState.getStringArrayList(Constants.HISTORY);
             ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
-            mPoisonShowing = savedInstanceState.getBoolean(POISON);
-            mWhiteBackground = savedInstanceState.getBoolean(BACKGROUND_WHITE);
-            mStartingLife = savedInstanceState.getInt(STARTING_LIFE);
+            mPoisonShowing = savedInstanceState.getBoolean(Constants.POISON);
+            mWhiteBackground = savedInstanceState.getBoolean(Constants.BACKGROUND_WHITE);
+            mStartingLife = savedInstanceState.getInt(Constants.STARTING_LIFE);
 
         } else {
             mHistory = new ArrayList<String>();
@@ -154,15 +140,15 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         System.out.println("Saving state");
-        savedInstanceState.putString(PICKER_ONE_LIFE, mLifePickerOne.getText().toString());
-        savedInstanceState.putString(PICKER_ONE_POISON, mPoisonPickerTwo.getText().toString());
-        savedInstanceState.putString(PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
-        savedInstanceState.putString(PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
+        savedInstanceState.putString(Constants.PICKER_ONE_LIFE, mLifePickerOne.getText().toString());
+        savedInstanceState.putString(Constants.PICKER_ONE_POISON, mPoisonPickerTwo.getText().toString());
+        savedInstanceState.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
+        savedInstanceState.putString(Constants.PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
 
-        savedInstanceState.putBoolean(BACKGROUND_WHITE, mWhiteBackground);
+        savedInstanceState.putBoolean(Constants.BACKGROUND_WHITE, mWhiteBackground);
         int startingLife;
         if (findViewById(R.id.starting_life_picker) == null)
-            startingLife = Integer.parseInt(STARTING_LIFE);
+            startingLife = Integer.parseInt(Constants.STARTING_LIFE);
         else {
             int index = ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue();
             String[] values = ((NumberPicker) findViewById(R.id.starting_life_picker))
@@ -170,10 +156,10 @@ public class MainActivity extends Activity {
             System.out.println(values);
             startingLife = Integer.parseInt(values[index]);
         }
-        savedInstanceState.putInt(STARTING_LIFE, startingLife);
-        savedInstanceState.putBoolean(POISON, mPoisonShowing);
+        savedInstanceState.putInt(Constants.STARTING_LIFE, startingLife);
+        savedInstanceState.putBoolean(Constants.POISON, mPoisonShowing);
 
-        savedInstanceState.putStringArrayList(HISTORY, mHistory);
+        savedInstanceState.putStringArrayList(Constants.HISTORY, mHistory);
 
         System.out.println(savedInstanceState);
 
@@ -268,12 +254,12 @@ public class MainActivity extends Activity {
 
     private boolean isHistoryEntryRead(String historyEntry) {
         String read = historyEntry.split(" ")[4];
-        return read.compareTo(READ) == 0;
+        return read.compareTo(Constants.READ) == 0;
     }
 
     private String markedHistoryEntryRead(String historyEntry) {
         String[] split = historyEntry.split(" ");
-        split[4] = READ;
+        split[4] = Constants.READ;
         return split[0] + " " + split[1] + " " + split[2] + " " + split[3]+ " " + split[4];
     }
 
@@ -326,6 +312,13 @@ public class MainActivity extends Activity {
                     System.out.println(mHistory);
                     collapseHistory();
                     showHistory();
+                    mHistoryDrawerList.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mHistoryDrawerList.
+                                    setSelection(mHistoryDrawerList.getAdapter().getCount());
+                        }
+                    });
                     mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
                 }
             }
@@ -646,11 +639,11 @@ public class MainActivity extends Activity {
             startingLife = values[index];
         }
         else
-            startingLife = STARTING_LIFE;
+            startingLife = Constants.STARTING_LIFE;
         mLifePickerOne.setText(startingLife);
         mLifePickerTwo.setText(startingLife);
-        mPoisonPickerOne.setText(STARTING_POISON);
-        mPoisonPickerTwo.setText(STARTING_POISON);
+        mPoisonPickerOne.setText(Constants.STARTING_POISON);
+        mPoisonPickerTwo.setText(Constants.STARTING_POISON);
         mHistory.clear();
         mOptions.clear();
         instantiateArrayLists();
@@ -668,9 +661,8 @@ public class MainActivity extends Activity {
     }
 
     public String[] getTotals() {
-        String[] result = {mLifePickerOne.getText().toString(), mLifePickerTwo.getText().toString(),
+        return new String[]{mLifePickerOne.getText().toString(), mLifePickerTwo.getText().toString(),
                            mPoisonPickerOne.getText().toString(), mPoisonPickerTwo.getText().toString()};
-        return result;
     }
 
 
@@ -706,7 +698,8 @@ public class MainActivity extends Activity {
 
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
-        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#555555")));
+        getActionBar().setBackgroundDrawable(
+                new ColorDrawable(Color.parseColor(getString(R.string.color_dark_grey))));
         getActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
