@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#555555">
+    android:background="@color/drawer_background">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#aaaaaa"
+        android:textColor="@color/text_light_grey"
         android:textSize="20dp"
         android:padding="15dp"
         android:layout_weight="0.2"
@@ -20,8 +20,8 @@
         android:textSize="20dp"
         android:padding="15dp"
         android:gravity="center"
-        android:textColor="#9bb8d5"
-        android:text="off"
+        android:textColor="@color/light_blue_2020"
+        android:text="@string/off"
         android:id="@+id/poison_toggle"
         android:layout_weight="0.8"/>
 

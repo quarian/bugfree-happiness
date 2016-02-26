@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#555555">
+    android:background="@color/drawer_background">
 
     <TextView
         android:layout_width="wrap_content"
@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:paddingRight="10dp"
         android:layout_centerVertical="true"
-        android:textColor="#e3aaaa"
+        android:textColor="@color/light_red_2020"
         android:id="@+id/left_life"/>
 
     <ImageView
@@ -32,7 +32,7 @@
         android:layout_toRightOf="@id/poison_left_icon"
         android:visibility="invisible"
         android:id="@+id/left_poison"
-        android:textColor="#e3aaaa"/>
+        android:textColor="@color/light_red_2020"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
         android:textSize="20dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textColor="#9bb8d5"
+        android:textColor="@color/light_blue_2020"
         android:id="@+id/right_life"/>
 
     <TextView
@@ -59,7 +59,7 @@
         android:paddingRight="10dp"
         android:visibility="invisible"
         android:id="@+id/right_poison"
-        android:textColor="#9bb8d5"/>
+        android:textColor="@color/light_blue_2020"/>
 
     <ImageView
         android:layout_width="20dp"

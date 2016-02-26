@@ -6,6 +6,6 @@
     </style>
 
     <style name="NumberPickerTextColorStyle">
-        <item name="android:textColorPrimary">#9bb8d5</item>
+        <item name="android:textColorPrimary">@color/light_blue_2020</item>
     </style>
 </resources>

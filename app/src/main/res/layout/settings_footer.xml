@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#555555"
+    android:background="@color/drawer_background"
     android:layout_alignParentBottom="true">
 
     <LinearLayout
@@ -28,8 +28,8 @@
             android:gravity="center"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:textColorLink="#9bb8d5"
-            android:textColor="#9bb8d5"
+            android:textColorLink="@color/light_blue_2020"
+            android:textColor="@color/light_blue_2020"
             android:layout_toRightOf="@id/swipe_image"/>
 
     </LinearLayout>
@@ -41,7 +41,7 @@
         android:textSize="10dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:textColor="#aaaaaa"
+        android:textColor="@color/text_light_grey"
         android:padding="10dp"
         android:text="Designed and developed by Miro Nurmela and Pekka Pulli"/>
 
