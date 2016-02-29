@@ -173,7 +173,7 @@ public class SettingsListAdapter extends BaseAdapter {
     }
 
     public void setSettings(boolean poisonShowing, int startingLife, boolean whiteBackground) {
-        System.out.println("Settings settings " + poisonShowing);
+        //System.out.println("Settings settings " + poisonShowing);
         mPoisonShowing = poisonShowing;
         mStartingLife = startingLife;
         mWhiteBackGround = whiteBackground;

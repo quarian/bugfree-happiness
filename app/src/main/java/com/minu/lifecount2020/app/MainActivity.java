@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
         initElements();
 
         if (savedInstanceState != null) {
-            System.out.println("Restoring state");
+            //System.out.println("Restoring state");
             setLifeTotals(savedInstanceState.getString(Constants.PICKER_ONE_LIFE),
                     savedInstanceState.getString(Constants.PICKER_ONE_POISON),
                     savedInstanceState.getString(Constants.PICKER_TWO_LIFE),
@@ -126,7 +126,7 @@ public class MainActivity extends Activity {
         if (!mWhiteBackground) {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
         }
-        System.out.println(mPoisonShowing + " " + mStartingLife + " " + mWhiteBackground);
+        //System.out.println(mPoisonShowing + " " + mStartingLife + " " + mWhiteBackground);
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter())
                 .setSettings(mPoisonShowing, mStartingLife, mWhiteBackground);
 
@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        System.out.println("Saving state");
+        //System.out.println("Saving state");
         savedInstanceState.putString(Constants.PICKER_ONE_LIFE, mLifePickerOne.getText().toString());
         savedInstanceState.putString(Constants.PICKER_ONE_POISON, mPoisonPickerTwo.getText().toString());
         savedInstanceState.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
@@ -148,7 +148,7 @@ public class MainActivity extends Activity {
             int index = ((NumberPicker) findViewById(R.id.starting_life_picker)).getValue();
             String[] values = ((NumberPicker) findViewById(R.id.starting_life_picker))
                     .getDisplayedValues();
-            System.out.println(values);
+            //System.out.println(values);
             startingLife = Integer.parseInt(values[index]);
         }
         savedInstanceState.putInt(Constants.STARTING_LIFE, startingLife);
@@ -156,7 +156,7 @@ public class MainActivity extends Activity {
 
         savedInstanceState.putStringArrayList(Constants.HISTORY, mHistory);
 
-        System.out.println(savedInstanceState);
+        //System.out.println(savedInstanceState);
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -312,8 +312,8 @@ public class MainActivity extends Activity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 if (drawerView.equals(mHistoryDrawerList)) {
-                    System.out.println("Should show history");
-                    System.out.println(mHistory);
+                    //System.out.println("Should show history");
+                    //System.out.println(mHistory);
                     collapseHistory();
                     showHistory();
                     mHistoryDrawerList.post(new Runnable() {
@@ -450,7 +450,7 @@ public class MainActivity extends Activity {
                 handlePickerTouchRelease(picker, poison);
                 break;
             default:
-                System.out.println("Default picker touchevent");
+                //System.out.println("Default picker touchevent");
                 break;
         }
     }
@@ -460,7 +460,7 @@ public class MainActivity extends Activity {
             changePickerValue(picker, poison);
             scaleTextView(picker, Constants.SCALE_DOWN);
         }
-        System.out.println("Action up");
+        //System.out.println("Action up");
         if (mSpun || mSideSwipe)
             scaleTextView(picker, Constants.SCALE_DOWN);
         mSpun = false;
@@ -507,7 +507,7 @@ public class MainActivity extends Activity {
                 handleLayoutTouchRelease(y, picker, layout);
                 break;
             default:
-                System.out.println("Default layout touchevent");
+                //System.out.println("Default layout touchevent");
                 break;
         }
     }
@@ -536,10 +536,10 @@ public class MainActivity extends Activity {
         if (!mSpun && Math.abs(x - mPickerLastX) > mScreenWidth / 40)
             mSideSwipe = true;
         if (mSideSwipe) {
-            System.out.println((int) (x - mPickerLastX));
+            //System.out.println((int) (x - mPickerLastX));
             if (!mUpdating)
                 mWrapper.scrollBy((int) -(x - mPickerLastX) / 2, 0);
-            System.out.println("Side swiping");
+            //System.out.println("Side swiping");
             if (Math.abs(x - mPickerX) > mScreenWidth / 3.5f) {
                 setUpdateTextViewTexts(mReleaseToRefresh);
                 mUpdating = true;
@@ -554,7 +554,7 @@ public class MainActivity extends Activity {
     private void verticalSwipe(float y, TextView picker) {
         if (!mSideSwipe && Math.abs(y - mPickerY) > mScreenHeight / 35) {
             mSpun = true;
-            System.out.println("Changing picker value");
+            //System.out.println("Changing picker value");
             if (y > mPickerY)
                 changePickerValue(picker, false);
             else
@@ -569,7 +569,7 @@ public class MainActivity extends Activity {
             scaleTextView(picker, Constants.SCALE_DOWN);
         } else {
             int[] coordinates = {0, 0};
-            System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
+            //System.out.println("Layout touch, coordinates and y: " + coordinates + " " + y);
             scaleTextView(picker, Constants.SCALE_DOWN);
             if (y > (coordinates[1] + layout.getHeight()) / 2)
                 changePickerValue(picker, false);
@@ -614,7 +614,7 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("RESUMING");
+        //System.out.println("RESUMING");
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mOptions.set(mPoisonOptionIndex, mPoisonOption);
         restoreSettings();
@@ -659,8 +659,8 @@ public class MainActivity extends Activity {
 
     public void addToHistory(String[] totals) {
         String timeStamp = Long.toString(System.currentTimeMillis());
-        System.out.println("Adding to history " + totals[0] + " " + totals[1] + " "
-                + totals[2] + " " + totals[3] + " " + timeStamp);
+        //System.out.println("Adding to history " + totals[0] + " " + totals[1] + " "
+        //        + totals[2] + " " + totals[3] + " " + timeStamp);
         mHistory.add(totals[0] + " " + totals[1] + " "
                 + totals[2] + " " + totals[3] + " " + timeStamp);
     }
