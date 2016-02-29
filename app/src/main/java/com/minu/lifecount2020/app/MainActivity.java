@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         //System.out.println("Saving state");
         savedInstanceState.putString(Constants.PICKER_ONE_LIFE, mLifePickerOne.getText().toString());
-        savedInstanceState.putString(Constants.PICKER_ONE_POISON, mPoisonPickerTwo.getText().toString());
+        savedInstanceState.putString(Constants.PICKER_ONE_POISON, mPoisonPickerOne.getText().toString());
         savedInstanceState.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
         savedInstanceState.putString(Constants.PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
 
