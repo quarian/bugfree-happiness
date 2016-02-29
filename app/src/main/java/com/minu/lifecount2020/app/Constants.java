@@ -1,4 +1,4 @@
-package com.minu.proto2020.app;
+package com.minu.lifecount2020.app;
 
 /**
  * Created by Miro on 25/2/2016.

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.minu.proto2020.app.MainActivity" >
+    tools:context="com.minu.lifecount2020.app.MainActivity" >
     <item android:id="@+id/reset"
         android:title="@string/reset"
         android:orderInCategory="100"
