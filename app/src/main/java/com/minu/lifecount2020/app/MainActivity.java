@@ -92,6 +92,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (!isTaskRoot()) {
+            // Android launch bug
+            finish();
+            return;
+        }
+
         hideSystemUI();
 
         bindElements();
