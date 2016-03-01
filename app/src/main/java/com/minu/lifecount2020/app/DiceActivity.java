@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.Random;
 
-public class DiceActivity extends Activity {
+public class DiceActivity extends SensorActivity {
 
     private boolean mWhiteBackground;
     private ImageButton mCloseButton;
@@ -23,6 +23,7 @@ public class DiceActivity extends Activity {
     private long mInterval;
     private int mSteps;
     private Random mGenerator;
+    private boolean mRolling;
 
 
     @Override
@@ -73,6 +74,7 @@ public class DiceActivity extends Activity {
         mGenerator = new Random(System.currentTimeMillis());
         mSteps = mGenerator.nextInt(10) + 16;
         mInterval = 400 - (long) Math.pow(mSteps, 2);
+        mRolling = false;
 
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,10 +91,12 @@ public class DiceActivity extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    if (mSteps > 0)
+                    if (mRolling && mSteps > 0)
                         mHandler.postDelayed(mStepper, mInterval);
-                    else
+                    else {
                         mSteps = mGenerator.nextInt(10) + 16;
+                        mRolling = false;
+                    }
                 }
             }
         };
@@ -110,23 +114,15 @@ public class DiceActivity extends Activity {
     }
 
     private void throwDice() {
-        mStepper.run();
-    }
-
-    private void hideSystemUI() {
-        View decorView = getWindow().getDecorView();
-        if (getActionBar() != null)
-            getActionBar().hide();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        } else {
-            // Not KitKat, do something else
+        if (!mRolling) {
+            mRolling = true;
+            mStepper.run();
         }
     }
 
+    protected void checkShake(float x, float y, float z) {
+        float acceleration = (float) Math.sqrt((double) x*x + y*y + z*z);
+        if (Math.abs(acceleration - mGravity) > 10.0f)
+            throwDice();
+    }
 }
