@@ -1,44 +1,74 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dice_drawer_layout"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dice_container_container"
     android:background="@color/background_light">
 
-    <RelativeLayout
+    <ImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/dice_close_button"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/close_icon"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/dice_container_container">
+        android:id="@+id/dice_container"
+        android:orientation="horizontal">
 
-        <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:id="@+id/dice_close_button"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/transparent"
-            android:src="@drawable/close_icon"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/dice_container"
-            android:orientation="horizontal">
+            android:layout_weight="0.5">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dice_bg_red"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dice_red"
+                android:layout_centerInParent="true"
+                android:textSize="40dp"
+                android:text="14"
+                android:gravity="center"
+                android:textColor="@color/light_red_2020"
+                android:minEms="2"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dice_bg_blue"
+                android:layout_centerInParent="true"/>
 
 
-        </LinearLayout>
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dice_blue"
+                android:layout_centerInParent="true"
+                android:textSize="40dp"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/light_blue_2020"
+                android:minEms="2"/>
 
-    <ListView
-        android:id="@+id/dice_drawer"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:padding="15dp"
-        android:choiceMode="singleChoice"
-        android:divider="@color/drawer_background"
-        android:dividerHeight="0dp"
-        android:background="@color/drawer_background" />
+        </RelativeLayout>
 
-</android.support.v4.widget.DrawerLayout>
+    </LinearLayout>
+</RelativeLayout>
