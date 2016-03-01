@@ -29,8 +29,12 @@ public class DiceActivity extends Activity {
             mWhiteBackground = savedInstanceState.getBoolean(Constants.BACKGROUND_WHITE);
 
         setBackgroundColor();
+    }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean(Constants.BACKGROUND_WHITE, mWhiteBackground);
     }
 
     private void setBackgroundColor() {

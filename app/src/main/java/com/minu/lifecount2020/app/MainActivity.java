@@ -402,8 +402,8 @@ public class MainActivity extends Activity {
                 case 3:
                     break;
                 case 4:
-                    startDiceThrowActivity(mWhiteBackground);
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
+                    startDiceThrowActivity(mWhiteBackground);
                     break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
