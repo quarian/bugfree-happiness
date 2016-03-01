@@ -205,16 +205,16 @@
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="left"
         android:id="@+id/settings_drawer">
     <ListView
         android:id="@+id/left_drawer"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"
-        android:divider="#555555"
+        android:divider="@color/drawer_background"
         android:dividerHeight="0dp"
-        android:background="#555555" />
+        android:background="@color/drawer_background" />
 
         <include layout="@layout/settings_footer" />
 
@@ -224,11 +224,11 @@
         android:id="@+id/right_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
+        android:layout_gravity="right"
         android:padding="15dp"
         android:choiceMode="singleChoice"
-        android:divider="#555555"
+        android:divider="@color/drawer_background"
         android:dividerHeight="0dp"
-        android:background="#555555" />
+        android:background="@color/drawer_background" />
 
 </android.support.v4.widget.DrawerLayout>

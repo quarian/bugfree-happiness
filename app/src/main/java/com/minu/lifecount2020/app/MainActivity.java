@@ -1,6 +1,7 @@
 package com.minu.lifecount2020.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -206,6 +207,7 @@ public class MainActivity extends Activity {
         mOptions.add(getString(R.string.starting_life_total));
         mOptions.add(mPoisonOption);
         mOptions.add(getString(R.string.color_scheme));
+        mOptions.add(getString(R.string.throw_dice));
     }
 
     private void setInitialColors() {
@@ -399,11 +401,21 @@ public class MainActivity extends Activity {
                     break;
                 case 3:
                     break;
+                case 4:
+                    startDiceThrowActivity(mWhiteBackground);
+                    mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
+                    break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
                     break;
             }
         }
+    }
+
+    private void startDiceThrowActivity(boolean whiteBackground) {
+        Intent i = new Intent(this, DiceActivity.class);
+        i.putExtra(Constants.BACKGROUND_WHITE, whiteBackground);
+        startActivity(i);
     }
 
     public void toggleBackground() {
