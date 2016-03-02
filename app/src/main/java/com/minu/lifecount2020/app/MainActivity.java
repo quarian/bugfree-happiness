@@ -1,13 +1,9 @@
 package com.minu.lifecount2020.app;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -46,6 +42,7 @@ public class MainActivity extends SensorActivity {
     private ImageButton mHistoryButton;
 
     private String mWhiteBackgroundColor;
+    private String mDarkGreyBackgroundColor;
     private String mBlackBackgroundColor;
 
     private LinearLayout mWrapper;
@@ -88,7 +85,7 @@ public class MainActivity extends SensorActivity {
     private int mPoisonOptionIndex;
 
     private float mCurrentRotation;
-    private boolean mWhiteBackground;
+    private BackgroundColor mBackGroundColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +114,8 @@ public class MainActivity extends SensorActivity {
             mHistory = savedInstanceState.getStringArrayList(Constants.HISTORY);
             ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
             mPoisonShowing = savedInstanceState.getBoolean(Constants.POISON);
-            mWhiteBackground = savedInstanceState.getBoolean(Constants.BACKGROUND_WHITE);
+            mBackGroundColor =
+                    (BackgroundColor) savedInstanceState.getSerializable(Constants.BACKGROUND_WHITE);
             mStartingLife = savedInstanceState.getInt(Constants.STARTING_LIFE);
 
         } else {
@@ -132,12 +130,13 @@ public class MainActivity extends SensorActivity {
             mPoisonShowing = !mPoisonShowing;
             displayPoison();
         }
-        if (!mWhiteBackground) {
+        if (BackgroundColor.GREY == mBackGroundColor)
+            mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mDarkGreyBackgroundColor));
+        else if (BackgroundColor.BLACK == mBackGroundColor)
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
-        }
         //System.out.println(mPoisonShowing + " " + mStartingLife + " " + mWhiteBackground);
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter())
-                .setSettings(mPoisonShowing, mStartingLife, mWhiteBackground);
+                .setSettings(mPoisonShowing, mStartingLife, mBackGroundColor);
 
     }
 
@@ -149,7 +148,7 @@ public class MainActivity extends SensorActivity {
         savedInstanceState.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
         savedInstanceState.putString(Constants.PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
 
-        savedInstanceState.putBoolean(Constants.BACKGROUND_WHITE, mWhiteBackground);
+        savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackGroundColor);
         int startingLife;
         if (findViewById(R.id.starting_life_picker) == null)
             startingLife = Integer.parseInt(Constants.STARTING_LIFE);
@@ -296,7 +295,7 @@ public class MainActivity extends SensorActivity {
         mPoisonOptionIndex = 2;
 
         mCurrentRotation = 0.0f;
-        mWhiteBackground = true;
+        mBackGroundColor = BackgroundColor.WHITE;
 
         mSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,7 +353,8 @@ public class MainActivity extends SensorActivity {
         mReleaseToRefresh = getString(R.string.pull_to_cancel);
 
         mWhiteBackgroundColor = getString(R.string.color_background_white);
-        mBlackBackgroundColor = getString(R.string.color_background_black);
+        mDarkGreyBackgroundColor = getString(R.string.color_background_black);
+        mBlackBackgroundColor = getString(R.string.color_black);
 
         mPoisonOption = mShowPoison;
 
@@ -391,7 +391,7 @@ public class MainActivity extends SensorActivity {
     protected void checkShake(float x, float y, float z) {
         float acceleration = (float) Math.sqrt((double) x*x + y*y + z*z);
         if (Math.abs(acceleration - mGravity) > 10.0f)
-            startDiceThrowActivity(mWhiteBackground);
+            startDiceThrowActivity(mBackGroundColor);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -410,7 +410,7 @@ public class MainActivity extends SensorActivity {
                     break;
                 case 4:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
-                    startDiceThrowActivity(mWhiteBackground);
+                    startDiceThrowActivity(mBackGroundColor);
                     break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
@@ -419,23 +419,25 @@ public class MainActivity extends SensorActivity {
         }
     }
 
-    private void startDiceThrowActivity(boolean whiteBackground) {
+    private void startDiceThrowActivity(BackgroundColor backgroundColor) {
         Intent i = new Intent(this, DiceActivity.class);
-        i.putExtra(Constants.BACKGROUND_WHITE, whiteBackground);
+        i.putExtra(Constants.BACKGROUND_WHITE, backgroundColor);
         startActivity(i);
     }
 
     public void toggleBackground() {
-        boolean toggleWhiteBackground =
+        BackgroundColor targetBackground =
                 ((SettingsListAdapter)
-                        mSettingsDrawerList.getAdapter()).getWhiteBackground();
-        if (mWhiteBackground && !toggleWhiteBackground) {
+                        mSettingsDrawerList.getAdapter()).getBackground();
+        if (BackgroundColor.GREY == targetBackground) {
+            mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mDarkGreyBackgroundColor));
+            mBackGroundColor = BackgroundColor.GREY;
+        } else if (BackgroundColor.BLACK == targetBackground) {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
-            mWhiteBackground = !mWhiteBackground;
-        }
-        else if (!mWhiteBackground && toggleWhiteBackground) {
+            mBackGroundColor = BackgroundColor.BLACK;
+        } else {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
-            mWhiteBackground = !mWhiteBackground;
+            mBackGroundColor = BackgroundColor.WHITE;
         }
     }
 

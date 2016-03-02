@@ -6,4 +6,5 @@
     <item name="drawer_background" type="color">#555555</item>
     <item name="light_red_2020" type="color">#e3aaaa</item>
     <item name="backgound_dark" type="color">#333231</item>
+    <item name="backgound_black" type="color">#000000</item>
 </resources>

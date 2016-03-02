@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class DiceActivity extends SensorActivity {
 
-    private boolean mWhiteBackground;
+    private BackgroundColor mBackGroundColor;
     private ImageButton mCloseButton;
     private RelativeLayout mBackgroundLayout;
     private TextView mRedDiceTextView;
@@ -36,9 +36,11 @@ public class DiceActivity extends SensorActivity {
         initElements();
 
         if (savedInstanceState == null)
-            mWhiteBackground = getIntent().getBooleanExtra(Constants.BACKGROUND_WHITE, true);
+            mBackGroundColor =
+                    (BackgroundColor) getIntent().getSerializableExtra(Constants.BACKGROUND_WHITE);
         else
-            mWhiteBackground = savedInstanceState.getBoolean(Constants.BACKGROUND_WHITE);
+            mBackGroundColor =
+                    (BackgroundColor) savedInstanceState.getSerializable(Constants.BACKGROUND_WHITE);
 
         setBackgroundColor();
 
@@ -48,12 +50,16 @@ public class DiceActivity extends SensorActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean(Constants.BACKGROUND_WHITE, mWhiteBackground);
+        savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackGroundColor);
     }
 
     private void setBackgroundColor() {
-        if (!mWhiteBackground)
+        if (BackgroundColor.GREY == mBackGroundColor)
             mBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.backgound_dark));
+        else if (BackgroundColor.BLACK == mBackGroundColor)
+            mBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.backgound_black));
+        else
+            mBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.background_light));
     }
 
     @Override

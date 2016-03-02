@@ -11,6 +11,7 @@
     <string name="color_red">#e3aaaa</string>
     <string name="color_blue">#9bb8d5</string>
     <string name="color_dark_grey">#555555</string>
+    <string name="color_black">#000000</string>
     <string name="new_duel">New duel</string>
     <string name="starting_life_total">Starting life total</string>
     <string name="color_scheme">Color scheme</string>

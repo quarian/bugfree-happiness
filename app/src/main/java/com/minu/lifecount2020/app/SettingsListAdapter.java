@@ -25,7 +25,7 @@ public class SettingsListAdapter extends BaseAdapter {
     private static LayoutInflater mLayoutInflater;
 
     private boolean mPoisonShowing;
-    private boolean mWhiteBackGround;
+    private BackgroundColor mBackgroundColor;
     private int mStartingLife;
 
     public SettingsListAdapter(Context context, ArrayList<String> data) {
@@ -122,32 +122,41 @@ public class SettingsListAdapter extends BaseAdapter {
 
     private void setupBackgroundOption(View vi) {
         final ImageView imageView = (ImageView) vi.findViewById(R.id.background_preview);
-        if (!mWhiteBackGround)
+        if (BackgroundColor.GREY == mBackgroundColor)
             imageView.setImageDrawable(vi.getContext().getResources()
                     .getDrawable(R.drawable.color_scheme_dark));
-        else
+        else if (BackgroundColor.WHITE == mBackgroundColor)
             imageView.setImageDrawable(vi.getContext().getResources()
                     .getDrawable(R.drawable.color_scheme_light));
+        else
+            imageView.setImageDrawable(vi.getContext().getResources()
+                    .getDrawable(R.drawable.color_scheme_dark));
+
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ImageView iw = (ImageView) v;
-                if (mWhiteBackGround)
+                if (BackgroundColor.WHITE == mBackgroundColor) {
                     iw.setImageDrawable(v.getContext().getResources()
                             .getDrawable(R.drawable.color_scheme_dark));
-                else
+                    mBackgroundColor = BackgroundColor.GREY;
+                } else if (BackgroundColor.GREY == mBackgroundColor) {
+                    iw.setImageDrawable(v.getContext().getResources()
+                            .getDrawable(R.drawable.color_scheme_dark));
+                    mBackgroundColor = BackgroundColor.BLACK;
+                } else {
                     iw.setImageDrawable(v.getContext().getResources()
                             .getDrawable(R.drawable.color_scheme_light));
-
-                mWhiteBackGround = !mWhiteBackGround;
+                    mBackgroundColor = BackgroundColor.WHITE;
+                }
                 ((MainActivity)mContext).toggleBackground();
             }
         });
     }
 
-    public boolean getWhiteBackground() {
-        return mWhiteBackGround;
+    public BackgroundColor getBackground() {
+        return mBackgroundColor;
     }
 
     private void setDividerColor(NumberPicker picker, int color) {
@@ -172,10 +181,10 @@ public class SettingsListAdapter extends BaseAdapter {
         }
     }
 
-    public void setSettings(boolean poisonShowing, int startingLife, boolean whiteBackground) {
+    public void setSettings(boolean poisonShowing, int startingLife, BackgroundColor background) {
         //System.out.println("Settings settings " + poisonShowing);
         mPoisonShowing = poisonShowing;
         mStartingLife = startingLife;
-        mWhiteBackGround = whiteBackground;
+        mBackgroundColor = background;
     }
 }
