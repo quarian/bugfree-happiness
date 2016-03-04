@@ -2,26 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:background="@color/drawer_background"
     android:layout_alignParentBottom="true">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center"
         android:id="@+id/image_twitter">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/swipe_image"
-            android:padding="10dp"
             android:layout_weight="0.5"
             android:src="@drawable/swipe_to_reset"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shake_dice"
+            android:paddingTop="3dp"
+            android:layout_weight="0.5"
+            android:src="@drawable/shake_to_dice"/>
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/twitter"
             android:id="@+id/twitter_link"
             android:layout_weight="0.5"
@@ -42,7 +50,8 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:textColor="@color/text_light_grey"
-        android:padding="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:text="Designed and developed by Miro Nurmela and Pekka Pulli"/>
 
 </RelativeLayout>

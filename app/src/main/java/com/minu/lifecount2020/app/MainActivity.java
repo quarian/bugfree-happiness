@@ -390,7 +390,7 @@ public class MainActivity extends SensorActivity {
 
     protected void checkShake(float x, float y, float z) {
         float acceleration = (float) Math.sqrt((double) x*x + y*y + z*z);
-        if (Math.abs(acceleration - mGravity) > 10.0f)
+        if (Math.abs(acceleration - mGravity) > Constants.THROW_ACCELERATION)
             startDiceThrowActivity(mBackGroundColor);
     }
 

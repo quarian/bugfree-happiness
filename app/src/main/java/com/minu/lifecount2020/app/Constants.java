@@ -18,4 +18,5 @@ public final class Constants {
     public static final String PICKER_TWO_POISON = "PICKER_TWO_POISON";
     public static final String HISTORY = "HISTORY";
     public static final String READ = "READ";
+    public static final float THROW_ACCELERATION = 13.0f;
 }

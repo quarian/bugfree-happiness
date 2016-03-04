@@ -130,7 +130,7 @@ public class SettingsListAdapter extends BaseAdapter {
                     .getDrawable(R.drawable.color_scheme_light));
         else
             imageView.setImageDrawable(vi.getContext().getResources()
-                    .getDrawable(R.drawable.color_scheme_dark));
+                    .getDrawable(R.drawable.color_scheme_black));
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +143,7 @@ public class SettingsListAdapter extends BaseAdapter {
                     mBackgroundColor = BackgroundColor.GREY;
                 } else if (BackgroundColor.GREY == mBackgroundColor) {
                     iw.setImageDrawable(v.getContext().getResources()
-                            .getDrawable(R.drawable.color_scheme_dark));
+                            .getDrawable(R.drawable.color_scheme_black  ));
                     mBackgroundColor = BackgroundColor.BLACK;
                 } else {
                     iw.setImageDrawable(v.getContext().getResources()
