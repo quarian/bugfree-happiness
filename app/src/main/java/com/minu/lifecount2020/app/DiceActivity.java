@@ -11,7 +11,6 @@ import java.util.Random;
 
 public class DiceActivity extends SensorActivity {
 
-    private BackgroundColor mBackGroundColor;
     private ImageButton mCloseButton;
     private RelativeLayout mBackgroundLayout;
     private TextView mRedDiceTextView;
@@ -22,8 +21,6 @@ public class DiceActivity extends SensorActivity {
     private int mSteps;
     private Random mGenerator;
     private boolean mRolling;
-    private String mRedDiceValue;
-    private String mBlueDiceValue;
 
 
     @Override
@@ -36,11 +33,11 @@ public class DiceActivity extends SensorActivity {
         initElements();
 
         if (savedInstanceState == null) {
-            mBackGroundColor =
+            mBackgroundColor =
                     (BackgroundColor) getIntent().getSerializableExtra(Constants.BACKGROUND_WHITE);
             throwDice();
         } else {
-            mBackGroundColor =
+            mBackgroundColor =
                     (BackgroundColor) savedInstanceState.getSerializable(Constants.BACKGROUND_WHITE);
             mRedDiceTextView.setText(savedInstanceState.getString(Constants.RED_DICE));
             mBlueDiceTextView.setText(savedInstanceState.getString(Constants.BLUE_DICE));
@@ -53,15 +50,15 @@ public class DiceActivity extends SensorActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackGroundColor);
+        savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackgroundColor);
         savedInstanceState.putString(Constants.RED_DICE, mRedDiceTextView.getText().toString());
         savedInstanceState.putString(Constants.BLUE_DICE, mBlueDiceTextView.getText().toString());
     }
 
     private void setBackgroundColor() {
-        if (BackgroundColor.GREY == mBackGroundColor)
+        if (BackgroundColor.GREY == mBackgroundColor)
             mBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.backgound_dark));
-        else if (BackgroundColor.BLACK == mBackGroundColor)
+        else if (BackgroundColor.BLACK == mBackgroundColor)
             mBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.backgound_black));
         else
             mBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.background_light));

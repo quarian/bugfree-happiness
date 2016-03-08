@@ -18,6 +18,7 @@ abstract public class SensorActivity extends Activity implements SensorEventList
     protected SensorManager mSensorManager;
     protected float mGravity;
     private Sensor mAccelerometer;
+    protected BackgroundColor mBackgroundColor;
 
     @Override
     protected void onCreate(Bundle savedInstance) {

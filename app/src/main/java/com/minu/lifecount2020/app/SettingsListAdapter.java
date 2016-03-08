@@ -27,12 +27,15 @@ public class SettingsListAdapter extends BaseAdapter {
     private boolean mPoisonShowing;
     private BackgroundColor mBackgroundColor;
     private int mStartingLife;
+    private String[] mStartingLifeValues;
 
     public SettingsListAdapter(Context context, ArrayList<String> data) {
         mContext = context;
         mData = data;
         mLayoutInflater =
                 (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mStartingLifeValues =
+                new String[]{"10", "20", "25", "30", "40", "50", "60", "70", "80", "90", "100"};
     }
 
     @Override
@@ -83,10 +86,17 @@ public class SettingsListAdapter extends BaseAdapter {
         NumberPicker np = (NumberPicker) vi.findViewById(R.id.starting_life_picker);
         setDividerColor(np, Color.argb(0, 0, 0, 0));
         np.setEnabled(true);
-        np.setDisplayedValues(new String[]{"10", "20", "25", "30", "40", "50", "60", "70", "80", "90", "100"});
+        np.setDisplayedValues(mStartingLifeValues);
         np.setMinValue(0);
         np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        np.setMaxValue(10);
+        np.setMaxValue(mStartingLifeValues.length - 1);
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                ((MainActivity) mContext).
+                        setmStartingLife(Integer.parseInt(mStartingLifeValues[newVal]));
+            }
+        });
         np.setValue(getInitialSpinnerValue());
     }
 

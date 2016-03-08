@@ -1,6 +1,8 @@
 package com.minu.lifecount2020.app;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -24,8 +26,9 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends SensorActivity {
 
@@ -85,7 +88,6 @@ public class MainActivity extends SensorActivity {
     private int mPoisonOptionIndex;
 
     private float mCurrentRotation;
-    private BackgroundColor mBackGroundColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,13 +116,12 @@ public class MainActivity extends SensorActivity {
             mHistory = savedInstanceState.getStringArrayList(Constants.HISTORY);
             ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
             mPoisonShowing = savedInstanceState.getBoolean(Constants.POISON);
-            mBackGroundColor =
+            mBackgroundColor =
                     (BackgroundColor) savedInstanceState.getSerializable(Constants.BACKGROUND_WHITE);
             mStartingLife = savedInstanceState.getInt(Constants.STARTING_LIFE);
 
         } else {
-            mHistory = new ArrayList<String>();
-            resetDuel();
+            restoreFromPreferences();
         }
     }
 
@@ -130,14 +131,57 @@ public class MainActivity extends SensorActivity {
             mPoisonShowing = !mPoisonShowing;
             displayPoison();
         }
-        if (BackgroundColor.GREY == mBackGroundColor)
+        if (BackgroundColor.GREY == mBackgroundColor)
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mDarkGreyBackgroundColor));
-        else if (BackgroundColor.BLACK == mBackGroundColor)
+        else if (BackgroundColor.BLACK == mBackgroundColor)
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
         //System.out.println(mPoisonShowing + " " + mStartingLife + " " + mWhiteBackground);
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter())
-                .setSettings(mPoisonShowing, mStartingLife, mBackGroundColor);
+                .setSettings(mPoisonShowing, mStartingLife, mBackgroundColor);
 
+    }
+
+    private void restoreFromPreferences() {
+        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        String lifeOne = settings.getString(Constants.PICKER_ONE_LIFE, Constants.STARTING_LIFE);
+        String lifeTwo = settings.getString(Constants.PICKER_TWO_LIFE, Constants.STARTING_LIFE);
+        String poisonOne = settings.getString(Constants.PICKER_ONE_POISON, Constants.STARTING_POISON);
+        String poisonTwo = settings.getString(Constants.PICKER_TWO_POISON, Constants.STARTING_POISON);
+        mBackgroundColor = BackgroundColor.values()[settings.getInt(Constants.BACKGROUND_WHITE, 0)];
+        mLifePickerOne.setText(lifeOne);
+        mLifePickerTwo.setText(lifeTwo);
+        mPoisonPickerOne.setText(poisonOne);
+        mPoisonPickerTwo.setText(poisonTwo);
+        mPoisonShowing = settings.getBoolean(Constants.POISON, false);
+        mStartingLife = settings.getInt(Constants.STARTING_LIFE,
+                Integer.parseInt(Constants.STARTING_LIFE));
+        String historyAsString = settings.getString(Constants.HISTORY, null);
+        List<String> tempList;
+        if (historyAsString != null)
+            tempList = Arrays.asList(
+                historyAsString.substring(1, historyAsString.length() - 1).split((", ")));
+        else
+            tempList = new ArrayList<String>();
+        mHistory = new ArrayList<String>(tempList);
+        restoreSettings();
+    }
+
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Constants.PICKER_ONE_LIFE, mLifePickerOne.getText().toString());
+        editor.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
+        editor.putString(Constants.PICKER_ONE_POISON, mPoisonPickerOne.getText().toString());
+        editor.putString(Constants.PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
+        editor.putInt(Constants.BACKGROUND_WHITE, mBackgroundColor.ordinal());
+        editor.putBoolean(Constants.POISON, mPoisonShowing);
+        editor.putInt(Constants.STARTING_LIFE, mStartingLife);
+        editor.putString(Constants.HISTORY, mHistory.toString());
+        editor.commit();
     }
 
     @Override
@@ -148,7 +192,7 @@ public class MainActivity extends SensorActivity {
         savedInstanceState.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
         savedInstanceState.putString(Constants.PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
 
-        savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackGroundColor);
+        savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackgroundColor);
         int startingLife;
         if (findViewById(R.id.starting_life_picker) == null)
             startingLife = Integer.parseInt(Constants.STARTING_LIFE);
@@ -269,6 +313,10 @@ public class MainActivity extends SensorActivity {
         return split[0] + " " + split[1] + " " + split[2] + " " + split[3]+ " " + split[4];
     }
 
+    public void setmStartingLife(int startingLife) {
+        mStartingLife = startingLife;
+    }
+
     private void initElements() {
 
         mSettingsDrawerList.setAdapter(new SettingsListAdapter(this, mOptions));
@@ -295,7 +343,7 @@ public class MainActivity extends SensorActivity {
         mPoisonOptionIndex = 2;
 
         mCurrentRotation = 0.0f;
-        mBackGroundColor = BackgroundColor.WHITE;
+        mBackgroundColor = BackgroundColor.WHITE;
 
         mSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -391,7 +439,7 @@ public class MainActivity extends SensorActivity {
     protected void checkShake(float x, float y, float z) {
         float acceleration = (float) Math.sqrt((double) x*x + y*y + z*z);
         if (Math.abs(acceleration - mGravity) > Constants.THROW_ACCELERATION)
-            startDiceThrowActivity(mBackGroundColor);
+            startDiceThrowActivity(mBackgroundColor);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -410,7 +458,7 @@ public class MainActivity extends SensorActivity {
                     break;
                 case 4:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
-                    startDiceThrowActivity(mBackGroundColor);
+                    startDiceThrowActivity(mBackgroundColor);
                     break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
@@ -431,13 +479,13 @@ public class MainActivity extends SensorActivity {
                         mSettingsDrawerList.getAdapter()).getBackground();
         if (BackgroundColor.GREY == targetBackground) {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mDarkGreyBackgroundColor));
-            mBackGroundColor = BackgroundColor.GREY;
+            mBackgroundColor = BackgroundColor.GREY;
         } else if (BackgroundColor.BLACK == targetBackground) {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
-            mBackGroundColor = BackgroundColor.BLACK;
+            mBackgroundColor = BackgroundColor.BLACK;
         } else {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mWhiteBackgroundColor));
-            mBackGroundColor = BackgroundColor.WHITE;
+            mBackgroundColor = BackgroundColor.WHITE;
         }
     }
 
