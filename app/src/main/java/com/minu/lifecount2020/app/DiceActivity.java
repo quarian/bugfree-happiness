@@ -79,7 +79,7 @@ public class DiceActivity extends SensorActivity {
     private void initElements() {
         mGenerator = new Random(System.currentTimeMillis());
         mSteps = mGenerator.nextInt(10) + 16;
-        mInterval = 400 - (long) Math.pow(mSteps, 2);
+        mInterval = Constants.ROLL_BASE_TIME - (long) Math.pow(mSteps, 2);
         mRolling = false;
 
         mCloseButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,7 @@ public class DiceActivity extends SensorActivity {
             int blueNumber = mGenerator.nextInt(20) + 1;
             mRedDiceTextView.setText(Integer.toString(redNumber));
             mBlueDiceTextView.setText(Integer.toString(blueNumber));
-            mInterval = 400 - (long) Math.pow(mSteps, 2);
+            mInterval = Constants.ROLL_BASE_TIME - (long) Math.pow(mSteps, 2);
         }
     }
 
