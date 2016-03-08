@@ -1,7 +1,5 @@
 package com.minu.lifecount2020.app;
 
-import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -24,6 +22,8 @@ public class DiceActivity extends SensorActivity {
     private int mSteps;
     private Random mGenerator;
     private boolean mRolling;
+    private String mRedDiceValue;
+    private String mBlueDiceValue;
 
 
     @Override
@@ -35,22 +35,27 @@ public class DiceActivity extends SensorActivity {
 
         initElements();
 
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             mBackGroundColor =
                     (BackgroundColor) getIntent().getSerializableExtra(Constants.BACKGROUND_WHITE);
-        else
+            throwDice();
+        } else {
             mBackGroundColor =
                     (BackgroundColor) savedInstanceState.getSerializable(Constants.BACKGROUND_WHITE);
+            mRedDiceTextView.setText(savedInstanceState.getString(Constants.RED_DICE));
+            mBlueDiceTextView.setText(savedInstanceState.getString(Constants.BLUE_DICE));
+        }
 
         setBackgroundColor();
 
-        throwDice();
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackGroundColor);
+        savedInstanceState.putString(Constants.RED_DICE, mRedDiceTextView.getText().toString());
+        savedInstanceState.putString(Constants.BLUE_DICE, mBlueDiceTextView.getText().toString());
     }
 
     private void setBackgroundColor() {

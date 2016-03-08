@@ -20,4 +20,6 @@ public final class Constants {
     public static final String READ = "READ";
     public static final float THROW_ACCELERATION = 13.0f;
     public static final int ROLL_BASE_TIME = 300;
+    public static final String RED_DICE = "RED_DICE";
+    public static final String BLUE_DICE = "BLUE_DICE";
 }
