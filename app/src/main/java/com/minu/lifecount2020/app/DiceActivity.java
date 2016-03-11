@@ -88,6 +88,7 @@ public class DiceActivity extends SensorActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.activity_slide_in_top, R.anim.activity_slide_out_bottom);
             }
         });
         mHandler = new Handler();
@@ -132,5 +133,11 @@ public class DiceActivity extends SensorActivity {
         float acceleration = (float) Math.sqrt((double) x*x + y*y + z*z);
         if (Math.abs(acceleration - mGravity) > Constants.THROW_ACCELERATION)
             throwDice();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.activity_slide_in_top, R.anim.activity_slide_out_bottom);
     }
 }

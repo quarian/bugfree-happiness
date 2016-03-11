@@ -471,6 +471,7 @@ public class MainActivity extends SensorActivity {
         Intent i = new Intent(this, DiceActivity.class);
         i.putExtra(Constants.BACKGROUND_WHITE, backgroundColor);
         startActivity(i);
+        overridePendingTransition(R.anim.activity_slide_in_bottom, R.anim.activity_slide_out_top);
     }
 
     public void toggleBackground() {
