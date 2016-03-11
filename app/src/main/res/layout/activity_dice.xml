@@ -39,6 +39,7 @@
                 android:layout_centerInParent="true"
                 android:textSize="40dp"
                 android:text="14"
+                android:textStyle="normal"
                 android:gravity="center"
                 android:textColor="@color/light_red_2020"
                 android:minEms="2"/>
@@ -64,6 +65,7 @@
                 android:layout_centerInParent="true"
                 android:textSize="40dp"
                 android:gravity="center"
+                android:textStyle="normal"
                 android:text="2"
                 android:textColor="@color/light_blue_2020"
                 android:minEms="2"/>
