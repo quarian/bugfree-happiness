@@ -19,7 +19,9 @@ public final class Constants {
     public static final String HISTORY = "HISTORY";
     public static final String READ = "READ";
     public static final float THROW_ACCELERATION = 13.0f;
-    public static final int ROLL_BASE_TIME = 300;
+    public static final int ROLL_BASE_TIME = 200;
     public static final String RED_DICE = "RED_DICE";
     public static final String BLUE_DICE = "BLUE_DICE";
+    public static final int BASE_STEPS = 10;
+    public static final int STEP_VARIATION = 10;
 }

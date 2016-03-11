@@ -80,8 +80,8 @@ public class DiceActivity extends SensorActivity {
 
     private void initElements() {
         mGenerator = new Random(System.currentTimeMillis());
-        mSteps = mGenerator.nextInt(10) + 16;
-        mInterval = Constants.ROLL_BASE_TIME - (long) Math.pow(mSteps, 2);
+        instantiateSteps();
+        updateInterval();
         mRolling = false;
 
         mCloseButton.setOnClickListener(new View.OnClickListener() {
@@ -103,12 +103,16 @@ public class DiceActivity extends SensorActivity {
                     if (mRolling && mSteps > 0)
                         mHandler.postDelayed(mStepper, mInterval);
                     else {
-                        mSteps = mGenerator.nextInt(10) + 16;
+                        instantiateSteps();
                         mRolling = false;
                     }
                 }
             }
         };
+    }
+
+    private void instantiateSteps() {
+        mSteps = mGenerator.nextInt(Constants.STEP_VARIATION) + Constants.BASE_STEPS;
     }
 
     private void showStep() {
@@ -118,8 +122,12 @@ public class DiceActivity extends SensorActivity {
             int blueNumber = mGenerator.nextInt(20) + 1;
             mRedDiceTextView.setText(Integer.toString(redNumber));
             mBlueDiceTextView.setText(Integer.toString(blueNumber));
-            mInterval = Constants.ROLL_BASE_TIME - (long) Math.pow(mSteps, 2);
+            updateInterval();
         }
+    }
+
+    private void updateInterval() {
+        mInterval = Constants.ROLL_BASE_TIME - (long) Math.pow(mSteps, 2);
     }
 
     private void throwDice() {
