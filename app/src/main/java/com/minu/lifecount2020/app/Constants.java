@@ -24,4 +24,5 @@ public final class Constants {
     public static final String BLUE_DICE = "BLUE_DICE";
     public static final int BASE_STEPS = 10;
     public static final int STEP_VARIATION = 10;
+    public static final long BASE_ROUND_TIME_IN_MS = 50 * 60 * 1000;
 }

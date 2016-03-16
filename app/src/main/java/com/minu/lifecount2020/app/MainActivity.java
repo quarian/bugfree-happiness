@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -88,6 +89,11 @@ public class MainActivity extends SensorActivity {
     private int mPoisonOptionIndex;
 
     private float mCurrentRotation;
+
+    private CountDownTimer mRoundTimer;
+    private TextView mRoundTimerTextView;
+    private boolean mTimerRunning;
+    private long mSavedRoundTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -416,7 +422,65 @@ public class MainActivity extends SensorActivity {
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mSettingsDrawerLayout.setKeepScreenOn(true);
 
+        mRoundTimer = getNewTimer(Constants.BASE_ROUND_TIME_IN_MS);
 
+        mRoundTimerTextView = (TextView) findViewById(R.id.round_timer);
+
+        mRoundTimerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTimerRunning)
+                    mRoundTimer.cancel();
+                else {
+                    mRoundTimer = getNewTimer(mSavedRoundTime);
+                    mRoundTimer.start();
+                }
+                mTimerRunning = !mTimerRunning;
+            }
+        });
+
+        mRoundTimerTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mRoundTimer.cancel();
+                mRoundTimer = getNewTimer(Constants.BASE_ROUND_TIME_IN_MS);
+                mSavedRoundTime = Constants.BASE_ROUND_TIME_IN_MS;
+                mTimerRunning = false;
+                mRoundTimerTextView.setText(getMinutes(Constants.BASE_ROUND_TIME_IN_MS));
+                return true;
+            }
+        });
+
+        mRoundTimer.start();
+        mTimerRunning = true;
+
+    }
+
+    private CountDownTimer getNewTimer(long startingTime) {
+        return new CountDownTimer(startingTime, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mRoundTimerTextView.setText(getMinutes(millisUntilFinished));
+                mSavedRoundTime = millisUntilFinished;
+            }
+
+            @Override
+            public void onFinish() {
+                mRoundTimerTextView.setText("TIME");
+            }
+        };
+    }
+
+    private String getMinutes(long millisUntilFinished) {
+        long remainingSeconds = millisUntilFinished / 1000;
+        long minutes = remainingSeconds / 60;
+        long seconds = remainingSeconds % 60;
+        String result;
+        if (seconds < 10)
+            result = Long.toString(minutes) + ":0" + Long.toString(seconds);
+        else
+            result = Long.toString(minutes) + ":" + Long.toString(seconds);
+        return result;
     }
 
     private void displayPoison() {
