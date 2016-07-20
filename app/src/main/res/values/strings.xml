@@ -24,5 +24,6 @@
     <string name="color_background_black">#333231</string>
     <string name="title_activity_dice">DiceActivity</string>
     <string name="throw_dice">Throw dice</string>
+    <string name="round_timer">Round timer</string>
 
 </resources>

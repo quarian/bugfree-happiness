@@ -259,6 +259,7 @@ public class MainActivity extends SensorActivity {
         mOptions.add(mPoisonOption);
         mOptions.add(getString(R.string.color_scheme));
         mOptions.add(getString(R.string.throw_dice));
+        mOptions.add(getString(R.string.round_timer));
     }
 
     private void setInitialColors() {
@@ -523,6 +524,8 @@ public class MainActivity extends SensorActivity {
                 case 4:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
                     startDiceThrowActivity(mBackgroundColor);
+                    break;
+                case 5:
                     break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);

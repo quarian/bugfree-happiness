@@ -28,6 +28,8 @@ public class SettingsListAdapter extends BaseAdapter {
     private BackgroundColor mBackgroundColor;
     private int mStartingLife;
     private String[] mStartingLifeValues;
+    private int mTime;
+    private String[] mTimerOptions;
 
     public SettingsListAdapter(Context context, ArrayList<String> data) {
         mContext = context;
@@ -36,6 +38,8 @@ public class SettingsListAdapter extends BaseAdapter {
                 (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mStartingLifeValues =
                 new String[]{"10", "20", "25", "30", "40", "50", "60", "70", "80", "90", "100"};
+        mTimerOptions =
+                new String[]{"30", "40", "50", "60", "90", "120"};
     }
 
     @Override
@@ -72,6 +76,10 @@ public class SettingsListAdapter extends BaseAdapter {
                     vi = mLayoutInflater.inflate(R.layout.change_background_option, parent, false);
                    setupBackgroundOption(vi);
                     break;
+                case 5:
+                    vi = mLayoutInflater.inflate(R.layout.timer_option, parent, false);
+                    setupTimerOption(vi);
+                    break;
                 default:
                     vi = mLayoutInflater.inflate(R.layout.settings_list_item, parent, false);
                     break;
@@ -80,6 +88,21 @@ public class SettingsListAdapter extends BaseAdapter {
         }
         ((TextView)vi.findViewById(R.id.settings_text)).setText(mData.get(position));
         return vi;
+    }
+
+    private void setupTimerOption(View vi) {
+        NumberPicker np = (NumberPicker) vi.findViewById(R.id.round_time_picker);
+        setDividerColor(np, Color.argb(0, 0, 0, 0));
+        np.setDisplayedValues(mTimerOptions);
+        np.setMinValue(0);
+        np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        np.setMaxValue(mTimerOptions.length - 1);
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                //((MainActivity) mContext);
+            }
+        });
     }
 
     private void setupStartingLifeOption(View vi) {
@@ -239,5 +262,6 @@ public class SettingsListAdapter extends BaseAdapter {
         mPoisonShowing = poisonShowing;
         mStartingLife = startingLife;
         mBackgroundColor = background;
+        //mTime = time;
     }
 }

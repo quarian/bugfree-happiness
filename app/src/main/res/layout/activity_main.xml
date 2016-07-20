@@ -193,6 +193,7 @@
             android:id="@+id/round_timer"
             android:textSize="20dp"
             android:textStyle="bold"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:textColor="@color/light_blue_2020"/>
