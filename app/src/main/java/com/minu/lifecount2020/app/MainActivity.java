@@ -92,6 +92,7 @@ public class MainActivity extends SensorActivity {
 
     private CountDownTimer mRoundTimer;
     private TextView mRoundTimerTextView;
+    private boolean mTimerShowing;
     private boolean mTimerRunning;
     private long mSavedRoundTime;
 
@@ -423,6 +424,7 @@ public class MainActivity extends SensorActivity {
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mSettingsDrawerLayout.setKeepScreenOn(true);
 
+        mSavedRoundTime = Constants.BASE_ROUND_TIME_IN_MS;
         mRoundTimer = getNewTimer(Constants.BASE_ROUND_TIME_IN_MS);
 
         mRoundTimerTextView = (TextView) findViewById(R.id.round_timer);
@@ -440,6 +442,23 @@ public class MainActivity extends SensorActivity {
             }
         });
 
+        mRoundTimerTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        scaleTextView((TextView) view, true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        scaleTextView((TextView) view, false);
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+
         mRoundTimerTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -452,8 +471,8 @@ public class MainActivity extends SensorActivity {
             }
         });
 
-        mRoundTimer.start();
-        mTimerRunning = true;
+        //mRoundTimer.start();
+        //mTimerRunning = true;
 
     }
 
@@ -564,6 +583,18 @@ public class MainActivity extends SensorActivity {
                 showPoison.equals("off") && mPoisonShowing) {
             displayPoison();
         }
+    }
+
+    public void toggleTimer() {
+        if (mTimerShowing) {
+            mRoundTimerTextView.setVisibility(View.GONE);
+            mRoundTimer.cancel();
+        } else {
+            mRoundTimerTextView.setVisibility(View.VISIBLE);
+            mRoundTimer = getNewTimer(mSavedRoundTime);
+            mRoundTimerTextView.setText(getMinutes(mSavedRoundTime));
+        }
+        mTimerShowing = !mTimerShowing;
     }
 
     private void setTextViewOnTouchListener(final TextView picker, final boolean poison) {

@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -29,6 +31,7 @@ public class SettingsListAdapter extends BaseAdapter {
     private int mStartingLife;
     private String[] mStartingLifeValues;
     private int mTime;
+    private boolean mTimerShowing;
     private String[] mTimerOptions;
 
     public SettingsListAdapter(Context context, ArrayList<String> data) {
@@ -74,7 +77,7 @@ public class SettingsListAdapter extends BaseAdapter {
                     break;
                 case 3:
                     vi = mLayoutInflater.inflate(R.layout.change_background_option, parent, false);
-                   setupBackgroundOption(vi);
+                    setupBackgroundOption(vi);
                     break;
                 case 5:
                     vi = mLayoutInflater.inflate(R.layout.timer_option, parent, false);
@@ -93,10 +96,14 @@ public class SettingsListAdapter extends BaseAdapter {
     private void setupTimerOption(View vi) {
         NumberPicker np = (NumberPicker) vi.findViewById(R.id.round_time_picker);
         setDividerColor(np, Color.argb(0, 0, 0, 0));
+        np.setEnabled(true);
         np.setDisplayedValues(mTimerOptions);
         np.setMinValue(0);
         np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         np.setMaxValue(mTimerOptions.length - 1);
+        TextView poisonToggle = (TextView) vi.findViewById(R.id.timer_toggle);
+        setUpToggle(poisonToggle, mTimerShowing);
+        setToggle(poisonToggle, new toggleTimerCommand());
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -168,20 +175,28 @@ public class SettingsListAdapter extends BaseAdapter {
 
     private void setupPoisonOption(View vi) {
         TextView poisonToggle = (TextView) vi.findViewById(R.id.poison_toggle);
-        if (mPoisonShowing) {
-            poisonToggle.setText(mContext.getString(R.string.on));
-            poisonToggle.setTextColor(
+        setUpToggle(poisonToggle, mPoisonShowing);
+        setToggle(poisonToggle, new togglePoisonCommand());
+    }
+
+    private void setUpToggle(TextView toggle, boolean on) {
+        if (on) {
+            toggle.setText(mContext.getString(R.string.on));
+            toggle.setTextColor(
                     Color.parseColor(mContext.getString(R.string.color_blue)));
         } else {
-            poisonToggle.setText(mContext.getString(R.string.off));
-            poisonToggle.setTextColor(
+            toggle.setText(mContext.getString(R.string.off));
+            toggle.setTextColor(
                     Color.parseColor(mContext.getString(R.string.color_red)));
         }
-        poisonToggle.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void setToggle(final TextView toggle, final Command command) {
+        toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView tw = ((TextView) v);
-                if (!mPoisonShowing) {
+                if (!isToggleOn(toggle)) {
                     tw.setText(mContext.getString(R.string.on));
                     tw.setTextColor(
                             Color.parseColor(mContext.getString(R.string.color_blue)));
@@ -190,10 +205,29 @@ public class SettingsListAdapter extends BaseAdapter {
                     tw.setTextColor(
                             Color.parseColor(mContext.getString(R.string.color_red)));
                 }
-                mPoisonShowing = !mPoisonShowing;
-                ((MainActivity) mContext).togglePoison();
+                command.execute();
             }
         });
+    }
+
+    private boolean isToggleOn(TextView toggle) {
+        return toggle.getText().equals(mContext.getString(R.string.on));
+    }
+
+    private class togglePoisonCommand implements Command{
+        @Override
+        public void execute() {
+            mPoisonShowing = !mPoisonShowing;
+            ((MainActivity) mContext).togglePoison();
+        }
+    }
+
+    private class toggleTimerCommand implements Command{
+        @Override
+        public void execute() {
+            mTimerShowing = !mTimerShowing;
+            ((MainActivity) mContext).toggleTimer();
+        }
     }
 
     private void setupBackgroundOption(View vi) {
