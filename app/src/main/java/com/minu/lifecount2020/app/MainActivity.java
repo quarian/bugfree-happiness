@@ -95,6 +95,7 @@ public class MainActivity extends SensorActivity {
     private boolean mTimerShowing;
     private boolean mTimerRunning;
     private long mSavedRoundTime;
+    private int mRoundTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,13 +139,19 @@ public class MainActivity extends SensorActivity {
             mPoisonShowing = !mPoisonShowing;
             displayPoison();
         }
+
+        if (mTimerShowing) {
+            mTimerShowing = !mTimerShowing;
+            toggleTimer();
+        }
+
         if (BackgroundColor.GREY == mBackgroundColor)
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mDarkGreyBackgroundColor));
         else if (BackgroundColor.BLACK == mBackgroundColor)
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
         //System.out.println(mPoisonShowing + " " + mStartingLife + " " + mWhiteBackground);
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter())
-                .setSettings(mPoisonShowing, mStartingLife, mBackgroundColor);
+                .setSettings(mPoisonShowing, mStartingLife, mBackgroundColor, mRoundTime, mTimerShowing);
 
     }
 
@@ -162,6 +169,11 @@ public class MainActivity extends SensorActivity {
         mPoisonShowing = settings.getBoolean(Constants.POISON, false);
         mStartingLife = settings.getInt(Constants.STARTING_LIFE,
                 Integer.parseInt(Constants.STARTING_LIFE));
+        mRoundTime = settings.getInt(Constants.ROUND_TIME, 50);
+        mSavedRoundTime =
+                settings.getLong(Constants.REMAINING_ROUND_TIME, Constants.BASE_ROUND_TIME_IN_MS);
+        mTimerShowing = settings.getBoolean(Constants.ROUND_TIMER_SHOWING, false);
+        resetTimer(true);
         String historyAsString = settings.getString(Constants.HISTORY, null);
         List<String> tempList;
         if (historyAsString != null)
@@ -188,6 +200,9 @@ public class MainActivity extends SensorActivity {
         editor.putBoolean(Constants.POISON, mPoisonShowing);
         editor.putInt(Constants.STARTING_LIFE, mStartingLife);
         editor.putString(Constants.HISTORY, mHistory.toString());
+        editor.putInt(Constants.ROUND_TIME, mRoundTime);
+        editor.putLong(Constants.REMAINING_ROUND_TIME, mSavedRoundTime);
+        editor.putBoolean(Constants.ROUND_TIMER_SHOWING, mTimerShowing);
         editor.commit();
     }
 
@@ -214,6 +229,10 @@ public class MainActivity extends SensorActivity {
         savedInstanceState.putBoolean(Constants.POISON, mPoisonShowing);
 
         savedInstanceState.putStringArrayList(Constants.HISTORY, mHistory);
+
+        savedInstanceState.putInt(Constants.ROUND_TIME, mRoundTime);
+        savedInstanceState.putLong(Constants.REMAINING_ROUND_TIME, mSavedRoundTime);
+        savedInstanceState.putBoolean(Constants.ROUND_TIMER_SHOWING, mTimerShowing);
 
         //System.out.println(savedInstanceState);
 
@@ -350,6 +369,8 @@ public class MainActivity extends SensorActivity {
         mStartingLife = 20;
         mPoisonOptionIndex = 2;
 
+        mRoundTime = 50;
+
         mCurrentRotation = 0.0f;
         mBackgroundColor = BackgroundColor.WHITE;
 
@@ -452,7 +473,7 @@ public class MainActivity extends SensorActivity {
         mRoundTimerTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                resetTimer();
+                resetTimer(false);
                 return true;
             }
         });
@@ -484,12 +505,17 @@ public class MainActivity extends SensorActivity {
         }
     }
 
-    private void resetTimer() {
+    private void resetTimer(boolean restart) {
         mRoundTimer.cancel();
         mRoundTimer = getNewTimer(Constants.BASE_ROUND_TIME_IN_MS);
-        mSavedRoundTime = Constants.BASE_ROUND_TIME_IN_MS;
+        if (!restart)
+            mSavedRoundTime = minutesToMilliseconds(mRoundTime);
         mTimerRunning = false;
-        mRoundTimerTextView.setText(getMinutes(Constants.BASE_ROUND_TIME_IN_MS));
+        mRoundTimerTextView.setText(getMinutes(mSavedRoundTime));
+    }
+
+    private long minutesToMilliseconds(int minutes) {
+        return minutes * 60 * 1000;
     }
 
     private CountDownTimer getNewTimer(long startingTime) {
@@ -540,6 +566,10 @@ public class MainActivity extends SensorActivity {
         float acceleration = (float) Math.sqrt((double) x*x + y*y + z*z);
         if (Math.abs(acceleration - mGravity) > Constants.THROW_ACCELERATION)
             startDiceThrowActivity(mBackgroundColor);
+    }
+
+    public void setTime(int i) {
+        mRoundTime = i;
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -847,7 +877,7 @@ public class MainActivity extends SensorActivity {
         addToHistory(getTotals());
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
         ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
-        resetTimer();
+        resetTimer(false);
     }
 
     public void addToHistory(String[] totals) {

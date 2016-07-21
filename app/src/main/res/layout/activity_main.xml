@@ -196,7 +196,7 @@
             android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-            android:textColor="@color/light_blue_2020"/>
+            android:textColor="@color/text_light_grey"/>
 
         <ImageButton
             android:layout_width="48dp"

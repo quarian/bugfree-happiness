@@ -80,7 +80,9 @@ public class SettingsListAdapter extends BaseAdapter {
                     setupBackgroundOption(vi);
                     break;
                 case 5:
-                    vi = mLayoutInflater.inflate(R.layout.timer_option, parent, false);
+                    vi = LayoutInflater.from(
+                            new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
+                            .inflate(R.layout.timer_option, parent, false);
                     setupTimerOption(vi);
                     break;
                 default:
@@ -107,9 +109,39 @@ public class SettingsListAdapter extends BaseAdapter {
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                //((MainActivity) mContext);
+                ((MainActivity) mContext).
+                        setTime(Integer.parseInt(mTimerOptions[newVal]));
             }
         });
+        np.setValue(getTimeSpinnerValue());
+    }
+
+    private int getTimeSpinnerValue() {
+        int result;
+        switch (mTime) {
+            case 30:
+                result = 0;
+                break;
+            case 40:
+                result = 1;
+                break;
+            case 50:
+                result = 2;
+                break;
+            case 60:
+                result = 3;
+                break;
+            case 90:
+                result = 4;
+                break;
+            case 120:
+                result = 5;
+                break;
+            default:
+                result = 2;
+                break;
+        }
+        return result;
     }
 
     private void setupStartingLifeOption(View vi) {
@@ -291,11 +323,13 @@ public class SettingsListAdapter extends BaseAdapter {
         }
     }
 
-    public void setSettings(boolean poisonShowing, int startingLife, BackgroundColor background) {
+    public void setSettings(boolean poisonShowing, int startingLife,
+                                BackgroundColor background, int time, boolean timerShowing) {
         //System.out.println("Settings settings " + poisonShowing);
         mPoisonShowing = poisonShowing;
         mStartingLife = startingLife;
         mBackgroundColor = background;
-        //mTime = time;
+        mTimerShowing = timerShowing;
+        mTime = time;
     }
 }

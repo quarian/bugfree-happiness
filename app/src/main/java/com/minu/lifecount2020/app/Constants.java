@@ -25,4 +25,8 @@ public final class Constants {
     public static final int BASE_STEPS = 10;
     public static final int STEP_VARIATION = 10;
     public static final long BASE_ROUND_TIME_IN_MS = 50 * 60 * 1000;
+    public static final String ROUND_TIME = "ROUND_TIME";
+    public static final String REMAINING_ROUND_TIME = "REMAINING_ROUND_TIME";
+    public static final String ROUND_TIMER_SHOWING = "ROUND_TIMER_SHOWING";
+
 }
