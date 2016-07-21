@@ -424,6 +424,11 @@ public class MainActivity extends SensorActivity {
         mSettingsDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mSettingsDrawerLayout.setKeepScreenOn(true);
 
+       instantiateRoundTimer();
+
+    }
+
+    private void instantiateRoundTimer() {
         mSavedRoundTime = Constants.BASE_ROUND_TIME_IN_MS;
         mRoundTimer = getNewTimer(Constants.BASE_ROUND_TIME_IN_MS);
 
@@ -442,38 +447,49 @@ public class MainActivity extends SensorActivity {
             }
         });
 
-        mRoundTimerTextView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        scaleTextView((TextView) view, true);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        scaleTextView((TextView) view, false);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+        setTimerAnimations(true);
 
         mRoundTimerTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mRoundTimer.cancel();
-                mRoundTimer = getNewTimer(Constants.BASE_ROUND_TIME_IN_MS);
-                mSavedRoundTime = Constants.BASE_ROUND_TIME_IN_MS;
-                mTimerRunning = false;
-                mRoundTimerTextView.setText(getMinutes(Constants.BASE_ROUND_TIME_IN_MS));
+                resetTimer();
                 return true;
             }
         });
 
         //mRoundTimer.start();
         //mTimerRunning = true;
+    }
 
+    private void setTimerAnimations(boolean on) {
+        if (on) {
+            mRoundTimerTextView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            scaleTextView((TextView) view, true);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            scaleTextView((TextView) view, false);
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                }
+            });
+        } else {
+            mRoundTimerTextView.clearAnimation();
+        }
+    }
+
+    private void resetTimer() {
+        mRoundTimer.cancel();
+        mRoundTimer = getNewTimer(Constants.BASE_ROUND_TIME_IN_MS);
+        mSavedRoundTime = Constants.BASE_ROUND_TIME_IN_MS;
+        mTimerRunning = false;
+        mRoundTimerTextView.setText(getMinutes(Constants.BASE_ROUND_TIME_IN_MS));
     }
 
     private CountDownTimer getNewTimer(long startingTime) {
@@ -587,9 +603,11 @@ public class MainActivity extends SensorActivity {
 
     public void toggleTimer() {
         if (mTimerShowing) {
+            setTimerAnimations(false);
             mRoundTimerTextView.setVisibility(View.GONE);
             mRoundTimer.cancel();
         } else {
+            setTimerAnimations(true);
             mRoundTimerTextView.setVisibility(View.VISIBLE);
             mRoundTimer = getNewTimer(mSavedRoundTime);
             mRoundTimerTextView.setText(getMinutes(mSavedRoundTime));
@@ -829,6 +847,7 @@ public class MainActivity extends SensorActivity {
         addToHistory(getTotals());
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
         ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
+        resetTimer();
     }
 
     public void addToHistory(String[] totals) {
