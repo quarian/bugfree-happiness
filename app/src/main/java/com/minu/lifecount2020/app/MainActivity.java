@@ -639,7 +639,8 @@ public class MainActivity extends SensorActivity {
         } else {
             setTimerAnimations(true);
             mRoundTimerTextView.setVisibility(View.VISIBLE);
-            mRoundTimer = getNewTimer(mSavedRoundTime);
+            if (mRoundTimer == null)
+                mRoundTimer = getNewTimer(mSavedRoundTime);
             mRoundTimerTextView.setText(getMinutes(mSavedRoundTime));
         }
         mTimerShowing = !mTimerShowing;
