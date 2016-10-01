@@ -95,7 +95,33 @@
                     android:gravity="left"
                     android:id="@+id/poison_picker_1"
                     android:layout_gravity="center"/>
+        </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/first_energy_picker_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:gravity="left"
+                    android:layout_weight="0.5"
+                    android:layout_gravity="center"
+                    android:id="@+id/energy_icon_one"
+                    android:src="@drawable/energy_icon_left"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="50dp"
+                    android:minEms="2"
+                    android:layout_weight="0.5"
+                    android:textStyle="bold"
+                    android:gravity="left"
+                    android:id="@+id/energy_picker_1"
+                    android:layout_gravity="center"/>
         </LinearLayout>
 
             <LinearLayout
@@ -143,6 +169,33 @@
                     android:id="@+id/poison_picker_2"
                     android:layout_gravity="center"/>
             </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/second_energy_picker_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight=".5"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="left"
+                android:layout_weight="0.5"
+                android:layout_gravity="center"
+                android:id="@+id/energy_icon_two"
+                android:src="@drawable/energy_icon_right"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50dp"
+                android:minEms="2"
+                android:layout_weight="0.5"
+                android:textStyle="bold"
+                android:gravity="left"
+                android:id="@+id/energy_picker_2"
+                android:layout_gravity="center"/>
+        </LinearLayout>
 
 
             <RelativeLayout

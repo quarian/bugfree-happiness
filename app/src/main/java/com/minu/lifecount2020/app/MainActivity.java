@@ -37,10 +37,14 @@ public class MainActivity extends SensorActivity {
     private LinearLayout mLifeLinearLayoutTwo;
     private LinearLayout mPoisonLinearLayoutOne;
     private LinearLayout mPoisonLinearLayoutTwo;
+    private LinearLayout mEnergyLinerLayoutOne;
+    private LinearLayout mEnergyLinerLayoutTwo;
     private TextView mLifePickerOne;
     private TextView mLifePickerTwo;
     private TextView mPoisonPickerOne;
     private TextView mPoisonPickerTwo;
+    private TextView mEnergyPickerOne;
+    private TextView mEnergyPickerTwo;
 
     private ImageButton mSettingsButton;
     private ImageButton mHistoryButton;
@@ -55,6 +59,7 @@ public class MainActivity extends SensorActivity {
     private TextView mRighyUpdateTextView;
 
     private boolean mPoisonShowing;
+    private boolean mEnergyShowing;
 
     private ArrayList<String> mOptions;
 
@@ -139,6 +144,10 @@ public class MainActivity extends SensorActivity {
             mPoisonShowing = !mPoisonShowing;
             displayPoison();
         }
+        if (mEnergyShowing) {
+            mEnergyShowing = !mEnergyShowing;
+            displayEnergy();
+        }
 
         if (mTimerShowing) {
             mTimerShowing = !mTimerShowing;
@@ -161,12 +170,17 @@ public class MainActivity extends SensorActivity {
         String lifeTwo = settings.getString(Constants.PICKER_TWO_LIFE, Constants.STARTING_LIFE);
         String poisonOne = settings.getString(Constants.PICKER_ONE_POISON, Constants.STARTING_POISON);
         String poisonTwo = settings.getString(Constants.PICKER_TWO_POISON, Constants.STARTING_POISON);
+        String energyOne = settings.getString(Constants.PICKER_ONE_ENERGY, Constants.STARTING_ENERGY);
+        String energyTwo = settings.getString(Constants.PICKER_TWO_ENERGY, Constants.STARTING_ENERGY);
         mBackgroundColor = BackgroundColor.values()[settings.getInt(Constants.BACKGROUND_WHITE, 0)];
         mLifePickerOne.setText(lifeOne);
         mLifePickerTwo.setText(lifeTwo);
         mPoisonPickerOne.setText(poisonOne);
         mPoisonPickerTwo.setText(poisonTwo);
+        mEnergyPickerOne.setText(energyOne);
+        mEnergyPickerTwo.setText(energyTwo);
         mPoisonShowing = settings.getBoolean(Constants.POISON, false);
+        mEnergyShowing = settings.getBoolean(Constants.POISON, false);
         mStartingLife = settings.getInt(Constants.STARTING_LIFE,
                 Integer.parseInt(Constants.STARTING_LIFE));
         mRoundTime = settings.getInt(Constants.ROUND_TIME, 50);
@@ -196,6 +210,8 @@ public class MainActivity extends SensorActivity {
         editor.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
         editor.putString(Constants.PICKER_ONE_POISON, mPoisonPickerOne.getText().toString());
         editor.putString(Constants.PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
+        editor.putString(Constants.PICKER_ONE_ENERGY, mEnergyPickerOne.getText().toString());
+        editor.putString(Constants.PICKER_TWO_ENERGY, mEnergyPickerTwo.getText().toString());
         editor.putInt(Constants.BACKGROUND_WHITE, mBackgroundColor.ordinal());
         editor.putBoolean(Constants.POISON, mPoisonShowing);
         editor.putInt(Constants.STARTING_LIFE, mStartingLife);
@@ -213,6 +229,8 @@ public class MainActivity extends SensorActivity {
         savedInstanceState.putString(Constants.PICKER_ONE_POISON, mPoisonPickerOne.getText().toString());
         savedInstanceState.putString(Constants.PICKER_TWO_LIFE, mLifePickerTwo.getText().toString());
         savedInstanceState.putString(Constants.PICKER_TWO_POISON, mPoisonPickerTwo.getText().toString());
+        savedInstanceState.putString(Constants.PICKER_ONE_ENERGY, mEnergyPickerOne.getText().toString());
+        savedInstanceState.putString(Constants.PICKER_TWO_ENERGY, mEnergyPickerTwo.getText().toString());
 
         savedInstanceState.putSerializable(Constants.BACKGROUND_WHITE, mBackgroundColor);
         int startingLife;
@@ -246,11 +264,17 @@ public class MainActivity extends SensorActivity {
         mPoisonLinearLayoutOne = (LinearLayout) findViewById(R.id.first_poison_picker_layout);
         mPoisonLinearLayoutTwo = (LinearLayout) findViewById(R.id.second_poison_picker_layout);
 
+        mEnergyLinerLayoutOne = (LinearLayout) findViewById(R.id.first_energy_picker_layout);
+        mEnergyLinerLayoutTwo = (LinearLayout) findViewById(R.id.second_energy_picker_layout);
+
         mLifePickerOne = (TextView) findViewById(R.id.life_picker_1);
         mLifePickerTwo = (TextView) findViewById(R.id.life_picker_2);
 
         mPoisonPickerOne = (TextView) findViewById(R.id.poison_picker_1);
         mPoisonPickerTwo = (TextView) findViewById(R.id.poison_picker_2);
+
+        mEnergyPickerOne = (TextView) findViewById(R.id.energy_picker_1);
+        mEnergyPickerTwo = (TextView) findViewById(R.id.energy_picker_2);
 
         setInitialColors();
 
@@ -287,18 +311,32 @@ public class MainActivity extends SensorActivity {
         int blue = Color.parseColor(getString(R.string.color_blue));
         mLifePickerOne.setTextColor(red);
         mPoisonPickerOne.setTextColor(red);
+        mEnergyPickerOne.setTextColor(red);
         mLifePickerTwo.setTextColor(blue);
         mPoisonPickerTwo.setTextColor(blue);
+        mEnergyPickerTwo.setTextColor(blue);
         Drawable arrowLeft = getResources().getDrawable(R.drawable.left_arrow);
         Drawable arrowRight = getResources().getDrawable(R.drawable.right_arrow);
+        Drawable energyIconLeft = getResources().getDrawable(R.drawable.energy_icon_left);
+        Drawable energyIconRight = getResources().getDrawable(R.drawable.energy_icon_right);
         if (arrowLeft != null)
             arrowLeft.setColorFilter(Color.parseColor(getString(R.string.color_text)),
                     PorterDuff.Mode.SRC_ATOP);
         if (arrowRight != null)
             arrowRight.setColorFilter(Color.parseColor(getString(R.string.color_text)),
                     PorterDuff.Mode.SRC_ATOP);
+        if (energyIconLeft != null)
+            energyIconLeft.setColorFilter(red,
+                    PorterDuff.Mode.SRC_ATOP);
+        if (energyIconRight != null)
+            energyIconRight.setColorFilter(blue,
+                    PorterDuff.Mode.SRC_ATOP);
+
         ((ImageView)findViewById(R.id.update_arrow_left)).setImageDrawable(arrowLeft);
         ((ImageView)findViewById(R.id.update_arrow_right)).setImageDrawable(arrowRight);
+
+        ((ImageView)findViewById(R.id.energy_icon_one)).setImageDrawable(energyIconLeft);
+        ((ImageView)findViewById(R.id.energy_icon_two)).setImageDrawable(energyIconRight);
     }
 
     private void collapseHistory() {
@@ -356,13 +394,20 @@ public class MainActivity extends SensorActivity {
         setLayoutTouchListener(mLifeLinearLayoutTwo, mLifePickerTwo);
         setLayoutTouchListener(mPoisonLinearLayoutOne, mPoisonPickerOne);
         setLayoutTouchListener(mPoisonLinearLayoutTwo, mPoisonPickerTwo);
+        setLayoutTouchListener(mEnergyLinerLayoutOne, mEnergyPickerOne);
+        setLayoutTouchListener(mEnergyLinerLayoutTwo, mEnergyPickerTwo);
         setTextViewOnTouchListener(mLifePickerOne, false);
         setTextViewOnTouchListener(mLifePickerTwo, false);
         setTextViewOnTouchListener(mPoisonPickerOne, true);
         setTextViewOnTouchListener(mPoisonPickerTwo, true);
+        setTextViewOnTouchListener(mEnergyPickerOne, false);
+        setTextViewOnTouchListener(mEnergyPickerTwo, false);
 
         mPoisonLinearLayoutOne.setVisibility(View.GONE);
         mPoisonLinearLayoutTwo.setVisibility(View.GONE);
+
+        mEnergyLinerLayoutOne.setVisibility(View.VISIBLE);
+        mEnergyLinerLayoutTwo.setVisibility(View.VISIBLE);
 
         instantiateArrayLists();
 
@@ -561,6 +606,22 @@ public class MainActivity extends SensorActivity {
 
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
     }
+
+    private void displayEnergy() {
+        if (mEnergyShowing) {
+            mEnergyLinerLayoutOne.setVisibility(View.GONE);
+            mEnergyLinerLayoutTwo.setVisibility(View.GONE);
+            mEnergyShowing = false;
+        } else {
+            mEnergyLinerLayoutOne.setVisibility(View.VISIBLE);
+            mEnergyLinerLayoutTwo.setVisibility(View.VISIBLE);
+            mEnergyShowing = true;
+        }
+
+        ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
+
+    }
+
 
     protected void checkShake(float x, float y, float z) {
         float acceleration = (float) Math.sqrt((double) x*x + y*y + z*z);
