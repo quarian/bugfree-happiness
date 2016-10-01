@@ -10,6 +10,7 @@ public final class Constants {
     public static final int LETHAL_POISON = 10;
     public static final String BACKGROUND_WHITE = "BACKGROUND_WHITE";
     public static final String POISON = "POISON";
+    public static final String ENERGY = "ENERGY";
     public static final String STARTING_LIFE = "20";
     public static final String STARTING_POISON = "0";
     public static final String STARTING_ENERGY = "0";

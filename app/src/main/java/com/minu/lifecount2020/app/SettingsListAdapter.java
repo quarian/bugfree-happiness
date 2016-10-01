@@ -27,6 +27,7 @@ public class SettingsListAdapter extends BaseAdapter {
     private static LayoutInflater mLayoutInflater;
 
     private boolean mPoisonShowing;
+    private boolean mEnergyShowing;
     private BackgroundColor mBackgroundColor;
     private int mStartingLife;
     private String[] mStartingLifeValues;
@@ -76,10 +77,14 @@ public class SettingsListAdapter extends BaseAdapter {
                     setupPoisonOption(vi);
                     break;
                 case 3:
+                    vi = mLayoutInflater.inflate(R.layout.energy_option, parent, false);
+                    setupEnergyOption(vi);
+                    break;
+                case 4:
                     vi = mLayoutInflater.inflate(R.layout.change_background_option, parent, false);
                     setupBackgroundOption(vi);
                     break;
-                case 5:
+                case 6:
                     vi = LayoutInflater.from(
                             new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
                             .inflate(R.layout.timer_option, parent, false);
@@ -211,6 +216,12 @@ public class SettingsListAdapter extends BaseAdapter {
         setToggle(poisonToggle, new togglePoisonCommand());
     }
 
+    private void setupEnergyOption(View vi) {
+        TextView energyToggle = (TextView) vi.findViewById(R.id.energy_toggle);
+        setUpToggle(energyToggle, mEnergyShowing);
+        setToggle(energyToggle, new toggleEnergyCommand());
+    }
+
     private void setUpToggle(TextView toggle, boolean on) {
         if (on) {
             toggle.setText(mContext.getString(R.string.on));
@@ -246,11 +257,20 @@ public class SettingsListAdapter extends BaseAdapter {
         return toggle.getText().equals(mContext.getString(R.string.on));
     }
 
-    private class togglePoisonCommand implements Command{
+    private class togglePoisonCommand implements Command {
         @Override
         public void execute() {
             mPoisonShowing = !mPoisonShowing;
             ((MainActivity) mContext).togglePoison();
+        }
+    }
+
+    private class toggleEnergyCommand implements Command {
+
+        @Override
+        public void execute() {
+            mEnergyShowing = !mEnergyShowing;
+            ((MainActivity) mContext).toggleEnergy();
         }
     }
 
@@ -323,10 +343,11 @@ public class SettingsListAdapter extends BaseAdapter {
         }
     }
 
-    public void setSettings(boolean poisonShowing, int startingLife,
+    public void setSettings(boolean poisonShowing, boolean energyShowing, int startingLife,
                                 BackgroundColor background, int time, boolean timerShowing) {
         //System.out.println("Settings settings " + poisonShowing);
         mPoisonShowing = poisonShowing;
+        mEnergyShowing = energyShowing;
         mStartingLife = startingLife;
         mBackgroundColor = background;
         mTimerShowing = timerShowing;

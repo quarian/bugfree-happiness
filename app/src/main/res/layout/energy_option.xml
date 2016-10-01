@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/drawer_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_light_grey"
+        android:textSize="20dp"
+        android:padding="15dp"
+        android:layout_weight="0.2"
+        android:gravity="center_vertical"
+        android:id="@+id/settings_text"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:padding="15dp"
+        android:gravity="center"
+        android:textColor="@color/light_blue_2020"
+        android:text="@string/off"
+        android:id="@+id/energy_toggle"
+        android:layout_weight="0.8"/>
+
+</LinearLayout>

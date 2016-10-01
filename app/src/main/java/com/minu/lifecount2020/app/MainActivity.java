@@ -101,6 +101,7 @@ public class MainActivity extends SensorActivity {
     private boolean mTimerRunning;
     private long mSavedRoundTime;
     private int mRoundTime;
+    private String mEnergyOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +125,14 @@ public class MainActivity extends SensorActivity {
             setLifeTotals(savedInstanceState.getString(Constants.PICKER_ONE_LIFE),
                     savedInstanceState.getString(Constants.PICKER_ONE_POISON),
                     savedInstanceState.getString(Constants.PICKER_TWO_LIFE),
-                    savedInstanceState.getString(Constants.PICKER_TWO_POISON));
+                    savedInstanceState.getString(Constants.PICKER_TWO_POISON),
+                    savedInstanceState.getString(Constants.PICKER_ONE_ENERGY),
+                    savedInstanceState.getString(Constants.PICKER_TWO_ENERGY));
 
             mHistory = savedInstanceState.getStringArrayList(Constants.HISTORY);
             ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
             mPoisonShowing = savedInstanceState.getBoolean(Constants.POISON);
+            mEnergyShowing = savedInstanceState.getBoolean(Constants.ENERGY);
             mBackgroundColor =
                     (BackgroundColor) savedInstanceState.getSerializable(Constants.BACKGROUND_WHITE);
             mStartingLife = savedInstanceState.getInt(Constants.STARTING_LIFE);
@@ -160,7 +164,7 @@ public class MainActivity extends SensorActivity {
             mSettingsDrawerLayout.setBackgroundColor(Color.parseColor(mBlackBackgroundColor));
         //System.out.println(mPoisonShowing + " " + mStartingLife + " " + mWhiteBackground);
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter())
-                .setSettings(mPoisonShowing, mStartingLife, mBackgroundColor, mRoundTime, mTimerShowing);
+                .setSettings(mPoisonShowing, mEnergyShowing, mStartingLife, mBackgroundColor, mRoundTime, mTimerShowing);
 
     }
 
@@ -180,7 +184,7 @@ public class MainActivity extends SensorActivity {
         mEnergyPickerOne.setText(energyOne);
         mEnergyPickerTwo.setText(energyTwo);
         mPoisonShowing = settings.getBoolean(Constants.POISON, false);
-        mEnergyShowing = settings.getBoolean(Constants.POISON, false);
+        mEnergyShowing = settings.getBoolean(Constants.ENERGY, false);
         mStartingLife = settings.getInt(Constants.STARTING_LIFE,
                 Integer.parseInt(Constants.STARTING_LIFE));
         mRoundTime = settings.getInt(Constants.ROUND_TIME, 50);
@@ -214,6 +218,7 @@ public class MainActivity extends SensorActivity {
         editor.putString(Constants.PICKER_TWO_ENERGY, mEnergyPickerTwo.getText().toString());
         editor.putInt(Constants.BACKGROUND_WHITE, mBackgroundColor.ordinal());
         editor.putBoolean(Constants.POISON, mPoisonShowing);
+        editor.putBoolean(Constants.ENERGY, mEnergyShowing);
         editor.putInt(Constants.STARTING_LIFE, mStartingLife);
         editor.putString(Constants.HISTORY, mHistory.toString());
         editor.putInt(Constants.ROUND_TIME, mRoundTime);
@@ -245,6 +250,7 @@ public class MainActivity extends SensorActivity {
         }
         savedInstanceState.putInt(Constants.STARTING_LIFE, startingLife);
         savedInstanceState.putBoolean(Constants.POISON, mPoisonShowing);
+        savedInstanceState.putBoolean(Constants.ENERGY, mEnergyShowing);
 
         savedInstanceState.putStringArrayList(Constants.HISTORY, mHistory);
 
@@ -301,6 +307,7 @@ public class MainActivity extends SensorActivity {
         mOptions.add(getString(R.string.new_duel));
         mOptions.add(getString(R.string.starting_life_total));
         mOptions.add(mPoisonOption);
+        mOptions.add(getString(R.string.energy));
         mOptions.add(getString(R.string.color_scheme));
         mOptions.add(getString(R.string.throw_dice));
         mOptions.add(getString(R.string.round_timer));
@@ -406,8 +413,8 @@ public class MainActivity extends SensorActivity {
         mPoisonLinearLayoutOne.setVisibility(View.GONE);
         mPoisonLinearLayoutTwo.setVisibility(View.GONE);
 
-        mEnergyLinerLayoutOne.setVisibility(View.VISIBLE);
-        mEnergyLinerLayoutTwo.setVisibility(View.VISIBLE);
+        mEnergyLinerLayoutOne.setVisibility(View.GONE);
+        mEnergyLinerLayoutTwo.setVisibility(View.GONE);
 
         instantiateArrayLists();
 
@@ -470,6 +477,7 @@ public class MainActivity extends SensorActivity {
 
         mShowPoison = getString(R.string.poison);
         mHidePoison = getString(R.string.poison);
+        mEnergyOption = getString(R.string.energy);
 
         mPullToRefresh = getString(R.string.pull_to_restart);
         mReleaseToRefresh = getString(R.string.pull_to_cancel);
@@ -648,10 +656,12 @@ public class MainActivity extends SensorActivity {
                 case 3:
                     break;
                 case 4:
+                    break;
+                case 5:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
                     startDiceThrowActivity(mBackgroundColor);
                     break;
-                case 5:
+                case 6:
                     break;
                 default:
                     mSettingsDrawerLayout.closeDrawer(mSettingsDrawer);
@@ -689,6 +699,15 @@ public class MainActivity extends SensorActivity {
         if (showPoison.equals("on") && !mPoisonShowing ||
                 showPoison.equals("off") && mPoisonShowing) {
             displayPoison();
+        }
+    }
+
+    public void toggleEnergy() {
+        String showEnergy =
+                ((TextView) findViewById(R.id.energy_toggle)).getText().toString();
+        if (showEnergy.equals("on") && !mEnergyShowing ||
+                showEnergy.equals("off") && mEnergyShowing) {
+            displayEnergy();
         }
     }
 
@@ -932,6 +951,8 @@ public class MainActivity extends SensorActivity {
         mLifePickerTwo.setText(startingLife);
         mPoisonPickerOne.setText(Constants.STARTING_POISON);
         mPoisonPickerTwo.setText(Constants.STARTING_POISON);
+        mEnergyPickerOne.setText(Constants.STARTING_ENERGY);
+        mEnergyPickerTwo.setText(Constants.STARTING_ENERGY);
         mHistory.clear();
         ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).clear();
         mOptions.clear();
@@ -957,11 +978,14 @@ public class MainActivity extends SensorActivity {
 
 
     private void setLifeTotals(String lifePickerOne, String poisonPickerOne,
-                               String lifePickerTwo, String poisonPickerTwo) {
+                               String lifePickerTwo, String poisonPickerTwo,
+                               String energyPickerOne, String energyPickerTwo) {
         mLifePickerOne.setText(lifePickerOne);
         mLifePickerTwo.setText(lifePickerTwo);
         mPoisonPickerOne.setText(poisonPickerOne);
         mPoisonPickerTwo.setText(poisonPickerTwo);
+        mEnergyPickerOne.setText(energyPickerOne);
+        mEnergyPickerTwo.setText(energyPickerTwo);
     }
 
     private void spinResetArrows() {
