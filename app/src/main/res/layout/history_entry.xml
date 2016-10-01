@@ -35,6 +35,28 @@
         android:textColor="@color/light_red_2020"/>
 
     <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/energy_icon_left"
+        android:id="@+id/energy_left_icon"
+        android:visibility="invisible"
+        android:layout_toRightOf="@id/left_poison"
+        android:paddingLeft="2dp"
+        android:layout_centerVertical="true"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/energy_left_icon"
+        android:visibility="invisible"
+        android:id="@+id/energy_left"
+        android:textColor="@color/light_red_2020"/>
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/divider_circle"
@@ -69,6 +91,26 @@
         android:visibility="invisible"
         android:id="@+id/poison_right_icon"
         android:layout_toLeftOf="@id/right_poison"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/poison_right_icon"
+        android:visibility="invisible"
+        android:id="@+id/energy_right"
+        android:textColor="@color/light_blue_2020"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/energy_icon_right"
+        android:id="@+id/energy_right_icon"
+        android:visibility="invisible"
+        android:layout_toLeftOf="@id/energy_right"
         android:layout_centerVertical="true"/>
 
     <ImageView

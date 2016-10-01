@@ -47,18 +47,14 @@ public class HistoryListAdapter extends BaseAdapter {
         String rightLife = mData.get(position).split(" ")[1];
         String leftPoison = mData.get(position).split(" ")[2];
         String rightPoison = mData.get(position).split(" ")[3];
+        String leftEnergy = mData.get(position).split(" ")[4];
+        String rightEnergy = mData.get(position).split(" ")[5];
         ((TextView) vi.findViewById(R.id.left_life)).setText(leftLife);
         ((TextView) vi.findViewById(R.id.right_life)).setText(rightLife);
-        if (!leftPoison.equals(Constants.STARTING_POISON)) {
-            vi.findViewById(R.id.left_poison).setVisibility(View.VISIBLE);
-            ((TextView) vi.findViewById(R.id.left_poison)).setText(leftPoison);
-            vi.findViewById(R.id.poison_left_icon).setVisibility(View.VISIBLE);
-        }
-        if (!rightPoison.equals(Constants.STARTING_POISON)) {
-            vi.findViewById(R.id.right_poison).setVisibility(View.VISIBLE);
-            ((TextView) vi.findViewById(R.id.right_poison)).setText(rightPoison);
-            vi.findViewById(R.id.poison_right_icon).setVisibility(View.VISIBLE);
-        }
+        addConditionalHistory(leftPoison, Constants.STARTING_POISON, vi, R.id.left_poison, R.id.poison_left_icon);
+        addConditionalHistory(rightPoison, Constants.STARTING_POISON, vi, R.id.right_poison, R.id.poison_right_icon);
+        addConditionalHistory(leftEnergy, Constants.STARTING_ENERGY, vi, R.id.energy_left, R.id.energy_left_icon);
+        addConditionalHistory(rightEnergy, Constants.STARTING_ENERGY, vi, R.id.energy_right, R.id.energy_right_icon);
 
         if (getCount() > 1 && position > 0)
             vi.findViewById(R.id.divider_pipe_above).setVisibility(View.VISIBLE);
@@ -69,6 +65,14 @@ public class HistoryListAdapter extends BaseAdapter {
         else
             vi.findViewById(R.id.divider_pipe_below).setVisibility(View.INVISIBLE);
         return vi;
+    }
+
+    private void addConditionalHistory(String historyEntry, String baseLine, View vi, int textId, int iconId) {
+        if (!historyEntry.equals(baseLine)) {
+            vi.findViewById(textId).setVisibility(View.VISIBLE);
+            ((TextView) vi.findViewById(textId)).setText(historyEntry);
+            vi.findViewById(iconId).setVisibility(View.VISIBLE);
+        }
     }
 
     public void addAll(ArrayList<String> history) {

@@ -370,19 +370,20 @@ public class MainActivity extends SensorActivity {
     }
 
     private long parseTimeStamp(String historyEntry) {
-        String timeString = historyEntry.split(" ")[4];
+        String timeString = historyEntry.split(" ")[6];
         return Long.parseLong(timeString);
     }
 
     private boolean isHistoryEntryRead(String historyEntry) {
-        String read = historyEntry.split(" ")[4];
+        //System.out.println(mHistory);
+        String read = historyEntry.split(" ")[6];
         return read.compareTo(Constants.READ) == 0;
     }
 
     private String markedHistoryEntryRead(String historyEntry) {
         String[] split = historyEntry.split(" ");
-        split[4] = Constants.READ;
-        return split[0] + " " + split[1] + " " + split[2] + " " + split[3]+ " " + split[4];
+        split[6] = Constants.READ;
+        return split[0] + " " + split[1] + " " + split[2] + " " + split[3] + " " + split[4] + " " + split[5] + " " + split[6];
     }
 
     public void setmStartingLife(int startingLife) {
@@ -968,12 +969,13 @@ public class MainActivity extends SensorActivity {
         //System.out.println("Adding to history " + totals[0] + " " + totals[1] + " "
         //        + totals[2] + " " + totals[3] + " " + timeStamp);
         mHistory.add(totals[0] + " " + totals[1] + " "
-                + totals[2] + " " + totals[3] + " " + timeStamp);
+                + totals[2] + " " + totals[3] + " " + totals[4] + " " + totals[5] + " " + timeStamp);
     }
 
     public String[] getTotals() {
         return new String[]{mLifePickerOne.getText().toString(), mLifePickerTwo.getText().toString(),
-                           mPoisonPickerOne.getText().toString(), mPoisonPickerTwo.getText().toString()};
+                           mPoisonPickerOne.getText().toString(), mPoisonPickerTwo.getText().toString(),
+                           mEnergyPickerOne.getText().toString(), mEnergyPickerTwo.getText().toString()};
     }
 
 
