@@ -961,7 +961,6 @@ public class MainActivity extends SensorActivity {
         addToHistory(getTotals());
         ((SettingsListAdapter)mSettingsDrawerList.getAdapter()).notifyDataSetChanged();
         ((HistoryListAdapter) mHistoryDrawerList.getAdapter()).notifyDataSetChanged();
-        resetTimer(false);
     }
 
     public void addToHistory(String[] totals) {
