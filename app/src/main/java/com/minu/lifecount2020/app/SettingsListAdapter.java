@@ -64,37 +64,40 @@ public class SettingsListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        if (vi == null) {
-            switch (position) {
-                case 1:
-                    vi = LayoutInflater.from(
-                            new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
-                            .inflate(R.layout.starting_life_option, parent, false);
-                    setupStartingLifeOption(vi);
-                    break;
-                case 2:
-                    vi = mLayoutInflater.inflate(R.layout.poison_option, parent, false);
-                    setupPoisonOption(vi);
-                    break;
-                case 3:
-                    vi = mLayoutInflater.inflate(R.layout.energy_option, parent, false);
-                    setupEnergyOption(vi);
-                    break;
-                case 4:
-                    vi = mLayoutInflater.inflate(R.layout.change_background_option, parent, false);
-                    setupBackgroundOption(vi);
-                    break;
-                case 6:
-                    vi = LayoutInflater.from(
-                            new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
-                            .inflate(R.layout.timer_option, parent, false);
-                    setupTimerOption(vi);
-                    break;
-                default:
-                    vi = mLayoutInflater.inflate(R.layout.settings_list_item, parent, false);
-                    break;
-
-            }
+        switch (position) {
+            case 0:
+                vi = mLayoutInflater.inflate(R.layout.settings_list_item, parent, false);
+                break;
+            case 1:
+                vi = LayoutInflater.from(
+                        new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
+                        .inflate(R.layout.starting_life_option, parent, false);
+                setupStartingLifeOption(vi);
+                break;
+            case 2:
+                vi = mLayoutInflater.inflate(R.layout.poison_option, parent, false);
+                setupPoisonOption(vi);
+                break;
+            case 3:
+                vi = mLayoutInflater.inflate(R.layout.energy_option, parent, false);
+                setupEnergyOption(vi);
+                break;
+            case 4:
+                vi = mLayoutInflater.inflate(R.layout.change_background_option, parent, false);
+                setupBackgroundOption(vi);
+                break;
+            case 5:
+                vi = mLayoutInflater.inflate(R.layout.settings_list_item, parent, false);
+                break;
+            case 6:
+                vi = LayoutInflater.from(
+                        new ContextThemeWrapper(mContext, R.style.NumberPickerTextColorStyle))
+                        .inflate(R.layout.timer_option, parent, false);
+                setupTimerOption(vi);
+                break;
+            default:
+                vi = mLayoutInflater.inflate(R.layout.settings_list_item, parent, false);
+                break;
         }
         ((TextView)vi.findViewById(R.id.settings_text)).setText(mData.get(position));
         return vi;
@@ -116,6 +119,7 @@ public class SettingsListAdapter extends BaseAdapter {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 ((MainActivity) mContext).
                         setTime(Integer.parseInt(mTimerOptions[newVal]));
+                mTime = Integer.parseInt(mTimerOptions[newVal]);
             }
         });
         np.setValue(getTimeSpinnerValue());
@@ -162,6 +166,7 @@ public class SettingsListAdapter extends BaseAdapter {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 ((MainActivity) mContext).
                         setmStartingLife(Integer.parseInt(mStartingLifeValues[newVal]));
+                mStartingLife = Integer.parseInt(mStartingLifeValues[newVal]);
             }
         });
         np.setValue(getInitialSpinnerValue());
